@@ -1,0 +1,9 @@
+{
+  "branch": "lynvo-sync",
+  "status": "syncing",
+  "pendingChanges": true,
+  "lastSyncAt": null,
+  "lastRemoteCommit": null,
+  "message": "Synchronizing Lynvo board",
+  "updatedAt": 1783439864804
+}

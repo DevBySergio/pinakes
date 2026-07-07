@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-g3xqfvv0",
+  "title": "Completed: Basic validation, repair, search, and UI state",
+  "description": "Added validation for core structure, manifest shape, enabled modules, ADR names, and local links; added repair, offline search, and persisted tree state.",
+  "status": "done",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439721573,
+  "updatedAt": 1783439721573,
+  "position": 1783439721573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-hb2fuly2",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439721573
+    }
+  ]
+}

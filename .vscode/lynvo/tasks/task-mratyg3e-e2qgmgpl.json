@@ -1,0 +1,129 @@
+{
+  "id": "task-mratyg3e-e2qgmgpl",
+  "title": "Plan: Pinake Editor full roadmap integration",
+  "description": "Tracks the full Pinake Editor roadmap derived from the initial requirements, current implementation status, and remaining integration work.\n\nCompleted items are already reflected in code. Open items should be implemented in priority order and moved through the board as work progresses.",
+  "status": "in-progress",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439716573,
+  "updatedAt": 1783439716573,
+  "position": 1783439716573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "checklist": [
+    {
+      "id": "check-mratyg3h-sf0q9y8h",
+      "text": "Review initial Pinake Editor requirements",
+      "done": true,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-msjx1jpi",
+      "text": "Record completed v0.1 foundation work",
+      "done": true,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-yy1g852j",
+      "text": "Record partially implemented architecture and validation work",
+      "done": true,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-a5p1ynpx",
+      "text": "Create remaining feature tasks from the initial guide",
+      "done": true,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-h88vznos",
+      "text": "Finish clean architecture boundaries",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-6lj78bve",
+      "text": "Finish manifest migrations and runtime schema validation",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-jm72fw6k",
+      "text": "Finish advanced search, backlinks, and cross-reference graph",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-dpi0x1j8",
+      "text": "Finish the multi-step module wizard",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-1ix3gauq",
+      "text": "Bring tree UX closer to Explorer parity",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-mjbdhds2",
+      "text": "Implement favorites and pinned documents",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-j8e7ippc",
+      "text": "Expand the documentation component catalog",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-5joe34hm",
+      "text": "Add CI validator and GitHub Actions workflow support",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-epdfjznq",
+      "text": "Add export/import workflows",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-aymv1tzb",
+      "text": "Add accessibility and large-tree performance hardening",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mratyg3h-ell6pwtn",
+      "text": "Expand automated coverage for commands and workflows",
+      "done": false,
+      "createdAt": 1783439716573,
+      "updatedAt": 1783439716573
+    }
+  ],
+  "relations": []
+}

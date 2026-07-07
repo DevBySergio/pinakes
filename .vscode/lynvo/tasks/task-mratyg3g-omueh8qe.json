@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-omueh8qe",
+  "title": "Completed: VS Code extension shell and Pinake tree",
+  "description": "Implemented the native Activity Bar container, Project Documentation tree view, TreeDataProvider, file watcher refresh, and command registration foundation.",
+  "status": "done",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439717573,
+  "updatedAt": 1783439717573,
+  "position": 1783439717573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-51m2wt2q",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439717573
+    }
+  ]
+}

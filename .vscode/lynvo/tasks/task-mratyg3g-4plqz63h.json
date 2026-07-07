@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-4plqz63h",
+  "title": "Completed: Initial module generator",
+  "description": "Added v0.1 module descriptors and generation for API, Database, Docker, Kubernetes, CI/CD, Frontend, Mobile, and Authentication, plus initial presets.",
+  "status": "done",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439720573,
+  "updatedAt": 1783439720573,
+  "position": 1783439720573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-rtjb69d1",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439720573
+    }
+  ]
+}

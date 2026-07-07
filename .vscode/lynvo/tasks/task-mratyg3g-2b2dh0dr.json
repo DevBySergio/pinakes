@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-2b2dh0dr",
+  "title": "Completed: Test and packaging baseline",
+  "description": "Added extension-host tests for scaffold, modules, UI state, search, repair, validation, and tree behavior. Compile, lint, tests, and package dry-runs are passing.",
+  "status": "done",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439722573,
+  "updatedAt": 1783439722573,
+  "position": 1783439722573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-qmyuycip",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439722573
+    }
+  ]
+}

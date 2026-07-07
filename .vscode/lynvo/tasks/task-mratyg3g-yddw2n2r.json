@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-yddw2n2r",
+  "title": "Completed: Core scaffold and Markdown templates",
+  "description": "Implemented the canonical numbered Pinake scaffold from 00_Overview through 99_Appendix with initial Markdown templates.",
+  "status": "done",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439719573,
+  "updatedAt": 1783439719573,
+  "position": 1783439719573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-rurvlqi6",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439719573
+    }
+  ]
+}
