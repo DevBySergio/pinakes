@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783440310369,
+  "updatedAt": 1783443000000,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -85,9 +85,9 @@
     {
       "id": "check-mratyg3h-mjbdhds2",
       "text": "Implement favorites and pinned documents",
-      "done": false,
+      "done": true,
       "createdAt": 1783439716573,
-      "updatedAt": 1783439716573
+      "updatedAt": 1783443000000
     },
     {
       "id": "check-mratyg3h-j8e7ippc",
