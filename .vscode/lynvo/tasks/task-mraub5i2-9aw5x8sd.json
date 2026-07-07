@@ -1,0 +1,30 @@
+{
+  "id": "task-mraub5i2-9aw5x8sd",
+  "title": "Document security and privacy guidance",
+  "description": "Add explicit user-facing security documentation for local-only behavior, no telemetry/network calls, workspace filesystem permissions, secret-handling guidance, auditability, and which Pinake files should or should not be committed.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783440310369,
+  "updatedAt": 1783440310369,
+  "position": 1783440313369,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mraub5i2-7523pt0s",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783440310369
+    }
+  ]
+}

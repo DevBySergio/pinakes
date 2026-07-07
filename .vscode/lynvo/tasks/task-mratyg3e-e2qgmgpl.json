@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783439716573,
+  "updatedAt": 1783440310369,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -123,6 +123,41 @@
       "done": false,
       "createdAt": 1783439716573,
       "updatedAt": 1783439716573
+    },
+    {
+      "id": "check-mraub5i2-wumq0a45",
+      "text": "Create public Pinake spec and schema documentation",
+      "done": false,
+      "createdAt": 1783440310369,
+      "updatedAt": 1783440310369
+    },
+    {
+      "id": "check-mraub5i2-nq6ptber",
+      "text": "Create VS Code extension architecture documentation and UI flow diagrams",
+      "done": false,
+      "createdAt": 1783440310369,
+      "updatedAt": 1783440310369
+    },
+    {
+      "id": "check-mraub5i2-huy2ntjv",
+      "text": "Create wizard scenario docs, command table, component matrix, and example Pinake repo",
+      "done": false,
+      "createdAt": 1783440310369,
+      "updatedAt": 1783440310369
+    },
+    {
+      "id": "check-mraub5i2-qotnqvq5",
+      "text": "Implement explicit tree actions: open Pinake, duplicate, reveal, copy path, properties, and sort children",
+      "done": false,
+      "createdAt": 1783440310369,
+      "updatedAt": 1783440310369
+    },
+    {
+      "id": "check-mraub5i2-msf83zyz",
+      "text": "Document security, privacy, secrets guidance, and local-only guarantees",
+      "done": false,
+      "createdAt": 1783440310369,
+      "updatedAt": 1783440310369
     }
   ],
   "relations": []

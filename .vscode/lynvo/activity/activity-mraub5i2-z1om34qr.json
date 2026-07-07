@@ -1,0 +1,16 @@
+{
+  "id": "activity-mraub5i2-z1om34qr",
+  "type": "task_moved",
+  "message": "Moved \"Completed: Test and packaging baseline\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783440310369,
+  "taskId": "task-mratyg3g-2b2dh0dr",
+  "metadata": {
+    "from": "todo",
+    "to": "done",
+    "retrospective": true
+  }
+}

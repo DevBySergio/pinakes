@@ -1,0 +1,16 @@
+{
+  "id": "activity-mraub5i2-rj7nu2xi",
+  "type": "task_moved",
+  "message": "Moved \"Completed: VS Code extension shell and Pinake tree\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783440310369,
+  "taskId": "task-mratyg3g-omueh8qe",
+  "metadata": {
+    "from": "todo",
+    "to": "done",
+    "retrospective": true
+  }
+}

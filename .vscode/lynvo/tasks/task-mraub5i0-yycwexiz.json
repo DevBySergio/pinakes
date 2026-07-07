@@ -1,0 +1,30 @@
+{
+  "id": "task-mraub5i0-yycwexiz",
+  "title": "Create public Pinake specification documentation",
+  "description": "Add the public docs deliverables from the original guide: manifest spec, .pinake state schemas, core scaffold reference, architecture overview, UI flow diagrams, wizard scenarios, command table, component matrix, and an example Pinake repo or sample workspace.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783440310369,
+  "updatedAt": 1783440310369,
+  "position": 1783440311369,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mraub5i2-x7v7260h",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783440310369
+    }
+  ]
+}

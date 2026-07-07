@@ -1,0 +1,30 @@
+{
+  "id": "task-mraub5i2-q86jsozl",
+  "title": "Implement explicit remaining tree context actions",
+  "description": "Split out the original guide's remaining tree actions from the broader Tree UX card: open Pinake manifest, duplicate, reveal in Explorer, copy path, properties/metadata, and sort children.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783440310369,
+  "updatedAt": 1783440310369,
+  "position": 1783440312369,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mraub5i2-198gr39f",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783440310369
+    }
+  ]
+}
