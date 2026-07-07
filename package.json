@@ -1,7 +1,7 @@
 {
   "name": "pinakes",
-  "displayName": "Pinakes",
-  "description": "Pinakes is the official extension of Calimaco, a project documentation manager and editor, where you can create project documentation in a convenient and intuitive way.",
+  "displayName": "Pinake Editor",
+  "description": "Manage Pinake project documentation from a native VS Code sidebar.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.125.0"
@@ -9,13 +9,215 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:pinakesView",
+    "onCommand:pinakes.createPinake",
+    "onCommand:pinakes.generateModule",
+    "onCommand:pinakes.searchDocumentation",
+    "onCommand:pinakes.repair",
+    "onCommand:pinakes.validate"
+  ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "pinakesExplorer",
+          "title": "Pinake",
+          "icon": "resources/pinake-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "pinakesExplorer": [
+        {
+          "id": "pinakesView",
+          "name": "Project Documentation"
+        }
+      ]
+    },
     "commands": [
       {
-        "command": "pinakes.helloWorld",
-        "title": "Hello World"
+        "command": "pinakes.createPinake",
+        "title": "Pinakes: Create Pinake"
+      },
+      {
+        "command": "pinakes.refresh",
+        "title": "Pinakes: Refresh"
+      },
+      {
+        "command": "pinakes.openFile",
+        "title": "Pinakes: Open File"
+      },
+      {
+        "command": "pinakes.openFileSide",
+        "title": "Pinakes: Open File to Side"
+      },
+      {
+        "command": "pinakes.newFile",
+        "title": "Pinakes: New Markdown File"
+      },
+      {
+        "command": "pinakes.newFolder",
+        "title": "Pinakes: New Folder"
+      },
+      {
+        "command": "pinakes.rename",
+        "title": "Pinakes: Rename"
+      },
+      {
+        "command": "pinakes.delete",
+        "title": "Pinakes: Delete"
+      },
+      {
+        "command": "pinakes.generateModule",
+        "title": "Pinakes: Generate Module"
+      },
+      {
+        "command": "pinakes.searchDocumentation",
+        "title": "Pinakes: Search Documentation"
+      },
+      {
+        "command": "pinakes.repair",
+        "title": "Pinakes: Repair"
+      },
+      {
+        "command": "pinakes.validate",
+        "title": "Pinakes: Validate"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "pinakes.createPinake",
+          "when": "view == pinakesView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "pinakes.newFile",
+          "when": "view == pinakesView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "pinakes.newFolder",
+          "when": "view == pinakesView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "pinakes.generateModule",
+          "when": "view == pinakesView",
+          "group": "navigation@4"
+        },
+        {
+          "command": "pinakes.searchDocumentation",
+          "when": "view == pinakesView",
+          "group": "navigation@5"
+        },
+        {
+          "command": "pinakes.repair",
+          "when": "view == pinakesView",
+          "group": "navigation@6"
+        },
+        {
+          "command": "pinakes.validate",
+          "when": "view == pinakesView",
+          "group": "navigation@7"
+        },
+        {
+          "command": "pinakes.refresh",
+          "when": "view == pinakesView",
+          "group": "navigation@9"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "pinakes.openFile",
+          "when": "view == pinakesView && viewItem == file",
+          "group": "navigation@1"
+        },
+        {
+          "command": "pinakes.openFileSide",
+          "when": "view == pinakesView && viewItem == file",
+          "group": "navigation@2"
+        },
+        {
+          "command": "pinakes.newFile",
+          "when": "view == pinakesView && viewItem == directory",
+          "group": "2_modification@1"
+        },
+        {
+          "command": "pinakes.newFolder",
+          "when": "view == pinakesView && viewItem == directory",
+          "group": "2_modification@2"
+        },
+        {
+          "command": "pinakes.rename",
+          "when": "view == pinakesView",
+          "group": "2_modification@3"
+        },
+        {
+          "command": "pinakes.delete",
+          "when": "view == pinakesView",
+          "group": "9_delete"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "pinakes.rename",
+        "key": "f2",
+        "mac": "f2",
+        "when": "view == pinakesView && viewItem"
+      },
+      {
+        "command": "pinakes.delete",
+        "key": "delete",
+        "mac": "delete",
+        "when": "view == pinakesView && viewItem"
+      },
+      {
+        "command": "pinakes.searchDocumentation",
+        "key": "ctrl+alt+f",
+        "mac": "cmd+alt+f",
+        "when": "view == pinakesView"
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": [
+          "/Pinake/pinake.json"
+        ],
+        "url": "./schemas/pinake.schema.json"
+      },
+      {
+        "fileMatch": [
+          "/Pinake/.pinake/modules.json"
+        ],
+        "url": "./schemas/modules.schema.json"
+      },
+      {
+        "fileMatch": [
+          "/Pinake/.pinake/ui.json"
+        ],
+        "url": "./schemas/ui.schema.json"
+      },
+      {
+        "fileMatch": [
+          "/Pinake/.pinake/indexes.json"
+        ],
+        "url": "./schemas/indexes.schema.json"
+      },
+      {
+        "fileMatch": [
+          "/Pinake/.pinake/migrations.json"
+        ],
+        "url": "./schemas/migrations.schema.json"
+      },
+      {
+        "fileMatch": [
+          "/Pinake/.pinake/version.json"
+        ],
+        "url": "./schemas/version.schema.json"
       }
     ]
   },

@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Pinake UI State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "expanded",
+    "collapsed",
+    "favorites"
+  ],
+  "properties": {
+    "expanded": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "collapsed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "favorites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lastOpened": {
+      "type": "string"
+    },
+    "lastScroll": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

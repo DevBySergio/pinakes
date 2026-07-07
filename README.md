@@ -1,71 +1,66 @@
-# pinakes README
+# Pinake Editor
 
-This is the README for your extension "pinakes". After writing up a brief description, we recommend including the following sections.
+Pinake Editor is a VS Code extension for managing project documentation stored in a local `Pinake/` folder.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Adds a native Activity Bar container and `Project Documentation` tree view.
+- Initializes a Pinake workspace with all Pinake-owned files inside `Pinake/`.
+- Generates the canonical v0.1 documentation scaffold:
+  - `00_Overview`
+  - `01_GettingStarted`
+  - `02_Architecture`
+  - `03_Development`
+  - `04_Quality`
+  - `05_Operations`
+  - `06_Decisions`
+  - `07_ProjectManagement`
+  - `99_Appendix`
+- Generates v0.1 documentation modules for API, Database, Docker, Kubernetes, CI/CD, Frontend, Mobile, and Authentication.
+- Opens Markdown files with VS Code's built-in editor.
+- Supports basic tree actions: new file, new folder, rename, delete, refresh, open, and open to side.
+- Saves expanded, collapsed, and last-opened tree state in `Pinake/.pinake/ui.json`, and restores expanded folders when the view opens.
+- Searches local documentation through the offline index in `Pinake/.pinake/indexes.json`.
+- Repairs missing generated core and module files without overwriting edited documents.
+- Validates Pinake structure, manifest fields, enabled modules, ADR names, and basic local Markdown links.
+- Keeps all data local to the workspace. The extension does not use telemetry or network APIs.
 
-For example if there is an image subfolder under your extension project workspace:
+## Commands
 
-\!\[feature X\]\(images/feature-x.png\)
+- `Pinakes: Create Pinake`
+- `Pinakes: Generate Module`
+- `Pinakes: Search Documentation`
+- `Pinakes: Repair`
+- `Pinakes: Validate`
+- `Pinakes: Refresh`
+- `Pinakes: New Markdown File`
+- `Pinakes: New Folder`
+- `Pinakes: Rename`
+- `Pinakes: Delete`
+- `Pinakes: Open File`
+- `Pinakes: Open File to Side`
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Keybindings
 
-## Requirements
+- `F2`: Rename the selected Pinake tree item.
+- `Delete`: Delete the selected Pinake tree item.
+- `Cmd+Alt+F` on macOS or `Ctrl+Alt+F` elsewhere: Search Pinake documentation from the tree.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Storage
 
-## Extension Settings
+Pinake Editor keeps generated Pinake files inside the root-level `Pinake/` directory:
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- `Pinake/` contains project documentation and should be committed.
+- `Pinake/pinake.json` is the public manifest and should be committed.
+- `Pinake/.pinake/` stores generated local state such as module state, UI state, indexes, migrations, and version metadata.
+- `Pinake/.gitignore` ignores the internal `.pinake/` state folder.
 
-For example:
+The extension does not create `pinake.json` or `.pinake/` at the workspace root.
 
-This extension contributes the following settings:
+## Development
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+```sh
+npm run compile
+npm run lint
+npm test
+```
