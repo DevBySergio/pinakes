@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3h-j0ourc6d",
+  "title": "Expand documentation component catalog",
+  "description": "Grow from the initial 8 modules to the full component set from the guide, including GraphQL, gRPC, WebSocket, Backend, Cache, MessageQueue, OAuth, IaC, Monitoring, Security, CLI, SDK, Microservice, and more.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439730573,
+  "updatedAt": 1783439730573,
+  "position": 1783439730573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-7s3iwz21",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439730573
+    }
+  ]
+}

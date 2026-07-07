@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-g98b588w",
+  "title": "Broaden validation and CI integration",
+  "description": "Validation command exists. Add markdownlint, richer schema checks, output formats, CLI or CI callable validator, and GitHub Actions workflow support.",
+  "status": "in-progress",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439728573,
+  "updatedAt": 1783439728573,
+  "position": 1783439728573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-26gh21k9",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439728573
+    }
+  ]
+}

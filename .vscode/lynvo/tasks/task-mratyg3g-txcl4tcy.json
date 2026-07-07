@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-txcl4tcy",
+  "title": "Expand search and cross-reference system",
+  "description": "Offline index and search command exist. Still needed: snippets, ranking improvements, heading/tag filters, incremental updates, backlinks, broken-reference reporting, and a cross-reference graph.",
+  "status": "in-progress",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439725573,
+  "updatedAt": 1783439725573,
+  "position": 1783439725573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-96f5sre2",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439725573
+    }
+  ]
+}

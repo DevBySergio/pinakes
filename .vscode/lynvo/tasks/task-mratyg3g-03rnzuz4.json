@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-03rnzuz4",
+  "title": "Finish manifest migrations and runtime schema validation",
+  "description": "Schemas exist, but runtime JSON Schema validation, upgrade flow, migration history application, and compatibility handling still need implementation.",
+  "status": "in-progress",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439724573,
+  "updatedAt": 1783439724573,
+  "position": 1783439724573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-pwtfie0a",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439724573
+    }
+  ]
+}

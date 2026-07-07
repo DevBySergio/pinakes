@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3h-kvpgcvdn",
+  "title": "Generate GitHub Actions validation workflow",
+  "description": "Add a command or template to create a GitHub Actions workflow that validates Pinake structure on pull requests.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439734573,
+  "updatedAt": 1783439734573,
+  "position": 1783439734573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-ddng49pd",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439734573
+    }
+  ]
+}

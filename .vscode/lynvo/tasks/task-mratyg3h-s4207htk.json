@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3h-s4207htk",
+  "title": "Add Calimaco and AI interoperability hooks",
+  "description": "Define stable metadata and command surfaces for future Calimaco desktop sync, AI assistant integration, and external tooling.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439738573,
+  "updatedAt": 1783439738573,
+  "position": 1783439738573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "low",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-qkak9kd4",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439738573
+    }
+  ]
+}

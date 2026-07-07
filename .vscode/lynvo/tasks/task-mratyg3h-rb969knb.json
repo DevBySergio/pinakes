@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3h-rb969knb",
+  "title": "Implement drag-and-drop move and reorder",
+  "description": "Add TreeDragAndDropController support for moving docs and folders safely within Pinake/, including index refresh and validation after moves.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439731573,
+  "updatedAt": 1783439731573,
+  "position": 1783439731573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-2kpdsllr",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439731573
+    }
+  ]
+}

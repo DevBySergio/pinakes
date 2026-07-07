@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-q6phgvy4",
+  "title": "Complete multi-step module wizard presets",
+  "description": "Basic preset/module selection exists. Build the full wizard flows for Backend, Frontend, Fullstack, Microservice, Library, and Mobile with conditional questions.",
+  "status": "in-progress",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439726573,
+  "updatedAt": 1783439726573,
+  "position": 1783439726573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-82cyz7rf",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439726573
+    }
+  ]
+}

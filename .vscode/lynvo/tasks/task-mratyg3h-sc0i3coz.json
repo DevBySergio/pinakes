@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3h-sc0i3coz",
+  "title": "Implement export and import workflows",
+  "description": "Add export to archive/static site and import existing docs into the Pinake structure with reviewable mapping behavior.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439732573,
+  "updatedAt": 1783439732573,
+  "position": 1783439732573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-qd45o7yn",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439732573
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-p3kiqv3z",
+  "title": "Bring Pinake tree UX to Explorer parity",
+  "description": "Basic tree actions exist. Finish Explorer-like behavior: richer context actions, keyboard coverage, reveal/copy path/properties, sorting, and polished open behavior.",
+  "status": "in-progress",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439727573,
+  "updatedAt": 1783439727573,
+  "position": 1783439727573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-x4xp2aqr",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439727573
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-dm3zlzb4",
+  "title": "Harden clean architecture boundaries",
+  "description": "Current code is modular, but not yet fully clean/hexagonal. Refine domain/application/infrastructure boundaries, keep VS Code API dependencies at the edges, and document ownership rules.",
+  "status": "in-progress",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439723573,
+  "updatedAt": 1783439723573,
+  "position": 1783439723573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-wui9qpyf",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439723573
+    }
+  ]
+}

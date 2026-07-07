@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3g-capqna5k",
+  "title": "Implement favorites and pinned documents",
+  "description": "Use Pinake/.pinake/ui.json favorites to support Add to Favorites, Remove from Favorites, and a Favorites pseudo-folder at the top of the tree.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439729573,
+  "updatedAt": 1783439729573,
+  "position": 1783439729573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-acmsmgjm",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439729573
+    }
+  ]
+}

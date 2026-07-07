@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3h-4kpsma35",
+  "title": "Add markdownlint and runtime JSON Schema validation",
+  "description": "Integrate Markdown lint checks and runtime validation for Pinake/pinake.json plus Pinake/.pinake/*.json, reporting actionable errors.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439735573,
+  "updatedAt": 1783439735573,
+  "position": 1783439735573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-wb3az1ox",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439735573
+    }
+  ]
+}

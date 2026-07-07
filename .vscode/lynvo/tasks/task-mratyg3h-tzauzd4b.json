@@ -1,0 +1,30 @@
+{
+  "id": "task-mratyg3h-tzauzd4b",
+  "title": "Add Pinake upgrade and migration command",
+  "description": "Implement pinakes upgrade behavior that reads schema versions, applies migrations, records history, and preserves user documents.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783439737573,
+  "updatedAt": 1783439737573,
+  "position": 1783439737573,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [],
+  "relations": [
+    {
+      "id": "rel-mratyg3h-quz9wzzf",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783439737573
+    }
+  ]
+}
