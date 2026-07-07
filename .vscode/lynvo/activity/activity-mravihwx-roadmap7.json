@@ -1,13 +1,11 @@
 {
   "id": "activity-mravihwx-roadmap7",
-  "taskId": "task-mratyg3e-e2qgmgpl",
   "type": "task_updated",
+  "message": "Marked the roadmap checklist item for favorites and pinned documents complete.",
   "createdAt": 1783443000000,
-  "createdBy": {
+  "actor": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
   },
-  "data": {
-    "message": "Marked the roadmap checklist item for favorites and pinned documents complete."
-  }
+  "taskId": "task-mratyg3e-e2qgmgpl"
 }

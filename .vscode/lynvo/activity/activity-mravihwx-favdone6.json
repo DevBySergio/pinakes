@@ -1,15 +1,15 @@
 {
   "id": "activity-mravihwx-favdone6",
-  "taskId": "task-mratyg3g-capqna5k",
   "type": "task_moved",
+  "message": "Completed favorites/pinned documents implementation and verification.",
   "createdAt": 1783443000000,
-  "createdBy": {
+  "actor": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
   },
-  "data": {
+  "taskId": "task-mratyg3g-capqna5k",
+  "metadata": {
     "from": "in-progress",
-    "to": "done",
-    "message": "Completed favorites/pinned documents implementation and verification."
+    "to": "done"
   }
 }

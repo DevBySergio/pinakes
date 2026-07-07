@@ -1,13 +1,11 @@
 {
   "id": "activity-mravihwx-favtree4",
-  "taskId": "task-mratyg3g-capqna5k",
   "type": "task_updated",
+  "message": "Added the Favorites virtual tree group and favorite-file tree node state.",
   "createdAt": 1783442600000,
-  "createdBy": {
+  "actor": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
   },
-  "data": {
-    "message": "Added the Favorites virtual tree group and favorite-file tree node state."
-  }
+  "taskId": "task-mratyg3g-capqna5k"
 }

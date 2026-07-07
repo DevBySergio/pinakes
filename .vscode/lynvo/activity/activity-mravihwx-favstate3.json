@@ -1,13 +1,11 @@
 {
   "id": "activity-mravihwx-favstate3",
-  "taskId": "task-mratyg3g-capqna5k",
   "type": "task_updated",
+  "message": "Added StateService favorite add/remove operations and marked the state checklist item complete.",
   "createdAt": 1783442450000,
-  "createdBy": {
+  "actor": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
   },
-  "data": {
-    "message": "Added StateService favorite add/remove operations and marked the state checklist item complete."
-  }
+  "taskId": "task-mratyg3g-capqna5k"
 }
