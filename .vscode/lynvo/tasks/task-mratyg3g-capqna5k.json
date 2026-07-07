@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439729573,
-  "updatedAt": 1783442600000,
+  "updatedAt": 1783442750000,
   "position": 1783439729573,
   "labelIds": [
     "feat"
@@ -36,16 +36,16 @@
     {
       "id": "check-mravihwx-cmds0003",
       "text": "Add Add/Remove Favorite commands and menu contributions",
-      "done": false,
+      "done": true,
       "createdAt": 1783442326065,
-      "updatedAt": 1783442326065
+      "updatedAt": 1783442750000
     },
     {
       "id": "check-mravihwx-tests004",
       "text": "Add tests and documentation for favorites",
-      "done": false,
+      "done": true,
       "createdAt": 1783442326065,
-      "updatedAt": 1783442326065
+      "updatedAt": 1783442750000
     },
     {
       "id": "check-mravihwx-verify05",
