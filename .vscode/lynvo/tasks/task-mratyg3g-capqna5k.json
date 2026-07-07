@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439729573,
-  "updatedAt": 1783442326065,
+  "updatedAt": 1783442600000,
   "position": 1783439729573,
   "labelIds": [
     "feat"
@@ -22,16 +22,16 @@
     {
       "id": "check-mravihwx-state001",
       "text": "Add favorite state operations to StateService",
-      "done": false,
+      "done": true,
       "createdAt": 1783442326065,
-      "updatedAt": 1783442326065
+      "updatedAt": 1783442450000
     },
     {
       "id": "check-mravihwx-tree0002",
       "text": "Add Favorites pseudo-folder and favorite tree item state",
-      "done": false,
+      "done": true,
       "createdAt": 1783442326065,
-      "updatedAt": 1783442326065
+      "updatedAt": 1783442600000
     },
     {
       "id": "check-mravihwx-cmds0003",
