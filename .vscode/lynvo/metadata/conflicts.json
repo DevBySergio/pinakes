@@ -1,1 +1,12 @@
-{}
+{
+  "task-task-mratyg3g-capqna5k-status": {
+    "id": "task-task-mratyg3g-capqna5k-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-capqna5k",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783442430884,
+    "resolved": false
+  }
+}

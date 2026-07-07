@@ -2,7 +2,7 @@
   "id": "task-mratyg3g-capqna5k",
   "title": "Implement favorites and pinned documents",
   "description": "Use Pinake/.pinake/ui.json favorites to support Add to Favorites, Remove from Favorites, and a Favorites pseudo-folder at the top of the tree.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,13 +12,49 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439729573,
-  "updatedAt": 1783439729573,
+  "updatedAt": 1783442326065,
   "position": 1783439729573,
   "labelIds": [
     "feat"
   ],
   "priority": "high",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mravihwx-state001",
+      "text": "Add favorite state operations to StateService",
+      "done": false,
+      "createdAt": 1783442326065,
+      "updatedAt": 1783442326065
+    },
+    {
+      "id": "check-mravihwx-tree0002",
+      "text": "Add Favorites pseudo-folder and favorite tree item state",
+      "done": false,
+      "createdAt": 1783442326065,
+      "updatedAt": 1783442326065
+    },
+    {
+      "id": "check-mravihwx-cmds0003",
+      "text": "Add Add/Remove Favorite commands and menu contributions",
+      "done": false,
+      "createdAt": 1783442326065,
+      "updatedAt": 1783442326065
+    },
+    {
+      "id": "check-mravihwx-tests004",
+      "text": "Add tests and documentation for favorites",
+      "done": false,
+      "createdAt": 1783442326065,
+      "updatedAt": 1783442326065
+    },
+    {
+      "id": "check-mravihwx-verify05",
+      "text": "Run compile, lint, tests, and package dry-run",
+      "done": false,
+      "createdAt": 1783442326065,
+      "updatedAt": 1783442326065
+    }
+  ],
   "relations": [
     {
       "id": "rel-mratyg3h-acmsmgjm",

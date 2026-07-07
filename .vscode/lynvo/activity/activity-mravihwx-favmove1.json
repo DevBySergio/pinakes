@@ -1,0 +1,15 @@
+{
+  "id": "activity-mravihwx-favmove1",
+  "type": "task_moved",
+  "message": "Moved \"Implement favorites and pinned documents\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783442326065,
+  "taskId": "task-mratyg3g-capqna5k",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}
