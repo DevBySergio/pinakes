@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783541933286,
-  "updatedAt": 1783544074223,
+  "updatedAt": 1783544156039,
   "position": 1783541933286,
   "labelIds": [
     "feat"
@@ -34,9 +34,9 @@
     {
       "id": "check-mrcitd3z-cmdchk02",
       "text": "Reorder or reduce view-title toolbar actions for daily-use scanning",
-      "done": false,
+      "done": true,
       "createdAt": 1783541933286,
-      "updatedAt": 1783541933286
+      "updatedAt": 1783544156039
     },
     {
       "id": "check-mrcitd3z-cmdchk03",
