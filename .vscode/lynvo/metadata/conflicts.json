@@ -34,10 +34,10 @@
     "entityType": "task",
     "entityId": "task-mratyg3g-g98b588w",
     "field": "description",
-    "localValue": "Partially completed. The current refactor added richer manifest/document validation and expanded VS Code extension tests around `.pinake` storage, legacy copy migration, Explorer settings merge, TreeView preview/edit behavior, and favorites. Remaining work: markdownlint, output formats, CLI or CI callable validator, and GitHub Actions workflow support.",
-    "remoteValue": "Validation command exists. Add markdownlint, richer schema checks, output formats, CLI or CI callable validator, and GitHub Actions workflow support.",
-    "createdAt": 1783503039603,
-    "resolved": true
+    "localValue": "Completed. Validation now includes runtime JSON Schema checks, Markdown style warnings with line numbers, a standalone dependency-free validator with text/JSON/GitHub output, packaged CLI entrypoints, and a command that generates `.pinake/tools/validate-pinake.mjs` plus `.github/workflows/pinake-validate.yml`.",
+    "remoteValue": "Partially completed. The current refactor added richer manifest/document validation and expanded VS Code extension tests around `.pinake` storage, legacy copy migration, Explorer settings merge, TreeView preview/edit behavior, and favorites. Remaining work: markdownlint, output formats, CLI or CI callable validator, and GitHub Actions workflow support.",
+    "createdAt": 1783504480335,
+    "resolved": false
   },
   "task-task-mratyg3g-lscjyvjc-title": {
     "id": "task-task-mratyg3g-lscjyvjc-title",
@@ -128,5 +128,75 @@
     "remoteValue": "todo",
     "createdAt": 1783503879097,
     "resolved": true
+  },
+  "task-task-mratyg3g-g98b588w-status": {
+    "id": "task-task-mratyg3g-g98b588w-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-g98b588w",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783504480335,
+    "resolved": false
+  },
+  "task-task-mratyg3h-4kpsma35-description": {
+    "id": "task-task-mratyg3h-4kpsma35-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3h-4kpsma35",
+    "field": "description",
+    "localValue": "Completed. Runtime JSON Schema validation is active for `.pinake/pinake.json` and `.pinake/.state/*.json`, and Markdown style validation now reports trailing whitespace, tab indentation, duplicate or missing H1s, and unclosed fenced code blocks.",
+    "remoteValue": "Integrate Markdown lint checks and runtime validation for Pinake/pinake.json plus Pinake/.pinake/*.json, reporting actionable errors.",
+    "createdAt": 1783504480335,
+    "resolved": false
+  },
+  "task-task-mratyg3h-4kpsma35-status": {
+    "id": "task-task-mratyg3h-4kpsma35-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3h-4kpsma35",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "todo",
+    "createdAt": 1783504480335,
+    "resolved": false
+  },
+  "task-task-mratyg3h-jbtztjti-description": {
+    "id": "task-task-mratyg3h-jbtztjti-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3h-jbtztjti",
+    "field": "description",
+    "localValue": "Completed. Added `scripts/validate-pinake.mjs` and the `pinake-validate`/`npm run pinake:validate` entrypoints so validation can run outside VS Code with text, JSON, or GitHub annotation output.",
+    "remoteValue": "Expose validation outside the VS Code command path so CI and developers can run the same checks from scripts.",
+    "createdAt": 1783504480335,
+    "resolved": false
+  },
+  "task-task-mratyg3h-jbtztjti-status": {
+    "id": "task-task-mratyg3h-jbtztjti-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3h-jbtztjti",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "todo",
+    "createdAt": 1783504480335,
+    "resolved": false
+  },
+  "task-task-mratyg3h-kvpgcvdn-description": {
+    "id": "task-task-mratyg3h-kvpgcvdn-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3h-kvpgcvdn",
+    "field": "description",
+    "localValue": "Completed. Added `Pinakes: Generate CI Validation Workflow`, which writes a standalone validator into `.pinake/tools/` and a GitHub Actions workflow that runs it on pushes and pull requests.",
+    "remoteValue": "Add a command or template to create a GitHub Actions workflow that validates Pinake structure on pull requests.",
+    "createdAt": 1783504480335,
+    "resolved": false
+  },
+  "task-task-mratyg3h-kvpgcvdn-status": {
+    "id": "task-task-mratyg3h-kvpgcvdn-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3h-kvpgcvdn",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "todo",
+    "createdAt": 1783504480335,
+    "resolved": false
   }
 }

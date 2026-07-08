@@ -1,8 +1,8 @@
 {
   "id": "task-mratyg3h-jbtztjti",
   "title": "Create CLI or standalone Pinake validator",
-  "description": "Expose validation outside the VS Code command path so CI and developers can run the same checks from scripts.",
-  "status": "todo",
+  "description": "Completed. Added `scripts/validate-pinake.mjs` and the `pinake-validate`/`npm run pinake:validate` entrypoints so validation can run outside VS Code with text, JSON, or GitHub annotation output.",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439733573,
-  "updatedAt": 1783439733573,
+  "updatedAt": 1783504411746,
   "position": 1783439733573,
   "labelIds": [
     "feat"
