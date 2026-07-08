@@ -317,7 +317,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783525543535,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mrc7hmkq-96uuar8q-description": {
     "id": "task-task-mrc7hmkq-96uuar8q-description",
@@ -327,6 +327,6 @@
     "localValue": "Completed. Added and refined shared native feedback formatting for search QuickPick rows, no-result guidance, validation output, and item properties. Search details now keep paths visible and tags explicit; validation output groups by severity with path/line-first entries and fix hints; properties output is path-first with stable sections and human-readable document metadata.",
     "remoteValue": "Completed. Added a shared FeedbackFormatter for search QuickPick rows, no-result guidance, grouped validation reports with fix hints, and stable item properties output; wired PinakesCommands to use it and added extension tests for the formatted native feedback surfaces.",
     "createdAt": 1783525543535,
-    "resolved": false
+    "resolved": true
   }
 }
