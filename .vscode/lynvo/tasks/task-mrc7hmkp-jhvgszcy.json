@@ -1,0 +1,66 @@
+{
+  "id": "task-mrc7hmkp-jhvgszcy",
+  "title": "Modernize Pinake creation and module selection flows",
+  "description": "Refine the UX/UI copy and interaction design for Pinake setup flows so creating documentation feels faster, clearer, and more intuitive.\n\nTarget the template picker, module selection, Explorer visibility choice, legacy migration prompt, existing workspace confirmation, new file and folder prompts, and module generation prompts.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783522907017,
+  "updatedAt": 1783522907017,
+  "position": 1783522907017,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [
+    {
+      "id": "check-mrc7hmlc-x45ywgcb",
+      "text": "Audit QuickPick and InputBox titles, placeholders, descriptions, defaults, and validation messages.",
+      "done": false,
+      "createdAt": 1783522907040,
+      "updatedAt": 1783522907040
+    },
+    {
+      "id": "check-mrc7hmld-sac8yzq5",
+      "text": "Make template and module choices easier to scan without adding extra steps.",
+      "done": false,
+      "createdAt": 1783522907041,
+      "updatedAt": 1783522907041
+    },
+    {
+      "id": "check-mrc7hmle-55u90s5d",
+      "text": "Normalize cancellation and warning paths so users always understand what happened.",
+      "done": false,
+      "createdAt": 1783522907042,
+      "updatedAt": 1783522907042
+    },
+    {
+      "id": "check-mrc7hmlf-rbus8ozo",
+      "text": "Keep all setup text short, action-oriented, and consistent with VS Code command conventions.",
+      "done": false,
+      "createdAt": 1783522907043,
+      "updatedAt": 1783522907043
+    },
+    {
+      "id": "check-mrc7hmlg-zvgymq7c",
+      "text": "Cover changed flow behavior with command or service tests where practical.",
+      "done": false,
+      "createdAt": 1783522907044,
+      "updatedAt": 1783522907044
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrc7hmkz-5c7im8bk",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783522907027
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "id": "task-mrc7hmko-3vflq93l",
+  "title": "Polish Pinake TreeView hierarchy and empty states",
+  "description": "Improve the visual design and usability of the Pinake Project Documentation TreeView while staying inside native VS Code UI patterns.\n\nFocus on hierarchy, labels, descriptions, tooltips, ThemeIcons, Favorites, generated/internal files, and an onboarding empty state using VS Code contributions such as viewsWelcome where appropriate.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783522907016,
+  "updatedAt": 1783522907016,
+  "position": 1783522907016,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "checklist": [
+    {
+      "id": "check-mrc7hml7-szsgr77b",
+      "text": "Review current TreeView labels, descriptions, tooltip content, and icon choices.",
+      "done": false,
+      "createdAt": 1783522907035,
+      "updatedAt": 1783522907035
+    },
+    {
+      "id": "check-mrc7hml8-shy93lto",
+      "text": "Add or refine a clear empty/onboarding state for workspaces without Pinake documentation.",
+      "done": false,
+      "createdAt": 1783522907036,
+      "updatedAt": 1783522907036
+    },
+    {
+      "id": "check-mrc7hml9-70hhy68l",
+      "text": "Ensure Favorites, folders, Markdown documents, manifests, and internal/generated files are visually distinct.",
+      "done": false,
+      "createdAt": 1783522907037,
+      "updatedAt": 1783522907037
+    },
+    {
+      "id": "check-mrc7hmla-t6qwlnpd",
+      "text": "Keep the interface minimalist by using native TreeView affordances instead of extra custom chrome.",
+      "done": false,
+      "createdAt": 1783522907038,
+      "updatedAt": 1783522907038
+    },
+    {
+      "id": "check-mrc7hmlb-o7che4qp",
+      "text": "Add or update tests for any changed TreeItem metadata or view contributions.",
+      "done": false,
+      "createdAt": 1783522907039,
+      "updatedAt": 1783522907039
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrc7hmky-u08mttek",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783522907026
+    }
+  ]
+}

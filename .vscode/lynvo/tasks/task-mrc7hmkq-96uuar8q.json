@@ -1,0 +1,66 @@
+{
+  "id": "task-mrc7hmkq-96uuar8q",
+  "title": "Improve Pinake search validation and properties feedback",
+  "description": "Improve the functional interface surfaces that explain results and system state to users.\n\nFocus on search result scanability, validation output formatting, properties output formatting, and consistent success, warning, and error messages across commands. The goal is clearer UX with native VS Code surfaces.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783522907018,
+  "updatedAt": 1783522907018,
+  "position": 1783522907018,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "checklist": [
+    {
+      "id": "check-mrc7hmlh-f9vrwk3j",
+      "text": "Review search result labels, descriptions, details, snippets, paths, and tag display.",
+      "done": false,
+      "createdAt": 1783522907045,
+      "updatedAt": 1783522907045
+    },
+    {
+      "id": "check-mrc7hmli-2y9rd7vz",
+      "text": "Format validation output so issue severity, path, line, and remediation context are easy to scan.",
+      "done": false,
+      "createdAt": 1783522907046,
+      "updatedAt": 1783522907046
+    },
+    {
+      "id": "check-mrc7hmlj-c7y3he6r",
+      "text": "Format properties output with stable labels and useful ordering.",
+      "done": false,
+      "createdAt": 1783522907047,
+      "updatedAt": 1783522907047
+    },
+    {
+      "id": "check-mrc7hmlk-mqz0auir",
+      "text": "Normalize command feedback messages for success, warnings, errors, and no-result states.",
+      "done": false,
+      "createdAt": 1783522907048,
+      "updatedAt": 1783522907048
+    },
+    {
+      "id": "check-mrc7hmll-egb3dsng",
+      "text": "Add tests for changed search or output formatting behavior where the extension can assert it.",
+      "done": false,
+      "createdAt": 1783522907049,
+      "updatedAt": 1783522907049
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrc7hml0-xi73f5xu",
+      "type": "related",
+      "targetTaskId": "task-mratyg3e-e2qgmgpl",
+      "createdAt": 1783522907028
+    }
+  ]
+}
