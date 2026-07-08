@@ -1,8 +1,8 @@
 {
   "id": "task-mrc7hmkp-jhvgszcy",
   "title": "Modernize Pinake creation and module selection flows",
-  "description": "Refine the UX/UI copy and interaction design for Pinake setup flows so creating documentation feels faster, clearer, and more intuitive.\n\nTarget the template picker, module selection, Explorer visibility choice, legacy migration prompt, existing workspace confirmation, new file and folder prompts, and module generation prompts.",
-  "status": "in-progress",
+  "description": "Completed. Refined the Pinake setup and module generation flows with scannable QuickPick summaries, shorter VS Code-style titles and placeholders, clearer legacy/Explorer/update choices, stricter new file/folder validation, and service-level tests for the changed UX helpers.",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783522907017,
-  "updatedAt": 1783525692972,
+  "updatedAt": 1783540513237,
   "position": 8,
   "labelIds": [
     "feat"
@@ -29,30 +29,30 @@
     {
       "id": "check-mrc7hmld-sac8yzq5",
       "text": "Make template and module choices easier to scan without adding extra steps.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907041,
-      "updatedAt": 1783522907041
+      "updatedAt": 1783540487474
     },
     {
       "id": "check-mrc7hmle-55u90s5d",
       "text": "Normalize cancellation and warning paths so users always understand what happened.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907042,
-      "updatedAt": 1783522907042
+      "updatedAt": 1783540487475
     },
     {
       "id": "check-mrc7hmlf-rbus8ozo",
       "text": "Keep all setup text short, action-oriented, and consistent with VS Code command conventions.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907043,
-      "updatedAt": 1783522907043
+      "updatedAt": 1783540487476
     },
     {
       "id": "check-mrc7hmlg-zvgymq7c",
       "text": "Cover changed flow behavior with command or service tests where practical.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907044,
-      "updatedAt": 1783522907044
+      "updatedAt": 1783540513237
     }
   ],
   "relations": [

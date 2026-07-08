@@ -334,9 +334,19 @@
     "entityType": "task",
     "entityId": "task-mrc7hmkp-jhvgszcy",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783525901190,
-    "resolved": true
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783540514397,
+    "resolved": false
+  },
+  "task-task-mrc7hmkp-jhvgszcy-description": {
+    "id": "task-task-mrc7hmkp-jhvgszcy-description",
+    "entityType": "task",
+    "entityId": "task-mrc7hmkp-jhvgszcy",
+    "field": "description",
+    "localValue": "Completed. Refined the Pinake setup and module generation flows with scannable QuickPick summaries, shorter VS Code-style titles and placeholders, clearer legacy/Explorer/update choices, stricter new file/folder validation, and service-level tests for the changed UX helpers.",
+    "remoteValue": "Refine the UX/UI copy and interaction design for Pinake setup flows so creating documentation feels faster, clearer, and more intuitive.\n\nTarget the template picker, module selection, Explorer visibility choice, legacy migration prompt, existing workspace confirmation, new file and folder prompts, and module generation prompts.",
+    "createdAt": 1783540514397,
+    "resolved": false
   }
 }
