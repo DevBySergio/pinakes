@@ -27,7 +27,7 @@
     "localValue": "Completed. Runtime JSON Schema validation now checks `.pinake/pinake.json` and `.pinake/.state/*.json` against the shipped schemas during validation. A formal `Pinakes: Upgrade Pinake` flow upgrades legacy `Pinake/` folders into `.pinake/docs`, preserves discovered documents and legacy module flags, rebuilds state/index files, and records migration history.",
     "remoteValue": "Partially completed. The manifest has been refactored to the new `.pinake/pinake.json` source-of-truth shape, the JSON schema was updated, validation now checks document paths/frontmatter/ADR names, and legacy `Pinake/` folders can be safely copied into `.pinake/docs`. Remaining work: runtime JSON Schema execution, a formal upgrade command, migration history application, and deeper compatibility handling.",
     "createdAt": 1783503879097,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3g-g98b588w-description": {
     "id": "task-task-mratyg3g-g98b588w-description",
@@ -107,7 +107,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783503879097,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3h-tzauzd4b-description": {
     "id": "task-task-mratyg3h-tzauzd4b-description",
@@ -117,7 +117,7 @@
     "localValue": "Completed. Added `Pinakes: Upgrade Pinake` / `pinakes.upgrade` to normalize current manifests, convert legacy `Pinake/` content into `.pinake/docs`, preserve user documents, sync state/version files, rebuild the index, and record migration history.",
     "remoteValue": "Implement pinakes upgrade behavior that reads schema versions, applies migrations, records history, and preserves user documents.",
     "createdAt": 1783503879097,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3h-tzauzd4b-status": {
     "id": "task-task-mratyg3h-tzauzd4b-status",
@@ -127,6 +127,6 @@
     "localValue": "done",
     "remoteValue": "todo",
     "createdAt": 1783503879097,
-    "resolved": false
+    "resolved": true
   }
 }
