@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrc80nwm-lzvpmmue",
+  "type": "task_moved",
+  "message": "Moved \"Plan: Small independent Lynvo documentation tasks\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783523795206,
+  "taskId": "task-mrc7xk0t-upj1m2y7",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}

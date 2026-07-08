@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrc80nwm-qbhfatqv",
+  "type": "task_moved",
+  "message": "Moved \"Detail full component catalog task breakdown\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783523795206,
+  "taskId": "task-mraub5i2-7ysys3gr",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}

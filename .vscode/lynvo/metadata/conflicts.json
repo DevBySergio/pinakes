@@ -244,9 +244,9 @@
     "entityType": "task",
     "entityId": "task-mraub5i2-7ysys3gr",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783523744147,
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783523829655,
     "resolved": false
   },
   "task-task-mraub5i2-9aw5x8sd-status": {
@@ -254,9 +254,39 @@
     "entityType": "task",
     "entityId": "task-mraub5i2-9aw5x8sd",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783523744147,
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783523829656,
+    "resolved": false
+  },
+  "task-task-mraub5i2-7ysys3gr-description": {
+    "id": "task-task-mraub5i2-7ysys3gr-description",
+    "entityType": "task",
+    "entityId": "task-mraub5i2-7ysys3gr",
+    "field": "description",
+    "localValue": "Completed. Added `docs/component-catalog-roadmap.md` with delivery slices, per-module starter document breakdowns, and acceptance criteria for expanding the full Pinake component catalog. Linked it from `README.md`.",
+    "remoteValue": "Make the component catalog backlog explicit by enumerating remaining modules from the guide, including Payments, GraphQL, gRPC, WebSocket, Backend, Cache, MessageQueue, Authorization, OAuth, IaC, Monitoring, Logging, Search, Email, DataPipeline, ML, GraphDB, Plugin/Extension, Library/SDK, CLI, Monorepo, Microservice, LegacyMigration, Documentation, Testing, Security, and DevTools.",
+    "createdAt": 1783523829655,
+    "resolved": false
+  },
+  "task-task-mraub5i2-9aw5x8sd-description": {
+    "id": "task-task-mraub5i2-9aw5x8sd-description",
+    "entityType": "task",
+    "entityId": "task-mraub5i2-9aw5x8sd",
+    "field": "description",
+    "localValue": "Completed. Added `docs/security-privacy.md` with user-facing local-first behavior, telemetry/network boundaries, workspace write locations, secret-handling guidance, commit policy, and auditability notes. Linked it from `README.md`.",
+    "remoteValue": "Add explicit user-facing security documentation for local-only behavior, no telemetry/network calls, workspace filesystem permissions, secret-handling guidance, auditability, and which Pinake files should or should not be committed.",
+    "createdAt": 1783523829656,
+    "resolved": false
+  },
+  "task-task-mrc7xk0t-upj1m2y7-status": {
+    "id": "task-task-mrc7xk0t-upj1m2y7-status",
+    "entityType": "task",
+    "entityId": "task-mrc7xk0t-upj1m2y7",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783523829656,
     "resolved": false
   }
 }

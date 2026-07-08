@@ -1,8 +1,8 @@
 {
   "id": "task-mraub5i2-9aw5x8sd",
   "title": "Document security and privacy guidance",
-  "description": "Add explicit user-facing security documentation for local-only behavior, no telemetry/network calls, workspace filesystem permissions, secret-handling guidance, auditability, and which Pinake files should or should not be committed.",
-  "status": "in-progress",
+  "description": "Completed. Added `docs/security-privacy.md` with user-facing local-first behavior, telemetry/network boundaries, workspace write locations, secret-handling guidance, commit policy, and auditability notes. Linked it from `README.md`.",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783440310369,
-  "updatedAt": 1783523727620,
+  "updatedAt": 1783523795205,
   "position": 1783440313369,
   "labelIds": [
     "feat"

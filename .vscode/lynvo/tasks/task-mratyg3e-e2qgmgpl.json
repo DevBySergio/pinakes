@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783522453628,
+  "updatedAt": 1783523795206,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -155,9 +155,9 @@
     {
       "id": "check-mraub5i2-msf83zyz",
       "text": "Document security, privacy, secrets guidance, and local-only guarantees",
-      "done": false,
+      "done": true,
       "createdAt": 1783440310369,
-      "updatedAt": 1783440310369
+      "updatedAt": 1783523795206
     }
   ],
   "relations": []
