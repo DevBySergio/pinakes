@@ -267,7 +267,7 @@
     "localValue": "Completed. Added `docs/component-catalog-roadmap.md` with delivery slices, per-module starter document breakdowns, and acceptance criteria for expanding the full Pinake component catalog. Linked it from `README.md`.",
     "remoteValue": "Make the component catalog backlog explicit by enumerating remaining modules from the guide, including Payments, GraphQL, gRPC, WebSocket, Backend, Cache, MessageQueue, Authorization, OAuth, IaC, Monitoring, Logging, Search, Email, DataPipeline, ML, GraphDB, Plugin/Extension, Library/SDK, CLI, Monorepo, Microservice, LegacyMigration, Documentation, Testing, Security, and DevTools.",
     "createdAt": 1783523829655,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mraub5i2-9aw5x8sd-description": {
     "id": "task-task-mraub5i2-9aw5x8sd-description",
