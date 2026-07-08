@@ -397,6 +397,6 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783542675824,
-    "resolved": false
+    "resolved": true
   }
 }
