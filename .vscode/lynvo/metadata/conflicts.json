@@ -227,7 +227,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783523503252,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mrc7hmkn-a353nn8o-description": {
     "id": "task-task-mrc7hmkn-a353nn8o-description",
@@ -237,6 +237,6 @@
     "localValue": "Completed. Added docs/interface-audit.md with a native VS Code interface inventory, friction points, design principles, Light/Dark/High Contrast acceptance notes, keyboard and screen reader expectations, and implementation-ready recommendations that avoid a custom webview.",
     "remoteValue": "Create a focused UX/UI and visual design audit for the Pinake VS Code extension interface.\n\nScope the native sidebar, creation wizard, module picker, search results, validation output, properties output, command feedback, and empty states. The outcome should define modern, intuitive, minimalist, and functional design principles that future implementation tasks can follow without introducing a custom webview.",
     "createdAt": 1783523503252,
-    "resolved": false
+    "resolved": true
   }
 }
