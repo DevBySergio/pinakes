@@ -398,5 +398,15 @@
     "remoteValue": "in-progress",
     "createdAt": 1783542675824,
     "resolved": true
+  },
+  "task-task-mrcitd1x-reconcil-status": {
+    "id": "task-task-mrcitd1x-reconcil-status",
+    "entityType": "task",
+    "entityId": "task-mrcitd1x-reconcil",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783542795149,
+    "resolved": false
   }
 }
