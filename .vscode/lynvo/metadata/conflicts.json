@@ -14,9 +14,9 @@
     "entityType": "task",
     "entityId": "task-mraub5i2-q86jsozl",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783500361762,
-    "resolved": true
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783500601655,
+    "resolved": false
   }
 }

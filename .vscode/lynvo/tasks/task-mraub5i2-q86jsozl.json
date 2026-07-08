@@ -2,7 +2,7 @@
   "id": "task-mraub5i2-q86jsozl",
   "title": "Implement explicit remaining tree context actions",
   "description": "Split out the original guide's remaining tree actions from the broader Tree UX card: open Pinake manifest, duplicate, reveal in Explorer, copy path, properties/metadata, and sort children.",
-  "status": "in-progress",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783440310369,
-  "updatedAt": 1783500239756,
+  "updatedAt": 1783500550874,
   "position": 1783440312369,
   "labelIds": [
     "feat"
@@ -22,30 +22,30 @@
     {
       "id": "check-mrbtzsek-3rudyn5k",
       "text": "Expose explicit tree context commands in the extension manifest and command registry",
-      "done": false,
+      "done": true,
       "createdAt": 1783500239756,
-      "updatedAt": 1783500239756
+      "updatedAt": 1783500550874
     },
     {
       "id": "check-mrbtzsek-19otugw3",
       "text": "Implement duplicate, reveal, copy path, properties, open manifest, and sort behavior",
-      "done": false,
+      "done": true,
       "createdAt": 1783500239756,
-      "updatedAt": 1783500239756
+      "updatedAt": 1783500550874
     },
     {
       "id": "check-mrbtzsek-ov5hzwv7",
       "text": "Add focused tests for ordering and tree action support",
-      "done": false,
+      "done": true,
       "createdAt": 1783500239756,
-      "updatedAt": 1783500239756
+      "updatedAt": 1783500550874
     },
     {
       "id": "check-mrbtzsek-gtizvm48",
       "text": "Compile and run validation checks",
-      "done": false,
+      "done": true,
       "createdAt": 1783500239756,
-      "updatedAt": 1783500239756
+      "updatedAt": 1783500550874
     }
   ],
   "relations": [
