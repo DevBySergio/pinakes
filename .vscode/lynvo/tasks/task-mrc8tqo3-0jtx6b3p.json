@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783525151811,
-  "updatedAt": 1783540677386,
+  "updatedAt": 1783540836682,
   "position": 1783525151811,
   "labelIds": [
     "feat"
@@ -34,23 +34,23 @@
     {
       "id": "check-mrc8tqo7-rxezb3dl",
       "text": "Implement safe Codex skill target resolution using `CODEX_HOME` then `~/.codex`.",
-      "done": false,
+      "done": true,
       "createdAt": 1783525151815,
-      "updatedAt": 1783525151815
+      "updatedAt": 1783540836682
     },
     {
       "id": "check-mrc8tqo8-6f527set",
       "text": "Add `pinakes.installAgentSkill` activation, command contribution, view button/menu entry, and command registration.",
-      "done": false,
+      "done": true,
       "createdAt": 1783525151816,
-      "updatedAt": 1783525151816
+      "updatedAt": 1783540836683
     },
     {
       "id": "check-mrc8tqo9-pesnzlww",
       "text": "Implement copy/install flow with existing-file comparison and overwrite confirmation.",
-      "done": false,
+      "done": true,
       "createdAt": 1783525151817,
-      "updatedAt": 1783525151817
+      "updatedAt": 1783540836684
     },
     {
       "id": "check-mrc8tqoa-1sksqb6q",
