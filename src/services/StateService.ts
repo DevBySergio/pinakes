@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import {
 	internalStateFileNames,
 	pinakeDirectoryName,
-	pinakeInternalDirectoryName,
+	pinakeStateDirectoryName,
 	pinakeSpecVersion,
 	pinakesExtensionVersion,
 } from '../constants';
@@ -11,6 +11,7 @@ import {
 	PinakeManifest,
 	PinakeMigrationsState,
 	PinakeModulesState,
+	PinakeTreeSortMode,
 	PinakeUiState,
 	PinakeVersionState,
 } from '../types';
@@ -20,7 +21,7 @@ export class StateService {
 	public constructor(private readonly fileService: FileService) {}
 
 	public getInternalDirectoryUri(root: vscode.Uri): vscode.Uri {
-		return vscode.Uri.joinPath(root, pinakeDirectoryName, pinakeInternalDirectoryName);
+		return vscode.Uri.joinPath(root, pinakeDirectoryName, pinakeStateDirectoryName);
 	}
 
 	public getUiStateUri(root: vscode.Uri): vscode.Uri {
@@ -33,23 +34,23 @@ export class StateService {
 		await this.fileService.ensureDirectory(internalDirectory);
 
 		if (await this.writeJsonIfMissing(vscode.Uri.joinPath(internalDirectory, internalStateFileNames.modules), this.createModulesState(manifest))) {
-			created.push(`${pinakeDirectoryName}/${pinakeInternalDirectoryName}/${internalStateFileNames.modules}`);
+			created.push(`${pinakeDirectoryName}/${pinakeStateDirectoryName}/${internalStateFileNames.modules}`);
 		}
 
 		if (await this.writeJsonIfMissing(vscode.Uri.joinPath(internalDirectory, internalStateFileNames.ui), this.createUiState())) {
-			created.push(`${pinakeDirectoryName}/${pinakeInternalDirectoryName}/${internalStateFileNames.ui}`);
+			created.push(`${pinakeDirectoryName}/${pinakeStateDirectoryName}/${internalStateFileNames.ui}`);
 		}
 
 		if (await this.writeJsonIfMissing(vscode.Uri.joinPath(internalDirectory, internalStateFileNames.indexes), this.createIndexesState())) {
-			created.push(`${pinakeDirectoryName}/${pinakeInternalDirectoryName}/${internalStateFileNames.indexes}`);
+			created.push(`${pinakeDirectoryName}/${pinakeStateDirectoryName}/${internalStateFileNames.indexes}`);
 		}
 
 		if (await this.writeJsonIfMissing(vscode.Uri.joinPath(internalDirectory, internalStateFileNames.migrations), this.createMigrationsState())) {
-			created.push(`${pinakeDirectoryName}/${pinakeInternalDirectoryName}/${internalStateFileNames.migrations}`);
+			created.push(`${pinakeDirectoryName}/${pinakeStateDirectoryName}/${internalStateFileNames.migrations}`);
 		}
 
 		if (await this.writeJsonIfMissing(vscode.Uri.joinPath(internalDirectory, internalStateFileNames.version), this.createVersionState())) {
-			created.push(`${pinakeDirectoryName}/${pinakeInternalDirectoryName}/${internalStateFileNames.version}`);
+			created.push(`${pinakeDirectoryName}/${pinakeStateDirectoryName}/${internalStateFileNames.version}`);
 		}
 
 		return created;
@@ -62,6 +63,35 @@ export class StateService {
 			vscode.Uri.joinPath(internalDirectory, internalStateFileNames.modules),
 			this.createModulesState(manifest),
 		);
+	}
+
+	public async syncVersionState(root: vscode.Uri): Promise<void> {
+		const internalDirectory = this.getInternalDirectoryUri(root);
+		await this.fileService.ensureDirectory(internalDirectory);
+		await this.fileService.writeJson(
+			vscode.Uri.joinPath(internalDirectory, internalStateFileNames.version),
+			this.createVersionState(),
+		);
+	}
+
+	public async recordMigration(root: vscode.Uri, notes: string): Promise<boolean> {
+		const internalDirectory = this.getInternalDirectoryUri(root);
+		const migrationsUri = vscode.Uri.joinPath(internalDirectory, internalStateFileNames.migrations);
+		await this.fileService.ensureDirectory(internalDirectory);
+
+		const state = normalizeMigrationsState(await this.fileService.readJson<PinakeMigrationsState>(migrationsUri));
+		const alreadyRecorded = state.history.some((entry) => entry.version === pinakeSpecVersion && entry.notes === notes);
+		state.currentVersion = pinakeSpecVersion;
+		if (!alreadyRecorded) {
+			state.history.push({
+				version: pinakeSpecVersion,
+				upgradedAt: new Date().toISOString(),
+				notes,
+			});
+		}
+
+		await this.fileService.writeJson(migrationsUri, state);
+		return !alreadyRecorded;
 	}
 
 	public async readUiState(root: vscode.Uri): Promise<PinakeUiState> {
@@ -89,6 +119,36 @@ export class StateService {
 		await this.writeUiState(root, state);
 	}
 
+	public async addFavorite(root: vscode.Uri, relativePath: string): Promise<boolean> {
+		const state = await this.readUiState(root);
+		const nextFavorites = addUnique(state.favorites, relativePath);
+		if (nextFavorites.length === state.favorites.length) {
+			return false;
+		}
+
+		state.favorites = nextFavorites;
+		await this.writeUiState(root, state);
+		return true;
+	}
+
+	public async removeFavorite(root: vscode.Uri, relativePath: string): Promise<boolean> {
+		const state = await this.readUiState(root);
+		const nextFavorites = removeValue(state.favorites, relativePath);
+		if (nextFavorites.length === state.favorites.length) {
+			return false;
+		}
+
+		state.favorites = nextFavorites;
+		await this.writeUiState(root, state);
+		return true;
+	}
+
+	public async recordSortMode(root: vscode.Uri, sortMode: PinakeTreeSortMode): Promise<void> {
+		const state = await this.readUiState(root);
+		state.sortMode = sortMode;
+		await this.writeUiState(root, state);
+	}
+
 	private async writeUiState(root: vscode.Uri, state: PinakeUiState): Promise<void> {
 		await this.fileService.ensureDirectory(this.getInternalDirectoryUri(root));
 		await this.fileService.writeJson(this.getUiStateUri(root), state);
@@ -96,11 +156,11 @@ export class StateService {
 
 	private createModulesState(manifest: PinakeManifest): PinakeModulesState {
 		return {
-			installedModules: manifest.modules
-				.filter((moduleEntry) => moduleEntry.enabled)
-				.map((moduleEntry) => ({
-					id: moduleEntry.id,
-					version: moduleEntry.version ?? pinakeSpecVersion,
+			installedModules: Object.entries(manifest.modules)
+				.filter(([, enabled]) => enabled)
+				.map(([id]) => ({
+					id,
+					version: pinakeSpecVersion,
 					config: {},
 				})),
 		};
@@ -111,12 +171,13 @@ export class StateService {
 			expanded: [],
 			collapsed: [],
 			favorites: [],
+			sortMode: 'foldersFirst',
 		};
 	}
 
 	private createIndexesState(): PinakeIndexesState {
 		return {
-			version: 1,
+			version: 2,
 			documents: [],
 			terms: {},
 		};
@@ -165,7 +226,29 @@ function normalizeUiState(value: PinakeUiState | undefined): PinakeUiState {
 		expanded: Array.isArray(value?.expanded) ? value.expanded : [],
 		collapsed: Array.isArray(value?.collapsed) ? value.collapsed : [],
 		favorites: Array.isArray(value?.favorites) ? value.favorites : [],
+		sortMode: isTreeSortMode(value?.sortMode) ? value.sortMode : 'foldersFirst',
 		lastOpened: typeof value?.lastOpened === 'string' ? value.lastOpened : undefined,
 		lastScroll: typeof value?.lastScroll === 'number' ? value.lastScroll : undefined,
 	};
+}
+
+function isTreeSortMode(value: unknown): value is PinakeTreeSortMode {
+	return value === 'foldersFirst' || value === 'nameAsc' || value === 'nameDesc';
+}
+
+function normalizeMigrationsState(value: PinakeMigrationsState | undefined): PinakeMigrationsState {
+	return {
+		currentVersion: typeof value?.currentVersion === 'string' ? value.currentVersion : pinakeSpecVersion,
+		history: Array.isArray(value?.history)
+			? value.history.filter(isMigrationEntry)
+			: [],
+	};
+}
+
+function isMigrationEntry(value: unknown): value is PinakeMigrationsState['history'][number] {
+	return typeof value === 'object'
+		&& value !== null
+		&& typeof (value as PinakeMigrationsState['history'][number]).version === 'string'
+		&& typeof (value as PinakeMigrationsState['history'][number]).upgradedAt === 'string'
+		&& typeof (value as PinakeMigrationsState['history'][number]).notes === 'string';
 }

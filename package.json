@@ -9,12 +9,42 @@
   "categories": [
     "Other"
   ],
+  "files": [
+    "out/**/*.js",
+    "!out/test/**",
+    "resources/**",
+    "scripts/**",
+    "schemas/**",
+    "docs/**",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "bin": {
+    "pinake-validate": "./scripts/validate-pinake.mjs"
+  },
   "activationEvents": [
     "onView:pinakesView",
     "onCommand:pinakes.createPinake",
+    "onCommand:pinake.create",
+    "onCommand:pinakes.openPreview",
+    "onCommand:pinake.openPreview",
+    "onCommand:pinakes.editDocument",
+    "onCommand:pinake.editDocument",
+    "onCommand:pinakes.refresh",
+    "onCommand:pinake.refresh",
+    "onCommand:pinakes.openManifest",
+    "onCommand:pinakes.duplicate",
+    "onCommand:pinakes.revealInExplorer",
+    "onCommand:pinakes.copyPath",
+    "onCommand:pinakes.showProperties",
+    "onCommand:pinakes.sortChildren",
     "onCommand:pinakes.generateModule",
     "onCommand:pinakes.searchDocumentation",
+    "onCommand:pinakes.addFavorite",
+    "onCommand:pinakes.removeFavorite",
     "onCommand:pinakes.repair",
+    "onCommand:pinakes.upgrade",
+    "onCommand:pinakes.generateCiValidation",
     "onCommand:pinakes.validate"
   ],
   "main": "./out/extension.js",
@@ -42,16 +72,72 @@
         "title": "Pinakes: Create Pinake"
       },
       {
+        "command": "pinake.create",
+        "title": "Pinake: Create Documentation"
+      },
+      {
         "command": "pinakes.refresh",
         "title": "Pinakes: Refresh"
       },
       {
+        "command": "pinake.refresh",
+        "title": "Pinake: Refresh"
+      },
+      {
         "command": "pinakes.openFile",
-        "title": "Pinakes: Open File"
+        "title": "Pinakes: Open Preview"
+      },
+      {
+        "command": "pinakes.openPreview",
+        "title": "Pinakes: Open Preview"
+      },
+      {
+        "command": "pinake.openPreview",
+        "title": "Pinake: Open Preview"
       },
       {
         "command": "pinakes.openFileSide",
         "title": "Pinakes: Open File to Side"
+      },
+      {
+        "command": "pinakes.editDocument",
+        "title": "Pinakes: Edit"
+      },
+      {
+        "command": "pinake.editDocument",
+        "title": "Pinake: Edit"
+      },
+      {
+        "command": "pinakes.openManifest",
+        "title": "Pinakes: Open Pinake Manifest"
+      },
+      {
+        "command": "pinakes.duplicate",
+        "title": "Pinakes: Duplicate"
+      },
+      {
+        "command": "pinakes.revealInExplorer",
+        "title": "Pinakes: Reveal in Explorer"
+      },
+      {
+        "command": "pinakes.copyPath",
+        "title": "Pinakes: Copy Relative Path"
+      },
+      {
+        "command": "pinakes.showProperties",
+        "title": "Pinakes: Show Properties"
+      },
+      {
+        "command": "pinakes.sortChildren",
+        "title": "Pinakes: Sort Children"
+      },
+      {
+        "command": "pinakes.addFavorite",
+        "title": "Pinakes: Add to Favorites"
+      },
+      {
+        "command": "pinakes.removeFavorite",
+        "title": "Pinakes: Remove from Favorites"
       },
       {
         "command": "pinakes.newFile",
@@ -80,6 +166,14 @@
       {
         "command": "pinakes.repair",
         "title": "Pinakes: Repair"
+      },
+      {
+        "command": "pinakes.upgrade",
+        "title": "Pinakes: Upgrade Pinake"
+      },
+      {
+        "command": "pinakes.generateCiValidation",
+        "title": "Pinakes: Generate CI Validation Workflow"
       },
       {
         "command": "pinakes.validate",
@@ -119,26 +213,71 @@
           "group": "navigation@6"
         },
         {
-          "command": "pinakes.validate",
+          "command": "pinakes.upgrade",
           "when": "view == pinakesView",
           "group": "navigation@7"
         },
         {
-          "command": "pinakes.refresh",
+          "command": "pinakes.generateCiValidation",
+          "when": "view == pinakesView",
+          "group": "navigation@8"
+        },
+        {
+          "command": "pinakes.validate",
           "when": "view == pinakesView",
           "group": "navigation@9"
+        },
+        {
+          "command": "pinakes.openManifest",
+          "when": "view == pinakesView",
+          "group": "navigation@10"
+        },
+        {
+          "command": "pinakes.sortChildren",
+          "when": "view == pinakesView",
+          "group": "navigation@11"
+        },
+        {
+          "command": "pinakes.refresh",
+          "when": "view == pinakesView",
+          "group": "navigation@12"
         }
       ],
       "view/item/context": [
         {
-          "command": "pinakes.openFile",
-          "when": "view == pinakesView && viewItem == file",
+          "command": "pinake.openPreview",
+          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)",
           "group": "navigation@1"
         },
         {
-          "command": "pinakes.openFileSide",
-          "when": "view == pinakesView && viewItem == file",
+          "command": "pinake.editDocument",
+          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)",
           "group": "navigation@2"
+        },
+        {
+          "command": "pinakes.addFavorite",
+          "when": "view == pinakesView && viewItem == pinakeDocument",
+          "group": "navigation@3"
+        },
+        {
+          "command": "pinakes.removeFavorite",
+          "when": "view == pinakesView && viewItem == favoritePinakeDocument",
+          "group": "navigation@3"
+        },
+        {
+          "command": "pinakes.revealInExplorer",
+          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
+          "group": "navigation@4"
+        },
+        {
+          "command": "pinakes.copyPath",
+          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
+          "group": "navigation@5"
+        },
+        {
+          "command": "pinakes.showProperties",
+          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
+          "group": "navigation@6"
         },
         {
           "command": "pinakes.newFile",
@@ -152,12 +291,22 @@
         },
         {
           "command": "pinakes.rename",
-          "when": "view == pinakesView",
+          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory)",
           "group": "2_modification@3"
         },
         {
+          "command": "pinakes.duplicate",
+          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
+          "group": "2_modification@4"
+        },
+        {
+          "command": "pinakes.sortChildren",
+          "when": "view == pinakesView && viewItem == directory",
+          "group": "3_sort@1"
+        },
+        {
           "command": "pinakes.delete",
-          "when": "view == pinakesView",
+          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory)",
           "group": "9_delete"
         }
       ]
@@ -167,13 +316,13 @@
         "command": "pinakes.rename",
         "key": "f2",
         "mac": "f2",
-        "when": "view == pinakesView && viewItem"
+        "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory)"
       },
       {
         "command": "pinakes.delete",
         "key": "delete",
         "mac": "delete",
-        "when": "view == pinakesView && viewItem"
+        "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory)"
       },
       {
         "command": "pinakes.searchDocumentation",
@@ -185,37 +334,37 @@
     "jsonValidation": [
       {
         "fileMatch": [
-          "/Pinake/pinake.json"
+          "/.pinake/pinake.json"
         ],
         "url": "./schemas/pinake.schema.json"
       },
       {
         "fileMatch": [
-          "/Pinake/.pinake/modules.json"
+          "/.pinake/.state/modules.json"
         ],
         "url": "./schemas/modules.schema.json"
       },
       {
         "fileMatch": [
-          "/Pinake/.pinake/ui.json"
+          "/.pinake/.state/ui.json"
         ],
         "url": "./schemas/ui.schema.json"
       },
       {
         "fileMatch": [
-          "/Pinake/.pinake/indexes.json"
+          "/.pinake/.state/indexes.json"
         ],
         "url": "./schemas/indexes.schema.json"
       },
       {
         "fileMatch": [
-          "/Pinake/.pinake/migrations.json"
+          "/.pinake/.state/migrations.json"
         ],
         "url": "./schemas/migrations.schema.json"
       },
       {
         "fileMatch": [
-          "/Pinake/.pinake/version.json"
+          "/.pinake/.state/version.json"
         ],
         "url": "./schemas/version.schema.json"
       }
@@ -227,16 +376,17 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
+    "pinake:validate": "node scripts/validate-pinake.mjs",
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.125.0",
     "@types/mocha": "^10.0.10",
-    "@types/node": "22.x",
-    "typescript-eslint": "^8.56.1",
+    "@types/node": "^22.20.1",
+    "@types/vscode": "^1.125.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
     "eslint": "^9.39.3",
     "typescript": "^5.9.3",
-    "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2"
+    "typescript-eslint": "^8.56.1"
   }
 }

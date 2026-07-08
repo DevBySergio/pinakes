@@ -1,6 +1,14 @@
 import * as vscode from 'vscode';
-import { pinakeDirectoryName, pinakeManifestFileName } from '../constants';
-import { PinakeManifest, PinakeModuleDescriptor, PinakeModuleManifest } from '../types';
+import { pinakeDirectoryName, pinakeDocsDirectoryName, pinakeManifestFileName } from '../constants';
+import { getDefaultPinakeTemplate, getPinakeDocuments, getPinakeTemplate } from '../templates/pinakeTemplates';
+import {
+	PinakeDocumentDefinition,
+	PinakeDocumentStatus,
+	PinakeDocumentType,
+	PinakeManifest,
+	PinakeModuleDescriptor,
+	PinakeModuleId,
+} from '../types';
 import { FileService } from './FileService';
 
 export class ManifestService {
@@ -11,13 +19,31 @@ export class ManifestService {
 	}
 
 	public createDefaultManifest(projectName: string): PinakeManifest {
+		const template = getDefaultPinakeTemplate();
+		return this.createManifest(projectName, template.id, template.defaultModules, false, getPinakeDocuments(template, template.defaultModules));
+	}
+
+	public createManifest(
+		projectName: string,
+		templateId: string,
+		moduleIds: PinakeModuleId[],
+		hiddenFromExplorer: boolean,
+		documents: PinakeDocumentDefinition[],
+	): PinakeManifest {
 		return {
-			name: projectName,
-			description: `Pinake docs for ${projectName}.`,
-			version: '1.0.0',
-			language: 'en',
-			modules: [],
-			keywords: ['pinake', 'docs'],
+			version: 1,
+			storage: {
+				root: `${pinakeDirectoryName}/${pinakeDocsDirectoryName}`,
+				hiddenFromExplorer,
+			},
+			project: {
+				name: projectName,
+				documentationType: 'internal',
+				audience: ['developers', 'small-team'],
+				template: templateId,
+			},
+			modules: createModuleSelection(moduleIds),
+			documents: documents.map(toManifestDocument),
 		};
 	}
 
@@ -26,7 +52,7 @@ export class ManifestService {
 	}
 
 	public async writeManifest(root: vscode.Uri, manifest: PinakeManifest): Promise<void> {
-		await this.fileService.writeJson(this.getManifestUri(root), manifest);
+		await this.fileService.writeJson(this.getManifestUri(root), normalizeManifestForWrite(manifest));
 	}
 
 	public validateManifestShape(value: unknown): string[] {
@@ -35,67 +61,239 @@ export class ManifestService {
 		}
 
 		const issues: string[] = [];
-		if (typeof value.name !== 'string' || value.name.trim().length === 0) {
-			issues.push('pinake.json requires a non-empty string field: name.');
+		if (typeof value.version !== 'number') {
+			issues.push('pinake.json requires numeric field: version.');
 		}
 
-		if (typeof value.version !== 'string' || value.version.trim().length === 0) {
-			issues.push('pinake.json requires a non-empty string field: version.');
+		if (!isRecord(value.storage)) {
+			issues.push('pinake.json requires object field: storage.');
+		} else {
+			if (typeof value.storage.root !== 'string' || value.storage.root.trim().length === 0) {
+				issues.push('pinake.json requires storage.root to be a non-empty string.');
+			}
+
+			if (typeof value.storage.hiddenFromExplorer !== 'boolean') {
+				issues.push('pinake.json requires storage.hiddenFromExplorer to be a boolean.');
+			}
 		}
 
-		if (typeof value.language !== 'string' || !/^[a-z]{2}(-[A-Z]{2})?$/.test(value.language)) {
-			issues.push('pinake.json requires language in the form "en" or "en-US".');
+		if (!isRecord(value.project)) {
+			issues.push('pinake.json requires object field: project.');
+		} else {
+			if (typeof value.project.name !== 'string' || value.project.name.trim().length === 0) {
+				issues.push('pinake.json requires project.name to be a non-empty string.');
+			}
+
+			if (typeof value.project.documentationType !== 'string' || value.project.documentationType.trim().length === 0) {
+				issues.push('pinake.json requires project.documentationType to be a non-empty string.');
+			}
+
+			if (!Array.isArray(value.project.audience) || !value.project.audience.every((entry) => typeof entry === 'string')) {
+				issues.push('pinake.json requires project.audience to be an array of strings.');
+			}
+
+			if (typeof value.project.template !== 'string' || value.project.template.trim().length === 0) {
+				issues.push('pinake.json requires project.template to be a non-empty string.');
+			}
 		}
 
-		if (!Array.isArray(value.modules)) {
-			issues.push('pinake.json requires modules to be an array.');
+		if (!isRecord(value.modules)) {
+			issues.push('pinake.json requires modules to be an object of boolean flags.');
+		} else {
+			for (const [moduleId, enabled] of Object.entries(value.modules)) {
+				if (typeof enabled !== 'boolean') {
+					issues.push(`pinake.json modules.${moduleId} must be a boolean.`);
+				}
+			}
+		}
+
+		if (!Array.isArray(value.documents)) {
+			issues.push('pinake.json requires documents to be an array.');
 			return issues;
 		}
 
-		for (const [index, moduleValue] of value.modules.entries()) {
-			if (!isRecord(moduleValue)) {
-				issues.push(`pinake.json modules[${index}] must be an object.`);
-				continue;
-			}
-
-			if (typeof moduleValue.id !== 'string' || moduleValue.id.trim().length === 0) {
-				issues.push(`pinake.json modules[${index}] requires a non-empty id.`);
-			}
-
-			if (typeof moduleValue.enabled !== 'boolean') {
-				issues.push(`pinake.json modules[${index}] requires a boolean enabled field.`);
-			}
-
-			if (moduleValue.version !== undefined && typeof moduleValue.version !== 'string') {
-				issues.push(`pinake.json modules[${index}] version must be a string when present.`);
-			}
+		for (const [index, documentValue] of value.documents.entries()) {
+			validateDocumentShape(documentValue, index, issues);
 		}
 
 		return issues;
 	}
 
 	public ensureModule(manifest: PinakeManifest, descriptor: PinakeModuleDescriptor): boolean {
-		const existing = manifest.modules.find((moduleEntry) => moduleEntry.id === descriptor.id);
-		if (existing) {
-			if (!existing.enabled || existing.version !== descriptor.version) {
-				existing.enabled = true;
-				existing.version = descriptor.version;
-				return true;
-			}
-
+		if (manifest.modules[descriptor.id] === true) {
 			return false;
 		}
 
-		const moduleEntry: PinakeModuleManifest = {
-			id: descriptor.id,
-			version: descriptor.version,
-			enabled: true,
-		};
-		manifest.modules.push(moduleEntry);
+		manifest.modules[descriptor.id] = true;
+		return true;
+	}
+
+	public setTemplateSelection(
+		manifest: PinakeManifest,
+		templateId: string,
+		moduleIds: PinakeModuleId[],
+		hiddenFromExplorer: boolean,
+	): void {
+		manifest.storage.root = `${pinakeDirectoryName}/${pinakeDocsDirectoryName}`;
+		manifest.storage.hiddenFromExplorer = hiddenFromExplorer;
+		manifest.project.template = getPinakeTemplate(templateId).id;
+		for (const moduleId of moduleIds) {
+			manifest.modules[moduleId] = true;
+		}
+	}
+
+	public addDocuments(manifest: PinakeManifest, documents: PinakeDocumentDefinition[]): boolean {
+		let changed = false;
+		for (const document of documents.map(toManifestDocument)) {
+			const existingIndex = manifest.documents.findIndex((entry) => entry.id === document.id || entry.path === document.path);
+			if (existingIndex >= 0) {
+				const existing = manifest.documents[existingIndex];
+				if (JSON.stringify(existing) !== JSON.stringify(document)) {
+					manifest.documents[existingIndex] = {
+						...existing,
+						...document,
+					};
+					changed = true;
+				}
+				continue;
+			}
+
+			manifest.documents.push(document);
+			changed = true;
+		}
+
+		if (changed) {
+			manifest.documents.sort(compareDocuments);
+		}
+
+		return changed;
+	}
+
+	public removeDocument(manifest: PinakeManifest, relativePath: string): boolean {
+		const nextDocuments = manifest.documents.filter((document) => document.path !== relativePath);
+		if (nextDocuments.length === manifest.documents.length) {
+			return false;
+		}
+
+		manifest.documents = nextDocuments;
+		return true;
+	}
+
+	public renameDocument(manifest: PinakeManifest, oldPath: string, newPath: string, newTitle?: string): boolean {
+		const document = manifest.documents.find((entry) => entry.path === oldPath);
+		if (!document) {
+			return false;
+		}
+
+		document.path = newPath;
+		if (newTitle) {
+			document.title = newTitle;
+		}
+
+		manifest.documents.sort(compareDocuments);
 		return true;
 	}
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function createModuleSelection(moduleIds: PinakeModuleId[]): Record<string, boolean> {
+	const modules: Record<string, boolean> = {
+		overview: false,
+		gettingStarted: false,
+		development: false,
+		decisions: false,
+		architecture: false,
+		quality: false,
+		operations: false,
+		projectManagement: false,
+		reference: false,
+	};
+
+	for (const moduleId of moduleIds) {
+		modules[moduleId] = true;
+	}
+
+	return modules;
+}
+
+function normalizeManifestForWrite(manifest: PinakeManifest): PinakeManifest {
+	return {
+		...manifest,
+		documents: manifest.documents.map(toManifestDocument).sort(compareDocuments),
+	};
+}
+
+function toManifestDocument(document: PinakeDocumentDefinition): PinakeDocumentDefinition {
+	return {
+		id: document.id,
+		title: document.title,
+		path: document.path,
+		type: document.type,
+		status: document.status,
+		order: document.order,
+	};
+}
+
+function validateDocumentShape(value: unknown, index: number, issues: string[]): void {
+	if (!isRecord(value)) {
+		issues.push(`pinake.json documents[${index}] must be an object.`);
+		return;
+	}
+
+	if (typeof value.id !== 'string' || value.id.trim().length === 0) {
+		issues.push(`pinake.json documents[${index}] requires a non-empty id.`);
+	}
+
+	if (typeof value.title !== 'string' || value.title.trim().length === 0) {
+		issues.push(`pinake.json documents[${index}] requires a non-empty title.`);
+	}
+
+	if (typeof value.path !== 'string' || value.path.trim().length === 0) {
+		issues.push(`pinake.json documents[${index}] requires a non-empty path.`);
+	} else if (value.path.startsWith('/') || value.path.includes('..')) {
+		issues.push(`pinake.json documents[${index}] path must be relative to .pinake/docs.`);
+	}
+
+	if (!isDocumentType(value.type)) {
+		issues.push(`pinake.json documents[${index}] has unsupported type.`);
+	}
+
+	if (!isDocumentStatus(value.status)) {
+		issues.push(`pinake.json documents[${index}] has unsupported status.`);
+	}
+
+	if (typeof value.order !== 'number') {
+		issues.push(`pinake.json documents[${index}] requires numeric order.`);
+	}
+}
+
+function isDocumentType(value: unknown): value is PinakeDocumentType {
+	return typeof value === 'string' && [
+		'overview',
+		'tutorial',
+		'how-to',
+		'reference',
+		'explanation',
+		'architecture',
+		'adr',
+		'runbook',
+		'changelog',
+		'roadmap',
+		'glossary',
+		'troubleshooting',
+		'testing',
+		'process',
+	].includes(value);
+}
+
+function isDocumentStatus(value: unknown): value is PinakeDocumentStatus {
+	return value === 'draft' || value === 'in-review' || value === 'stable' || value === 'deprecated';
+}
+
+function compareDocuments(left: PinakeDocumentDefinition, right: PinakeDocumentDefinition): number {
+	const pathOrder = left.path.localeCompare(right.path, undefined, { numeric: true, sensitivity: 'base' });
+	return pathOrder !== 0 ? pathOrder : left.order - right.order;
 }

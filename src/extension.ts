@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext): void {
 	const indexService = new IndexService(fileService);
 	const scaffoldService = new ScaffoldService(fileService, manifestService, stateService, indexService);
 	const validationService = new ValidationService(fileService, manifestService);
-	const treeProvider = new PinakeTreeProvider(workspaceService.getWorkspaceRoot(), fileService);
+	const treeProvider = new PinakeTreeProvider(workspaceService.getWorkspaceRoot(), fileService, stateService);
 	const outputChannel = vscode.window.createOutputChannel('Pinakes');
 	const treeView = vscode.window.createTreeView('pinakesView', {
 		treeDataProvider: treeProvider,
@@ -28,6 +28,7 @@ export function activate(context: vscode.ExtensionContext): void {
 	const commands = new PinakesCommands(
 		workspaceService,
 		fileService,
+		manifestService,
 		scaffoldService,
 		validationService,
 		indexService,
@@ -40,7 +41,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
 	const root = workspaceService.getWorkspaceRoot();
 	if (root) {
-		const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(root, 'Pinake/**'));
+		const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(root, '.pinake/**'));
 		const refresh = debounce(() => treeProvider.refresh(), 150);
 		context.subscriptions.push(
 			watcher,
@@ -48,10 +49,14 @@ export function activate(context: vscode.ExtensionContext): void {
 			watcher.onDidChange(refresh),
 			watcher.onDidDelete(refresh),
 			treeView.onDidExpandElement((event) => {
-				void stateService.recordExpanded(root, event.element.relativePath);
+				if (event.element.kind === 'directory') {
+					void stateService.recordExpanded(root, event.element.relativePath);
+				}
 			}),
 			treeView.onDidCollapseElement((event) => {
-				void stateService.recordCollapsed(root, event.element.relativePath);
+				if (event.element.kind === 'directory') {
+					void stateService.recordCollapsed(root, event.element.relativePath);
+				}
 			}),
 		);
 

@@ -27,6 +27,14 @@
         "type": "string"
       }
     },
+    "sortMode": {
+      "type": "string",
+      "enum": [
+        "foldersFirst",
+        "nameAsc",
+        "nameDesc"
+      ]
+    },
     "lastOpened": {
       "type": "string"
     },

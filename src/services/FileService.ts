@@ -22,6 +22,10 @@ export class FileService {
 		}
 	}
 
+	public async stat(uri: vscode.Uri): Promise<vscode.FileStat> {
+		return vscode.workspace.fs.stat(uri);
+	}
+
 	public async ensureDirectory(uri: vscode.Uri): Promise<void> {
 		await vscode.workspace.fs.createDirectory(uri);
 	}
@@ -62,6 +66,10 @@ export class FileService {
 
 	public async rename(source: vscode.Uri, target: vscode.Uri, overwrite: boolean): Promise<void> {
 		await vscode.workspace.fs.rename(source, target, { overwrite });
+	}
+
+	public async copy(source: vscode.Uri, target: vscode.Uri, overwrite: boolean): Promise<void> {
+		await vscode.workspace.fs.copy(source, target, { overwrite });
 	}
 
 	public async delete(uri: vscode.Uri, recursive: boolean): Promise<void> {

@@ -11,7 +11,7 @@
   "properties": {
     "version": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 2
     },
     "documents": {
       "type": "array",
@@ -21,11 +21,17 @@
         "required": [
           "path",
           "headings",
+          "headingDetails",
           "keywords",
+          "tags",
+          "links",
           "id"
         ],
         "properties": {
           "path": {
+            "type": "string"
+          },
+          "title": {
             "type": "string"
           },
           "headings": {
@@ -34,10 +40,68 @@
               "type": "string"
             }
           },
+          "headingDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "level",
+                "text",
+                "line"
+              ],
+              "properties": {
+                "level": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "text": {
+                  "type": "string"
+                },
+                "line": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
           "keywords": {
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "target",
+                "line",
+                "broken"
+              ],
+              "properties": {
+                "target": {
+                  "type": "string"
+                },
+                "line": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "resolvedPath": {
+                  "type": "string"
+                },
+                "broken": {
+                  "type": "boolean"
+                }
+              }
             }
           },
           "id": {
