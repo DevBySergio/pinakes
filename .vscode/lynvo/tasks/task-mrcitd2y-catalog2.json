@@ -1,0 +1,57 @@
+{
+  "id": "task-mrcitd2y-catalog2",
+  "title": "Finish or rescope the component catalog roadmap",
+  "description": "Created from the project state audit.\n\nResolve the mismatch between the Done board task for catalog expansion and the roadmap acceptance criteria.\n\nContext:\n- `docs/component-catalog-roadmap.md` says catalog expansion is complete when every backlog module has a descriptor and starter files.\n- Current descriptors implement the first expansion slice, but the roadmap still lists missing modules: Authorization, Payments, Search, Email, DataPipeline, ML, GraphDB, Logging, PluginExtension, Monorepo, LegacyMigration, Documentation, Testing, and DevTools.\n\nImplementation options:\n- Implement the remaining roadmap modules with descriptors, starter Markdown files, presets where useful, icon mappings/fallbacks, and tests.\n- Or explicitly rescope the roadmap and completed Lynvo item so the current work is documented as a first expansion slice.\n\nAcceptance criteria:\n- Roadmap, code, tests, and board state agree on what is complete.\n- Missing modules are either implemented or intentionally deferred in a new backlog section.\n\nCode anchors: `docs/component-catalog-roadmap.md:67`, `src/modules/moduleDescriptors.ts:337`.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783541932286,
+  "updatedAt": 1783541932286,
+  "position": 1783541932286,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "codeReference": {
+    "filePath": "docs/component-catalog-roadmap.md",
+    "lineStart": 67,
+    "lineEnd": 73
+  },
+  "checklist": [
+    {
+      "id": "check-mrcitd2y-catchk01",
+      "text": "Decide whether to implement remaining modules or rescope the roadmap",
+      "done": false,
+      "createdAt": 1783541932286,
+      "updatedAt": 1783541932286
+    },
+    {
+      "id": "check-mrcitd2y-catchk02",
+      "text": "If implementing, add descriptors and starter files for the remaining backlog modules",
+      "done": false,
+      "createdAt": 1783541932286,
+      "updatedAt": 1783541932286
+    },
+    {
+      "id": "check-mrcitd2y-catchk03",
+      "text": "Update presets, icon mapping/fallback documentation, and generated-module tests",
+      "done": false,
+      "createdAt": 1783541932286,
+      "updatedAt": 1783541932286
+    },
+    {
+      "id": "check-mrcitd2y-catchk04",
+      "text": "Update docs and Lynvo status so completion criteria match code",
+      "done": false,
+      "createdAt": 1783541932286,
+      "updatedAt": 1783541932286
+    }
+  ],
+  "relations": []
+}

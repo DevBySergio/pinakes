@@ -1,0 +1,57 @@
+{
+  "id": "task-mrcitd3z-cmdpolsh",
+  "title": "Polish Pinake commands toolbar and setup flow",
+  "description": "Created from the project state audit.\n\nImprove the native VS Code interface polish that remains after the first interface audit tasks.\n\nScope:\n- Normalize visible command titles to singular `Pinake:` while preserving existing command IDs for compatibility.\n- Reduce crowded view-title toolbar ordering so daily-use actions are easier to scan than setup/maintenance actions.\n- Add a final setup summary before writing files in the creation wizard.\n- Add command/keybinding parity for frequent actions: preview, edit, favorite, reveal, copy path, and validate.\n- Keep all changes on native VS Code surfaces; do not introduce a custom webview.\n\nCode anchors: `package.json:70`, `package.json:189`, `src/commands/PinakesCommands.ts:60`.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783541933286,
+  "updatedAt": 1783541933286,
+  "position": 1783541933286,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "codeReference": {
+    "filePath": "package.json",
+    "lineStart": 70,
+    "lineEnd": 186
+  },
+  "checklist": [
+    {
+      "id": "check-mrcitd3z-cmdchk01",
+      "text": "Normalize visible command titles to singular `Pinake:` without removing existing command IDs",
+      "done": false,
+      "createdAt": 1783541933286,
+      "updatedAt": 1783541933286
+    },
+    {
+      "id": "check-mrcitd3z-cmdchk02",
+      "text": "Reorder or reduce view-title toolbar actions for daily-use scanning",
+      "done": false,
+      "createdAt": 1783541933286,
+      "updatedAt": 1783541933286
+    },
+    {
+      "id": "check-mrcitd3z-cmdchk03",
+      "text": "Add a final setup summary step before file writes",
+      "done": false,
+      "createdAt": 1783541933286,
+      "updatedAt": 1783541933286
+    },
+    {
+      "id": "check-mrcitd3z-cmdchk04",
+      "text": "Add command/keybinding parity tests for frequent actions",
+      "done": false,
+      "createdAt": 1783541933286,
+      "updatedAt": 1783541933286
+    }
+  ],
+  "relations": []
+}
