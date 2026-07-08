@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrci76bw-01si1c1x",
+  "type": "task_moved",
+  "message": "Moved \"Add Pinake AI agent skill and installer command\" from in-progress to done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783540895180,
+  "taskId": "task-mrc8tqo3-0jtx6b3p",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}
