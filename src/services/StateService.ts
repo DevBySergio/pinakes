@@ -143,6 +143,31 @@ export class StateService {
 		return true;
 	}
 
+	public async renamePathReferences(root: vscode.Uri, oldRelativePath: string, newRelativePath: string, isDirectory: boolean): Promise<void> {
+		const state = await this.readUiState(root);
+		state.expanded = rewritePathList(state.expanded, oldRelativePath, newRelativePath, isDirectory);
+		state.collapsed = rewritePathList(state.collapsed, oldRelativePath, newRelativePath, isDirectory);
+		state.favorites = rewritePathList(state.favorites, oldRelativePath, newRelativePath, isDirectory);
+		if (state.lastOpened) {
+			state.lastOpened = rewritePath(state.lastOpened, oldRelativePath, newRelativePath, isDirectory);
+		}
+
+		await this.writeUiState(root, state);
+	}
+
+	public async removePathReferences(root: vscode.Uri, relativePath: string, isDirectory: boolean): Promise<void> {
+		const state = await this.readUiState(root);
+		state.expanded = removePathList(state.expanded, relativePath, isDirectory);
+		state.collapsed = removePathList(state.collapsed, relativePath, isDirectory);
+		state.favorites = removePathList(state.favorites, relativePath, isDirectory);
+		if (state.lastOpened && pathMatches(state.lastOpened, relativePath, isDirectory)) {
+			state.lastOpened = undefined;
+			state.lastScroll = undefined;
+		}
+
+		await this.writeUiState(root, state);
+	}
+
 	public async recordSortMode(root: vscode.Uri, sortMode: PinakeTreeSortMode): Promise<void> {
 		const state = await this.readUiState(root);
 		state.sortMode = sortMode;
@@ -219,6 +244,31 @@ function addUnique(values: string[], value: string): string[] {
 
 function removeValue(values: string[], value: string): string[] {
 	return values.filter((entry) => entry !== value);
+}
+
+function rewritePathList(values: string[], oldRelativePath: string, newRelativePath: string, isDirectory: boolean): string[] {
+	return Array.from(new Set(values.map((entry) => rewritePath(entry, oldRelativePath, newRelativePath, isDirectory))))
+		.sort((left, right) => left.localeCompare(right));
+}
+
+function rewritePath(value: string, oldRelativePath: string, newRelativePath: string, isDirectory: boolean): string {
+	if (value === oldRelativePath) {
+		return newRelativePath;
+	}
+
+	if (isDirectory && value.startsWith(`${oldRelativePath}/`)) {
+		return `${newRelativePath}/${value.slice(oldRelativePath.length + 1)}`;
+	}
+
+	return value;
+}
+
+function removePathList(values: string[], relativePath: string, isDirectory: boolean): string[] {
+	return values.filter((entry) => !pathMatches(entry, relativePath, isDirectory));
+}
+
+function pathMatches(value: string, relativePath: string, isDirectory: boolean): boolean {
+	return value === relativePath || (isDirectory && value.startsWith(`${relativePath}/`));
 }
 
 function normalizeUiState(value: PinakeUiState | undefined): PinakeUiState {

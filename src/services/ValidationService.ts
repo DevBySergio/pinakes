@@ -72,6 +72,7 @@ export class ValidationService {
 		}
 
 		await this.validateMarkdownLinks(root, issues);
+		await this.validateMarkdownSecretHygiene(root, issues);
 
 		return {
 			valid: issues.every((issue) => issue.severity !== 'error'),
@@ -251,6 +252,16 @@ export class ValidationService {
 		}
 	}
 
+	private async validateMarkdownSecretHygiene(root: vscode.Uri, issues: ValidationIssue[]): Promise<void> {
+		const docsDirectory = vscode.Uri.joinPath(root, pinakeDirectoryName, pinakeDocsDirectoryName);
+		const files = await this.collectMarkdownFiles(docsDirectory, []);
+		for (const relativePath of files) {
+			const fileUri = joinUri(docsDirectory, relativePath);
+			const content = await this.fileService.readText(fileUri);
+			validateSecretHygiene(`${pinakeDirectoryName}/${pinakeDocsDirectoryName}/${relativePath}`, content, issues);
+		}
+	}
+
 	private async collectMarkdownFiles(directory: vscode.Uri, relativeSegments: string[]): Promise<string[]> {
 		if (!(await this.fileService.exists(directory))) {
 			return [];
@@ -273,6 +284,94 @@ export class ValidationService {
 
 		return files;
 	}
+}
+
+interface SecretPattern {
+	name: string;
+	pattern: RegExp;
+	getValue?: (match: RegExpMatchArray) => string | undefined;
+}
+
+const secretPatterns: SecretPattern[] = [
+	{
+		name: 'private key material',
+		pattern: /-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----/,
+	},
+	{
+		name: 'GitHub token',
+		pattern: /\bgh[pousr]_[A-Za-z0-9_]{36,}\b/,
+	},
+	{
+		name: 'AWS access key id',
+		pattern: /\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/,
+	},
+	{
+		name: 'Slack token',
+		pattern: /\bxox[baprs]-[A-Za-z0-9-]{20,}\b/,
+	},
+	{
+		name: 'JWT-like token',
+		pattern: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/,
+	},
+	{
+		name: 'credential assignment',
+		pattern: /\b(?:api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|password|passwd|secret|token)\b\s*[:=]\s*["']?([^"'\s`]{12,})["']?/i,
+		getValue: (match) => match[1],
+	},
+];
+
+function validateSecretHygiene(relativePath: string, content: string, issues: ValidationIssue[]): void {
+	const lines = content.split(/\r?\n/);
+	for (const [index, line] of lines.entries()) {
+		if (isSecretPlaceholderLine(line)) {
+			continue;
+		}
+
+		for (const secretPattern of secretPatterns) {
+			const match = line.match(secretPattern.pattern);
+			if (!match) {
+				continue;
+			}
+
+			const value = secretPattern.getValue?.(match) ?? match[0];
+			if (isSafePlaceholderValue(value)) {
+				continue;
+			}
+
+			issues.push({
+				severity: 'warning',
+				message: `Possible secret-like content detected (${secretPattern.name}) in ${relativePath}.`,
+				path: relativePath,
+				line: index + 1,
+			});
+			break;
+		}
+	}
+}
+
+function isSecretPlaceholderLine(line: string): boolean {
+	const trimmed = line.trim();
+	if (!trimmed) {
+		return true;
+	}
+
+	return /^(?:[-*]\s*)?(?:`)?[A-Z][A-Z0-9_]*(?:`)?(?:\s+-\s+|\s*:\s*$|\s*$)/.test(trimmed)
+		&& /(?:TOKEN|SECRET|PASSWORD|API_KEY|KEY)$/i.test(trimmed);
+}
+
+function isSafePlaceholderValue(value: string): boolean {
+	const normalized = value.toUpperCase();
+	return normalized.includes('EXAMPLE')
+		|| normalized.includes('SAMPLE')
+		|| normalized.includes('PLACEHOLDER')
+		|| normalized.includes('REDACTED')
+		|| normalized.includes('CHANGEME')
+		|| normalized.includes('CHANGE_ME')
+		|| normalized.includes('YOUR_')
+		|| normalized.includes('XXXX')
+		|| normalized.includes('***')
+		|| /^<[^>]+>$/.test(value)
+		|| /^\$\{[^}]+}$/.test(value);
 }
 
 function validateMarkdownStyle(relativePath: string, content: string, issues: ValidationIssue[]): void {

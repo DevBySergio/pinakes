@@ -131,10 +131,12 @@ export class PinakeTreeProvider implements vscode.TreeDataProvider<PinakeNode> {
 		}
 
 		const state = await this.stateService.readUiState(this.root);
-		const manifestChildren = await this.getManifestChildren(element?.relativePath ?? '', state.sortMode ?? 'foldersFirst');
+		const sortMode = state.sortMode ?? 'foldersFirst';
+		const manifestChildren = await this.getManifestChildren(element?.relativePath ?? '', sortMode);
+		const filesystemChildren = await this.getFilesystemChildren(element, sortMode);
 		const children = manifestChildren.length > 0
-			? manifestChildren
-			: await this.getFilesystemChildren(element, state.sortMode ?? 'foldersFirst');
+			? mergeFilesystemDirectories(manifestChildren, filesystemChildren, sortMode)
+			: filesystemChildren;
 
 		if (!element) {
 			const favoriteChildren = await this.getFavoriteChildren();
@@ -551,4 +553,17 @@ function compareNodes(left: PinakeNode, right: PinakeNode, sortMode: PinakeTreeS
 
 	const labelOrder = left.label.localeCompare(right.label, undefined, { numeric: true, sensitivity: 'base' });
 	return sortMode === 'nameDesc' ? -labelOrder : labelOrder;
+}
+
+function mergeFilesystemDirectories(manifestChildren: PinakeNode[], filesystemChildren: PinakeNode[], sortMode: PinakeTreeSortMode): PinakeNode[] {
+	const childrenByPath = new Map(manifestChildren.map((node) => [node.relativePath, node]));
+	for (const filesystemChild of filesystemChildren) {
+		if (filesystemChild.kind !== 'directory' || childrenByPath.has(filesystemChild.relativePath)) {
+			continue;
+		}
+
+		childrenByPath.set(filesystemChild.relativePath, filesystemChild);
+	}
+
+	return Array.from(childrenByPath.values()).sort((left, right) => compareNodes(left, right, sortMode));
 }

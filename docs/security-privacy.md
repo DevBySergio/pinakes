@@ -41,6 +41,8 @@ Prefer safe placeholders and references:
 - List required environment variables with purpose, owner, and rotation guidance.
 - Redact logs, curl examples, screenshots, and command output before adding them to documentation.
 
+`Pinakes: Validate` includes conservative, warning-only secret hygiene checks for obvious private key material, known token prefixes, AWS access key IDs, JWT-like tokens, and credential assignments with concrete values. These warnings include line numbers and do not make validation fail. They are meant to catch accidental sensitive content before commit, not to replace dedicated secret-scanning tools. Safe placeholders such as `EXAMPLE_API_TOKEN`, `REDACTED`, `${CLIENT_SECRET}`, and variable names without values are ignored.
+
 ## What To Commit
 
 The recommended commit policy is:
@@ -63,4 +65,3 @@ Pinake files are text-based and reviewable:
 - Validation reports can be generated locally with `npm run pinake:validate`.
 
 Before release or large documentation changes, review generated files in source control, run validation, and check that no secrets or private data were introduced.
-

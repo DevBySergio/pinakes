@@ -45,7 +45,8 @@
     "onCommand:pinakes.repair",
     "onCommand:pinakes.upgrade",
     "onCommand:pinakes.generateCiValidation",
-    "onCommand:pinakes.validate"
+    "onCommand:pinakes.validate",
+    "onCommand:pinakes.installAgentSkill"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -69,7 +70,8 @@
     "commands": [
       {
         "command": "pinakes.createPinake",
-        "title": "Pinakes: Create Pinake"
+        "title": "Pinakes: Create Pinake",
+        "icon": "$(add)"
       },
       {
         "command": "pinake.create",
@@ -77,7 +79,8 @@
       },
       {
         "command": "pinakes.refresh",
-        "title": "Pinakes: Refresh"
+        "title": "Pinakes: Refresh",
+        "icon": "$(refresh)"
       },
       {
         "command": "pinake.refresh",
@@ -141,11 +144,13 @@
       },
       {
         "command": "pinakes.newFile",
-        "title": "Pinakes: New Markdown File"
+        "title": "Pinakes: New Markdown File",
+        "icon": "$(new-file)"
       },
       {
         "command": "pinakes.newFolder",
-        "title": "Pinakes: New Folder"
+        "title": "Pinakes: New Folder",
+        "icon": "$(new-folder)"
       },
       {
         "command": "pinakes.rename",
@@ -161,7 +166,8 @@
       },
       {
         "command": "pinakes.searchDocumentation",
-        "title": "Pinakes: Search Documentation"
+        "title": "Pinakes: Search Documentation",
+        "icon": "$(search)"
       },
       {
         "command": "pinakes.repair",
@@ -178,6 +184,10 @@
       {
         "command": "pinakes.validate",
         "title": "Pinakes: Validate"
+      },
+      {
+        "command": "pinakes.installAgentSkill",
+        "title": "Pinakes: Install Agent Skill"
       }
     ],
     "menus": {
@@ -198,49 +208,54 @@
           "group": "navigation@3"
         },
         {
-          "command": "pinakes.generateModule",
+          "command": "pinakes.searchDocumentation",
           "when": "view == pinakesView",
           "group": "navigation@4"
         },
         {
-          "command": "pinakes.searchDocumentation",
+          "command": "pinakes.refresh",
           "when": "view == pinakesView",
           "group": "navigation@5"
         },
         {
-          "command": "pinakes.repair",
+          "command": "pinakes.generateModule",
           "when": "view == pinakesView",
-          "group": "navigation@6"
-        },
-        {
-          "command": "pinakes.upgrade",
-          "when": "view == pinakesView",
-          "group": "navigation@7"
-        },
-        {
-          "command": "pinakes.generateCiValidation",
-          "when": "view == pinakesView",
-          "group": "navigation@8"
+          "group": "1_generate@1"
         },
         {
           "command": "pinakes.validate",
           "when": "view == pinakesView",
-          "group": "navigation@9"
+          "group": "2_validate@1"
+        },
+        {
+          "command": "pinakes.repair",
+          "when": "view == pinakesView",
+          "group": "3_maintenance@1"
+        },
+        {
+          "command": "pinakes.upgrade",
+          "when": "view == pinakesView",
+          "group": "3_maintenance@2"
+        },
+        {
+          "command": "pinakes.generateCiValidation",
+          "when": "view == pinakesView",
+          "group": "3_maintenance@3"
+        },
+        {
+          "command": "pinakes.installAgentSkill",
+          "when": "view == pinakesView",
+          "group": "3_maintenance@4"
         },
         {
           "command": "pinakes.openManifest",
           "when": "view == pinakesView",
-          "group": "navigation@10"
+          "group": "4_manage@1"
         },
         {
           "command": "pinakes.sortChildren",
           "when": "view == pinakesView",
-          "group": "navigation@11"
-        },
-        {
-          "command": "pinakes.refresh",
-          "when": "view == pinakesView",
-          "group": "navigation@12"
+          "group": "4_manage@2"
         }
       ],
       "view/item/context": [

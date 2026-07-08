@@ -1,11 +1,13 @@
 import * as vscode from 'vscode';
 import { PinakesCommands } from './commands/PinakesCommands';
 import { registerPinakesCommands } from './commands/registerCommands';
+import { AgentSkillInstaller } from './services/AgentSkillInstaller';
 import { FileService } from './services/FileService';
 import { IndexService } from './services/IndexService';
 import { ManifestService } from './services/ManifestService';
 import { ScaffoldService } from './services/ScaffoldService';
 import { StateService } from './services/StateService';
+import { ValidationDiagnosticsService } from './services/ValidationDiagnosticsService';
 import { ValidationService } from './services/ValidationService';
 import { WorkspaceService } from './services/WorkspaceService';
 import { PinakeTreeProvider } from './tree/PinakeTreeProvider';
@@ -18,6 +20,9 @@ export function activate(context: vscode.ExtensionContext): void {
 	const indexService = new IndexService(fileService);
 	const scaffoldService = new ScaffoldService(fileService, manifestService, stateService, indexService);
 	const validationService = new ValidationService(fileService, manifestService);
+	const validationDiagnostics = vscode.languages.createDiagnosticCollection('pinakes');
+	const validationDiagnosticsService = new ValidationDiagnosticsService(fileService, validationDiagnostics);
+	const agentSkillInstaller = new AgentSkillInstaller(fileService, context.extensionUri);
 	const treeProvider = new PinakeTreeProvider(workspaceService.getWorkspaceRoot(), fileService, stateService);
 	const outputChannel = vscode.window.createOutputChannel('Pinakes');
 	const treeView = vscode.window.createTreeView('pinakesView', {
@@ -35,6 +40,8 @@ export function activate(context: vscode.ExtensionContext): void {
 		stateService,
 		treeProvider,
 		outputChannel,
+		agentSkillInstaller,
+		validationDiagnosticsService,
 	);
 
 	registerPinakesCommands(context, commands);
@@ -63,7 +70,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		void restoreTreeState(root, stateService, treeProvider, treeView);
 	}
 
-	context.subscriptions.push(outputChannel, treeView);
+	context.subscriptions.push(outputChannel, treeView, validationDiagnostics);
 }
 
 async function restoreTreeState(

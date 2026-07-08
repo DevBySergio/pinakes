@@ -2,17 +2,27 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { legacyPinakeDirectoryName, pinakeDirectoryName, pinakeDocsDirectoryName } from '../constants';
 import { moduleDescriptors, modulePresets } from '../modules/moduleDescriptors';
+import { AgentSkillInstaller } from '../services/AgentSkillInstaller';
 import { FileService } from '../services/FileService';
 import {
+	formatGeneratedModulePickItem,
+	formatModulePresetPickItem,
 	formatNoSearchResultsMessage,
 	formatPropertiesReport,
 	formatSearchResultItem,
+	formatTemplateModulePickItem,
+	formatTemplatePickItem,
 	formatValidationReport,
+	normalizePinakeFolderName,
+	normalizePinakeMarkdownFileName,
+	validatePinakeFileName,
+	validatePinakeFolderName,
 } from '../services/FeedbackFormatter';
 import { IndexService } from '../services/IndexService';
 import { ManifestService } from '../services/ManifestService';
 import { ScaffoldService } from '../services/ScaffoldService';
 import { StateService } from '../services/StateService';
+import { ValidationDiagnosticsService } from '../services/ValidationDiagnosticsService';
 import { ValidationService } from '../services/ValidationService';
 import { WorkspaceService } from '../services/WorkspaceService';
 import {
@@ -27,7 +37,7 @@ import {
 } from '../types';
 import { PinakeNode } from '../tree/PinakeNode';
 import { PinakeTreeProvider } from '../tree/PinakeTreeProvider';
-import { joinUri, toWorkspaceRelative } from '../services/uriUtils';
+import { isUriInside, joinUri, toWorkspaceRelative } from '../services/uriUtils';
 import {
 	allPinakeModuleIds,
 	getPinakeModuleDefinition,
@@ -45,6 +55,8 @@ export class PinakesCommands {
 		private readonly stateService: StateService,
 		private readonly treeProvider: PinakeTreeProvider,
 		private readonly outputChannel: vscode.OutputChannel,
+		private readonly agentSkillInstaller: AgentSkillInstaller,
+		private readonly validationDiagnosticsService?: ValidationDiagnosticsService,
 	) {}
 
 	public async createPinake(): Promise<void> {
@@ -157,13 +169,20 @@ export class PinakesCommands {
 			return;
 		}
 
-		const target = await this.createDuplicateTarget(source);
 		const sourceRelativePath = this.toPinakeRelativePath(root, source);
+		const target = await this.createDuplicateTarget(source);
+		const targetRelativePath = this.getContainedPinakeRelativePath(root, target, 'duplicate to');
+		if (!targetRelativePath) {
+			return;
+		}
+
 		await this.fileService.copy(source, target, false);
 		let indexedIncrementally = false;
-		if (!(await this.fileService.isDirectory(target)) && target.path.toLowerCase().endsWith('.md')) {
-			const targetRelativePath = this.toPinakeRelativePath(root, target);
-			await this.addDocumentToManifest(root, createDocumentDefinition(targetRelativePath, sourceRelativePath));
+		const targetIsDirectory = await this.fileService.isDirectory(target);
+		if (targetIsDirectory) {
+			await this.addDocumentsToManifest(root, await this.createDocumentsForDirectoryCopy(root, target, sourceRelativePath, targetRelativePath));
+		} else if (target.path.toLowerCase().endsWith('.md')) {
+			await this.addDocumentsToManifest(root, [createDocumentDefinition(targetRelativePath, sourceRelativePath)]);
 			await this.indexService.updateDocument(root, targetRelativePath);
 			indexedIncrementally = true;
 		}
@@ -322,19 +341,20 @@ export class PinakesCommands {
 		await this.fileService.ensureDirectory(parent);
 
 		const name = await vscode.window.showInputBox({
-			title: 'New Pinake Markdown',
-			prompt: 'File name',
+			title: 'Pinake: New Markdown File',
+			prompt: 'Name the Markdown file to create.',
+			placeHolder: 'architecture-notes.md',
 			value: 'NewDocument.md',
-			validateInput: (value) => value.trim().length === 0 ? 'File name is required.' : undefined,
+			validateInput: validatePinakeFileName,
 		});
-		if (!name) {
+		if (name === undefined) {
 			return;
 		}
 
-		const normalizedName = name.endsWith('.md') ? name : `${name}.md`;
+		const normalizedName = normalizePinakeMarkdownFileName(name);
 		const uri = vscode.Uri.joinPath(parent, normalizedName);
 		if (await this.fileService.exists(uri)) {
-			vscode.window.showWarningMessage(`File already exists: ${normalizedName}`);
+			vscode.window.showWarningMessage(`File already exists: ${normalizedName}.`);
 			return;
 		}
 
@@ -360,17 +380,19 @@ export class PinakesCommands {
 		await this.fileService.ensureDirectory(parent);
 
 		const name = await vscode.window.showInputBox({
-			title: 'New Pinake Folder',
-			prompt: 'Folder name',
-			validateInput: (value) => value.trim().length === 0 ? 'Folder name is required.' : undefined,
+			title: 'Pinake: New Folder',
+			prompt: 'Name the folder to create.',
+			placeHolder: 'architecture',
+			validateInput: validatePinakeFolderName,
 		});
-		if (!name) {
+		if (name === undefined) {
 			return;
 		}
 
-		const uri = vscode.Uri.joinPath(parent, name.trim());
+		const normalizedName = normalizePinakeFolderName(name);
+		const uri = vscode.Uri.joinPath(parent, normalizedName);
 		if (await this.fileService.exists(uri)) {
-			vscode.window.showWarningMessage(`Folder already exists: ${name}`);
+			vscode.window.showWarningMessage(`Folder already exists: ${normalizedName}.`);
 			return;
 		}
 
@@ -389,29 +411,64 @@ export class PinakesCommands {
 			return;
 		}
 
-		const nextName = await vscode.window.showInputBox({
-			title: 'Rename Pinake Item',
-			prompt: 'New name',
-			value: node.label,
-			validateInput: (value) => value.trim().length === 0 ? 'Name is required.' : undefined,
-		});
-		if (!nextName || nextName === node.label) {
+		if (node.kind !== 'file' && node.kind !== 'directory') {
+			vscode.window.showWarningMessage('Select a Pinake file or folder to rename.');
 			return;
 		}
 
-		const root = this.treeProvider.getWorkspaceRoot() ?? this.workspaceService.getWorkspaceRoot();
-		const oldRelativePath = root ? this.toPinakeRelativePath(root, node.uri) : undefined;
-		const target = node.uri.with({ path: path.posix.join(path.posix.dirname(node.uri.path), nextName.trim()) });
+		const root = this.requireRootForCommand();
+		if (!root) {
+			return;
+		}
+
+		const oldRelativePath = this.getContainedPinakeRelativePath(root, node.uri, 'rename');
+		if (!oldRelativePath) {
+			return;
+		}
+
+		const validateInput = node.kind === 'directory' ? validatePinakeFolderName : validatePinakeFileName;
+		const nextName = await vscode.window.showInputBox({
+			title: 'Rename Pinake Item',
+			prompt: node.kind === 'directory' ? 'New folder name' : 'New Markdown file name',
+			value: path.posix.basename(node.uri.path),
+			validateInput,
+		});
+		if (nextName === undefined) {
+			return;
+		}
+
+		const validationMessage = validateInput(nextName);
+		if (validationMessage) {
+			vscode.window.showWarningMessage(validationMessage);
+			return;
+		}
+
+		const normalizedName = node.kind === 'directory'
+			? normalizePinakeFolderName(nextName)
+			: normalizePinakeMarkdownFileName(nextName);
+		if (normalizedName === path.posix.basename(node.uri.path)) {
+			return;
+		}
+
+		const target = node.uri.with({ path: path.posix.join(path.posix.dirname(node.uri.path), normalizedName) });
+		const nextRelativePath = this.getContainedPinakeRelativePath(root, target, 'rename to');
+		if (!nextRelativePath) {
+			return;
+		}
+
+		if (await this.fileService.exists(target)) {
+			vscode.window.showWarningMessage(`Pinake item already exists: ${normalizedName}.`);
+			return;
+		}
+
 		await this.fileService.rename(node.uri, target, false);
-		if (root) {
-			const nextRelativePath = this.toPinakeRelativePath(root, target);
-			await this.renameManifestPath(root, oldRelativePath, nextRelativePath, node.kind === 'directory', path.posix.basename(nextName.trim(), '.md'));
-			if (node.kind === 'file' && oldRelativePath) {
-				await this.indexService.removeDocument(root, oldRelativePath);
-				await this.indexService.updateDocument(root, nextRelativePath);
-			} else {
-				await this.indexService.rebuild(root);
-			}
+		await this.renameManifestPath(root, oldRelativePath, nextRelativePath, node.kind === 'directory', path.posix.basename(normalizedName, '.md'));
+		await this.stateService.renamePathReferences(root, oldRelativePath, nextRelativePath, node.kind === 'directory');
+		if (node.kind === 'file') {
+			await this.indexService.removeDocument(root, oldRelativePath);
+			await this.indexService.updateDocument(root, nextRelativePath);
+		} else {
+			await this.indexService.rebuild(root);
 		}
 
 		this.treeProvider.refresh();
@@ -428,6 +485,21 @@ export class PinakesCommands {
 			return;
 		}
 
+		if (node.kind !== 'file' && node.kind !== 'directory') {
+			vscode.window.showWarningMessage('Select a Pinake file or folder to delete.');
+			return;
+		}
+
+		const root = this.requireRootForCommand();
+		if (!root) {
+			return;
+		}
+
+		const relativePath = this.getContainedPinakeRelativePath(root, node.uri, 'delete');
+		if (!relativePath) {
+			return;
+		}
+
 		const answer = await vscode.window.showWarningMessage(
 			`Delete ${node.label}?`,
 			{ modal: true, detail: 'The item will be moved to the trash when the platform supports it.' },
@@ -438,15 +510,12 @@ export class PinakesCommands {
 		}
 
 		await this.fileService.delete(node.uri, node.kind === 'directory');
-		const root = this.treeProvider.getWorkspaceRoot() ?? this.workspaceService.getWorkspaceRoot();
-		if (root) {
-			const relativePath = this.toPinakeRelativePath(root, node.uri);
-			await this.removeManifestPath(root, relativePath, node.kind === 'directory');
-			if (node.kind === 'file') {
-				await this.indexService.removeDocument(root, relativePath);
-			} else {
-				await this.indexService.rebuild(root);
-			}
+		await this.removeManifestPath(root, relativePath, node.kind === 'directory');
+		await this.stateService.removePathReferences(root, relativePath, node.kind === 'directory');
+		if (node.kind === 'file') {
+			await this.indexService.removeDocument(root, relativePath);
+		} else {
+			await this.indexService.rebuild(root);
 		}
 
 		this.treeProvider.refresh();
@@ -514,6 +583,7 @@ export class PinakesCommands {
 
 		const result = await this.scaffoldService.repairPinake(root, this.workspaceService.getDefaultProjectName(root));
 		this.treeProvider.refresh();
+		this.validationDiagnosticsService?.clear();
 		this.showScaffoldSummary('Pinake repaired', result);
 	}
 
@@ -555,6 +625,7 @@ export class PinakesCommands {
 		}
 
 		const result = await this.validationService.validate(root);
+		await this.validationDiagnosticsService?.update(root, result);
 		this.writeValidationResult(result);
 		this.outputChannel.show(true);
 
@@ -565,17 +636,49 @@ export class PinakesCommands {
 		}
 	}
 
+	public async installAgentSkill(): Promise<void> {
+		try {
+			const result = await this.agentSkillInstaller.installPinakeSkill(async (targetUri) => {
+				const answer = await vscode.window.showWarningMessage(
+					'A different Pinake agent skill already exists.',
+					{
+						modal: true,
+						detail: `Replace ${targetUri.fsPath}?`,
+					},
+					'Replace Skill',
+					'Cancel',
+				);
+
+				return answer === 'Replace Skill';
+			});
+
+			if (result.status === 'cancelled') {
+				vscode.window.showInformationMessage('Pinake agent skill installation cancelled.');
+				return;
+			}
+
+			const action = result.status === 'unchanged'
+				? 'already installed'
+				: result.status === 'updated'
+					? 'updated'
+					: 'installed';
+			vscode.window.showInformationMessage(`Pinake agent skill ${action}: ${result.targetUri.fsPath}`);
+		} catch (error) {
+			this.outputChannel.appendLine(`Install Pinake agent skill failed: ${error instanceof Error ? error.stack ?? error.message : String(error)}`);
+			vscode.window.showErrorMessage(`Pinake agent skill installation failed: ${error instanceof Error ? error.message : String(error)}`);
+		}
+	}
+
 	private async pickDocumentationTemplate(): Promise<PinakeTemplateDefinition | undefined> {
 		const selected = await vscode.window.showQuickPick(
-			pinakeTemplateDefinitions.map((template, index) => ({
-				label: template.title,
-				description: index === 0 ? 'Default' : undefined,
-				detail: template.description,
+			pinakeTemplateDefinitions.map((template, index) => formatTemplatePickItem(
 				template,
-			})),
+				template.defaultModules.map((moduleId) => getPinakeModuleDefinition(template, moduleId).title),
+				index === 0,
+			)),
 			{
-				title: 'Create Pinake: Select Template',
-				placeHolder: 'Choose a documentation template',
+				title: 'Pinake: Select Template',
+				placeHolder: 'Choose a starter documentation structure',
 			},
 		);
 
@@ -587,16 +690,11 @@ export class PinakesCommands {
 		const selected = await vscode.window.showQuickPick(
 			allPinakeModuleIds.map((moduleId) => {
 				const definition = getPinakeModuleDefinition(template, moduleId);
-				return {
-					label: definition.title,
-					description: definition.folder,
-					moduleId,
-					picked: defaultModuleIds.has(moduleId),
-				};
+				return formatTemplateModulePickItem(definition, moduleId, defaultModuleIds.has(moduleId));
 			}),
 			{
-				title: 'Create Pinake: Select Modules',
-				placeHolder: 'Choose optional documentation modules',
+				title: 'Pinake: Select Modules',
+				placeHolder: 'Keep included modules or add optional ones',
 				canPickMany: true,
 			},
 		);
@@ -608,20 +706,21 @@ export class PinakesCommands {
 		const selected = await vscode.window.showQuickPick(
 			[
 				{
-					label: 'Hide .pinake folder from VS Code Explorer',
+					label: 'Hide .pinake in Explorer',
 					description: 'Recommended',
 					detail: 'Adds "**/.pinake": true to .vscode/settings.json while preserving existing settings.',
 					hiddenFromExplorer: true,
 				},
 				{
-					label: 'Show .pinake folder in VS Code Explorer',
-					description: 'Do not update workspace settings',
+					label: 'Show .pinake in Explorer',
+					description: 'No settings change',
+					detail: 'Leaves .vscode/settings.json unchanged.',
 					hiddenFromExplorer: false,
 				},
 			],
 			{
-				title: 'Create Pinake: Explorer Visibility',
-				placeHolder: 'Confirm whether Pinake should hide its internal folder from the standard Explorer',
+				title: 'Pinake: Explorer Visibility',
+				placeHolder: 'Choose how .pinake appears in the Explorer',
 			},
 		);
 
@@ -637,25 +736,27 @@ export class PinakesCommands {
 		const selected = await vscode.window.showQuickPick(
 			[
 				{
-					label: 'Keep existing Pinake folder',
-					description: 'Leave Pinake/ untouched and create the selected .pinake structure separately.',
-					migrate: false,
-				},
-				{
-					label: 'Copy Pinake into .pinake/docs',
-					description: 'Safely copy existing documentation without deleting the old folder.',
+					label: 'Copy into .pinake/docs',
+					description: 'Recommended',
+					detail: 'Copies existing Pinake/ documentation without deleting the old folder.',
 					migrate: true,
 				},
 				{
-					label: 'Cancel setup',
-					description: 'Do not create or update Pinake.',
+					label: 'Keep Pinake/ as-is',
+					description: 'Create .pinake separately',
+					detail: 'Leaves the existing Pinake/ folder untouched.',
+					migrate: false,
+				},
+				{
+					label: 'Cancel',
+					description: 'Stop setup',
 					cancel: true,
 					migrate: false,
 				},
 			],
 			{
-				title: 'Existing Pinake Folder Found',
-				placeHolder: 'Choose how Pinake should handle the old visible folder',
+				title: 'Pinake: Legacy Folder Found',
+				placeHolder: 'Choose what to do with the existing Pinake/ folder',
 			},
 		);
 
@@ -678,18 +779,64 @@ export class PinakesCommands {
 				modal: true,
 				detail: 'Pinake will create missing files and update pinake.json, but it will not overwrite existing documentation files.',
 			},
-			'Update Missing Files',
+			'Create Missing Files',
 			'Cancel',
 		);
 
-		return answer === 'Update Missing Files';
+		return answer === 'Create Missing Files';
 	}
 
 	private async addDocumentToManifest(root: vscode.Uri, document: PinakeDocumentDefinition): Promise<void> {
+		await this.addDocumentsToManifest(root, [document]);
+	}
+
+	private async addDocumentsToManifest(root: vscode.Uri, documents: PinakeDocumentDefinition[]): Promise<void> {
+		if (documents.length === 0) {
+			return;
+		}
+
 		const manifest = await this.manifestService.readManifest(root) ?? this.manifestService.createDefaultManifest(this.workspaceService.getDefaultProjectName(root));
-		if (this.manifestService.addDocuments(manifest, [document])) {
+		if (this.manifestService.addDocuments(manifest, documents)) {
 			await this.manifestService.writeManifest(root, manifest);
 		}
+	}
+
+	private async createDocumentsForDirectoryCopy(
+		root: vscode.Uri,
+		targetDirectory: vscode.Uri,
+		sourceRelativePath: string,
+		targetRelativePath: string,
+	): Promise<PinakeDocumentDefinition[]> {
+		const targetMarkdownPaths = await this.collectMarkdownPaths(root, targetDirectory);
+		return targetMarkdownPaths.map((targetMarkdownPath) => {
+			const suffix = targetMarkdownPath.startsWith(`${targetRelativePath}/`)
+				? targetMarkdownPath.slice(targetRelativePath.length + 1)
+				: path.posix.basename(targetMarkdownPath);
+			const sourceMarkdownPath = `${sourceRelativePath}/${suffix}`;
+			return createDocumentDefinition(targetMarkdownPath, sourceMarkdownPath);
+		});
+	}
+
+	private async collectMarkdownPaths(root: vscode.Uri, directory: vscode.Uri): Promise<string[]> {
+		if (!(await this.fileService.isDirectory(directory))) {
+			return [];
+		}
+
+		const entries = await this.fileService.readDirectory(directory);
+		const markdownPaths: string[] = [];
+		for (const [name, type] of entries) {
+			const uri = vscode.Uri.joinPath(directory, name);
+			if ((type & vscode.FileType.Directory) !== 0) {
+				markdownPaths.push(...await this.collectMarkdownPaths(root, uri));
+				continue;
+			}
+
+			if ((type & vscode.FileType.File) !== 0 && name.toLowerCase().endsWith('.md')) {
+				markdownPaths.push(this.toPinakeRelativePath(root, uri));
+			}
+		}
+
+		return markdownPaths.sort((left, right) => left.localeCompare(right, undefined, { numeric: true, sensitivity: 'base' }));
 	}
 
 	private async renameManifestPath(
@@ -784,6 +931,11 @@ export class PinakesCommands {
 		}
 
 		if (node?.kind === 'file' || node?.kind === 'directory' || node?.kind === 'favoriteFile') {
+			if (!isUriInside(this.getDocsDirectory(root), node.uri)) {
+				vscode.window.showWarningMessage(`Pinake can only ${action} items inside .pinake/docs.`);
+				return undefined;
+			}
+
 			return node.uri;
 		}
 
@@ -798,16 +950,22 @@ export class PinakesCommands {
 	}
 
 	private resolvePinakeRelativePath(root: vscode.Uri, node: PinakeNode | undefined, action: string): string | undefined {
-		if (node?.kind === 'file' || node?.kind === 'directory' || node?.kind === 'favoriteFile') {
-			return node.sourceRelativePath ?? node.relativePath;
-		}
-
 		const uri = this.resolvePinakeItemUri(root, node, action);
 		return uri ? this.toPinakeRelativePath(root, uri) : undefined;
 	}
 
 	private toPinakeRelativePath(root: vscode.Uri, uri: vscode.Uri): string {
 		return toWorkspaceRelative(this.getDocsDirectory(root), uri);
+	}
+
+	private getContainedPinakeRelativePath(root: vscode.Uri, uri: vscode.Uri, action: string): string | undefined {
+		const docsDirectory = this.getDocsDirectory(root);
+		if (!isUriInside(docsDirectory, uri)) {
+			vscode.window.showWarningMessage(`Pinake can only ${action} items inside .pinake/docs.`);
+			return undefined;
+		}
+
+		return toWorkspaceRelative(docsDirectory, uri);
 	}
 
 	private async createDuplicateTarget(source: vscode.Uri): Promise<vscode.Uri> {
@@ -828,7 +986,12 @@ export class PinakesCommands {
 
 	private resolveFavoriteRelativePath(root: vscode.Uri, node?: PinakeNode): string | undefined {
 		if (node?.kind === 'file' || node?.kind === 'favoriteFile') {
-			return node.sourceRelativePath ?? node.relativePath;
+			if (!isUriInside(this.getDocsDirectory(root), node.uri)) {
+				vscode.window.showWarningMessage('Select or open a Pinake file to favorite.');
+				return undefined;
+			}
+
+			return node.sourceRelativePath ?? this.toPinakeRelativePath(root, node.uri);
 		}
 
 		const activeUri = vscode.window.activeTextEditor?.document.uri;
@@ -856,36 +1019,43 @@ export class PinakesCommands {
 	}
 
 	private async resolveTargetDirectory(root: vscode.Uri, node?: PinakeNode): Promise<vscode.Uri | undefined> {
+		const docsDirectory = this.getDocsDirectory(root);
 		if (!node) {
-			return this.getDocsDirectory(root);
+			return docsDirectory;
 		}
 
+		let directory: vscode.Uri;
 		if (node.kind === 'directory') {
-			return node.uri;
+			directory = node.uri;
+		} else if (node.kind === 'file' || node.kind === 'favoriteFile') {
+			directory = node.uri.with({ path: path.posix.dirname(node.uri.path) });
+		} else {
+			vscode.window.showWarningMessage('Select a Pinake folder or document.');
+			return undefined;
 		}
 
-		return node.uri.with({ path: path.posix.dirname(node.uri.path) });
+		if (!isUriInside(docsDirectory, directory)) {
+			vscode.window.showWarningMessage('Pinake can only create items inside .pinake/docs.');
+			return undefined;
+		}
+
+		return directory;
 	}
 
 	private async pickModules(): Promise<PinakeModuleDescriptor[]> {
 		const mode = await vscode.window.showQuickPick(
 			[
-				...modulePresets.map((preset) => ({
-					label: preset.title,
-					description: preset.description,
-					presetId: preset.id,
-					moduleId: undefined,
-				})),
+				...modulePresets.map(formatModulePresetPickItem),
 				{
 					label: 'Choose individual modules',
-					description: 'Select one or more v0.1 modules.',
+					description: 'Custom selection',
+					detail: 'Pick one or more generated module scaffolds.',
 					presetId: undefined,
-					moduleId: undefined,
 				},
 			],
 			{
-				title: 'Generate Pinake Module',
-				placeHolder: 'Select a preset or choose individual modules',
+				title: 'Pinake: Generate Module',
+				placeHolder: 'Choose a preset or select modules manually',
 			},
 		);
 
@@ -899,15 +1069,11 @@ export class PinakesCommands {
 		}
 
 		const selected = await vscode.window.showQuickPick(
-			moduleDescriptors.map((descriptor) => ({
-				label: descriptor.title,
-				description: descriptor.description,
-				moduleId: descriptor.id,
-			})),
+			moduleDescriptors.map(formatGeneratedModulePickItem),
 			{
-				title: 'Choose Pinake Modules',
+				title: 'Pinake: Select Modules',
 				canPickMany: true,
-				placeHolder: 'Select modules to generate',
+				placeHolder: 'Choose modules to generate',
 			},
 		);
 
@@ -1004,11 +1170,6 @@ function slug(value: string): string {
 		.toLowerCase()
 		.replace(/[^a-z0-9]+/g, '-')
 		.replace(/^-+|-+$/g, '');
-}
-
-function isUriInside(parent: vscode.Uri, uri: vscode.Uri): boolean {
-	const parentPath = parent.path.endsWith('/') ? parent.path : `${parent.path}/`;
-	return uri.path === parent.path || uri.path.startsWith(parentPath);
 }
 
 function formatBytes(bytes: number): string {

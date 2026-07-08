@@ -24,7 +24,7 @@ Pinake Editor is a VS Code extension for managing internal project documentation
 - Searches local documentation through the offline index in `.pinake/.state/indexes.json`, with snippets, tag/heading filters, backlinks, broken references, and reference graph data.
 - Repairs missing generated files without overwriting edited documents.
 - Upgrades legacy Pinake folders into the current `.pinake/docs` layout and records migration history.
-- Validates Pinake structure, runtime JSON schemas, document paths, ADR names, Markdown style, and basic local Markdown links.
+- Validates Pinake structure, runtime JSON schemas, document paths, ADR names, Markdown style, basic local Markdown links, and warning-only secret hygiene patterns.
 - Generates a standalone Pinake validator and GitHub Actions workflow for CI.
 - Keeps all data local to the workspace. The extension does not use telemetry or network APIs.
 

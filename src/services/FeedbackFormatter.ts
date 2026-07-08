@@ -1,6 +1,11 @@
 import {
+	ModulePreset,
 	PinakeDocumentDefinition,
+	PinakeModuleDefinition,
+	PinakeModuleDescriptor,
+	PinakeModuleId,
 	PinakeSearchResult,
+	PinakeTemplateDefinition,
 	ValidationIssue,
 	ValidationResult,
 } from '../types';
@@ -23,6 +28,35 @@ export interface PinakeItemProperties {
 	document?: PinakeDocumentDefinition;
 }
 
+export interface PinakeTemplateQuickPickItem {
+	label: string;
+	description: string;
+	detail: string;
+	template: PinakeTemplateDefinition;
+}
+
+export interface PinakeTemplateModuleQuickPickItem {
+	label: string;
+	description: string;
+	detail: string;
+	moduleId: PinakeModuleId;
+	picked: boolean;
+}
+
+export interface PinakeModulePresetQuickPickItem {
+	label: string;
+	description: string;
+	detail: string;
+	presetId: string;
+}
+
+export interface PinakeGeneratedModuleQuickPickItem {
+	label: string;
+	description: string;
+	detail: string;
+	moduleId: string;
+}
+
 const severityOrder: ValidationIssue['severity'][] = ['error', 'warning', 'info'];
 
 export function formatSearchResultItem(result: PinakeSearchResult): PinakeSearchQuickPickItem {
@@ -41,6 +75,106 @@ export function formatSearchResultItem(result: PinakeSearchResult): PinakeSearch
 		detail: detail.length > 0 ? detail : undefined,
 		path: result.path,
 	};
+}
+
+export function formatTemplatePickItem(
+	template: PinakeTemplateDefinition,
+	defaultModuleTitles: string[],
+	isDefault: boolean,
+): PinakeTemplateQuickPickItem {
+	const moduleSummary = formatCount(template.defaultModules.length, 'module');
+	return {
+		label: template.title,
+		description: isDefault ? `Default - ${moduleSummary}` : moduleSummary,
+		detail: [
+			template.description,
+			`Starts with: ${formatInlineList(defaultModuleTitles)}`,
+		].join('\n'),
+		template,
+	};
+}
+
+export function formatTemplateModulePickItem(
+	definition: PinakeModuleDefinition,
+	moduleId: PinakeModuleId,
+	picked: boolean,
+): PinakeTemplateModuleQuickPickItem {
+	return {
+		label: definition.title,
+		description: `${picked ? 'Included' : 'Optional'} - ${definition.folder}`,
+		detail: formatCount(definition.documents.length, 'document'),
+		moduleId,
+		picked,
+	};
+}
+
+export function formatModulePresetPickItem(preset: ModulePreset): PinakeModulePresetQuickPickItem {
+	return {
+		label: preset.title,
+		description: formatCount(preset.moduleIds.length, 'module'),
+		detail: preset.description,
+		presetId: preset.id,
+	};
+}
+
+export function formatGeneratedModulePickItem(descriptor: PinakeModuleDescriptor): PinakeGeneratedModuleQuickPickItem {
+	const detail = [
+		descriptor.description,
+		formatCount(descriptor.files.length, 'file'),
+		descriptor.dependencies.length > 0 ? `Requires: ${descriptor.dependencies.join(', ')}` : undefined,
+	].filter((line): line is string => Boolean(line)).join('\n');
+
+	return {
+		label: descriptor.title,
+		description: descriptor.rootFolder,
+		detail,
+		moduleId: descriptor.id,
+	};
+}
+
+export function normalizePinakeMarkdownFileName(value: string): string {
+	const trimmed = value.trim();
+	return trimmed.toLowerCase().endsWith('.md') ? trimmed : `${trimmed}.md`;
+}
+
+export function normalizePinakeFolderName(value: string): string {
+	return value.trim();
+}
+
+export function validatePinakeFileName(value: string): string | undefined {
+	const trimmed = value.trim();
+	if (trimmed.length === 0) {
+		return 'File name is required.';
+	}
+	if (trimmed === '.' || trimmed === '..') {
+		return 'Use a file name, not "." or "..".';
+	}
+	if (/[\\/]/.test(trimmed)) {
+		return 'Use a file name only; create folders separately.';
+	}
+	if (hasNonMarkdownExtension(trimmed)) {
+		return 'Use a .md file name, or omit the extension.';
+	}
+
+	return undefined;
+}
+
+export function validatePinakeFolderName(value: string): string | undefined {
+	const trimmed = value.trim();
+	if (trimmed.length === 0) {
+		return 'Folder name is required.';
+	}
+	if (trimmed === '.' || trimmed === '..') {
+		return 'Use a folder name, not "." or "..".';
+	}
+	if (/[\\/]/.test(trimmed)) {
+		return 'Use one folder name at a time.';
+	}
+	if (trimmed.toLowerCase().endsWith('.md')) {
+		return 'Use New File to create Markdown documents.';
+	}
+
+	return undefined;
 }
 
 export function formatNoSearchResultsMessage(query: string): string {
@@ -122,6 +256,27 @@ function formatTags(tags: string[]): string | undefined {
 	return tags.map((tag) => `#${tag}`).join(' ');
 }
 
+function formatCount(count: number, noun: string): string {
+	return `${count} ${noun}${count === 1 ? '' : 's'}`;
+}
+
+function formatInlineList(values: string[], maxItems = 4): string {
+	if (values.length === 0) {
+		return 'No modules selected';
+	}
+
+	const shown = values.slice(0, maxItems);
+	const remaining = values.length - shown.length;
+	return remaining > 0 ? `${shown.join(', ')}, +${remaining} more` : shown.join(', ');
+}
+
+function hasNonMarkdownExtension(value: string): boolean {
+	const lastSeparator = Math.max(value.lastIndexOf('/'), value.lastIndexOf('\\'));
+	const basename = value.slice(lastSeparator + 1);
+	const dotIndex = basename.lastIndexOf('.');
+	return dotIndex > 0 && basename.slice(dotIndex).toLowerCase() !== '.md';
+}
+
 function countIssuesBySeverity(issues: ValidationIssue[]): Record<ValidationIssue['severity'], number> {
 	return {
 		error: issues.filter((issue) => issue.severity === 'error').length,
@@ -177,6 +332,9 @@ function getIssueSuggestion(issue: ValidationIssue): string | undefined {
 	}
 	if (message.includes('top-level heading')) {
 		return 'Keep exactly one H1 heading in the Markdown document.';
+	}
+	if (message.includes('secret-like content')) {
+		return 'Remove the value, replace it with a safe placeholder, or document where the secret is managed.';
 	}
 
 	return undefined;

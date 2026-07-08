@@ -157,7 +157,17 @@ export class ScaffoldService {
 		}
 
 		await this.writeDocumentFiles(docsDirectory, documents, result);
+		let manifestChanged = false;
 		if (this.manifestService.addDocuments(manifest, documents)) {
+			manifestChanged = true;
+		}
+
+		const discoveredDocuments = await this.collectUntrackedMarkdownDocuments(docsDirectory, manifest.documents);
+		if (this.manifestService.addDocuments(manifest, discoveredDocuments)) {
+			manifestChanged = true;
+		}
+
+		if (manifestChanged) {
 			await this.manifestService.writeManifest(root, manifest);
 			result.updated.push(`${pinakeDirectoryName}/${pinakeManifestFileName}`);
 		}

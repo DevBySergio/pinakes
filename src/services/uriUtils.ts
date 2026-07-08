@@ -16,14 +16,31 @@ export function uriDirname(uri: vscode.Uri): vscode.Uri {
 }
 
 export function toWorkspaceRelative(root: vscode.Uri, uri: vscode.Uri): string {
-	const rootPath = root.path.endsWith('/') ? root.path : `${root.path}/`;
-	if (!uri.path.startsWith(rootPath)) {
-		return uriBasename(uri);
+	const rootPath = trimTrailingSlash(root.path);
+	if (!isUriInside(root, uri)) {
+		throw new Error(`URI is outside ${root.fsPath}: ${uri.fsPath}`);
 	}
 
-	return decodeURIComponent(uri.path.slice(rootPath.length));
+	if (uri.path === rootPath) {
+		return '';
+	}
+
+	return decodeURIComponent(uri.path.slice(rootPath.length + 1));
 }
 
 export function normalizeRelativePath(relativePath: string): string {
 	return relativePath.split(path.sep).join('/');
+}
+
+export function isUriInside(parent: vscode.Uri, uri: vscode.Uri): boolean {
+	if (parent.scheme !== uri.scheme) {
+		return false;
+	}
+
+	const parentPath = trimTrailingSlash(parent.path);
+	return uri.path === parentPath || uri.path.startsWith(`${parentPath}/`);
+}
+
+function trimTrailingSlash(value: string): string {
+	return value.length > 1 && value.endsWith('/') ? value.slice(0, -1) : value;
 }
