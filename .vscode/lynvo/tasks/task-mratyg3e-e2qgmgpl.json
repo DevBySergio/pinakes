@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783504411746,
+  "updatedAt": 1783522453628,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -64,9 +64,9 @@
     {
       "id": "check-mratyg3h-jm72fw6k",
       "text": "Finish advanced search, backlinks, and cross-reference graph",
-      "done": false,
+      "done": true,
       "createdAt": 1783439716573,
-      "updatedAt": 1783439716573
+      "updatedAt": 1783522453628
     },
     {
       "id": "check-mratyg3h-dpi0x1j8",

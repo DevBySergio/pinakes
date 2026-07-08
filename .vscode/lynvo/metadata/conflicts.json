@@ -198,5 +198,25 @@
     "remoteValue": "todo",
     "createdAt": 1783504480335,
     "resolved": true
+  },
+  "task-task-mratyg3g-txcl4tcy-description": {
+    "id": "task-task-mratyg3g-txcl4tcy-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-txcl4tcy",
+    "field": "description",
+    "localValue": "Completed. The local index now stores heading metadata, tags, links, backlinks, broken references, and graph edges; search supports snippets plus tag:/heading: filters and improved ranking.",
+    "remoteValue": "Offline index and search command exist. Still needed: snippets, ranking improvements, heading/tag filters, incremental updates, backlinks, broken-reference reporting, and a cross-reference graph.",
+    "createdAt": 1783522456502,
+    "resolved": false
+  },
+  "task-task-mratyg3g-txcl4tcy-status": {
+    "id": "task-task-mratyg3g-txcl4tcy-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-txcl4tcy",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783522456502,
+    "resolved": false
   }
 }

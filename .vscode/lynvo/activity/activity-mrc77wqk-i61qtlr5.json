@@ -1,0 +1,14 @@
+{
+  "id": "activity-mrc77wqk-i61qtlr5",
+  "type": "checklist_updated",
+  "message": "Completed checklist item in \"Plan: Pinake Editor full roadmap integration\"",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783522453630,
+  "taskId": "task-mratyg3e-e2qgmgpl",
+  "metadata": {
+    "checklistItem": "Finish advanced search, backlinks, and cross-reference graph"
+  }
+}
