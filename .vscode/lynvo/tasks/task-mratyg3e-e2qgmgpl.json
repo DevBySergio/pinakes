@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783502909000,
+  "updatedAt": 1783503872503,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -57,9 +57,9 @@
     {
       "id": "check-mratyg3h-6lj78bve",
       "text": "Finish manifest migrations and runtime schema validation",
-      "done": false,
+      "done": true,
       "createdAt": 1783439716573,
-      "updatedAt": 1783439716573
+      "updatedAt": 1783503872503
     },
     {
       "id": "check-mratyg3h-jm72fw6k",

@@ -1,8 +1,8 @@
 {
   "id": "task-mratyg3g-03rnzuz4",
   "title": "Finish manifest migrations and runtime schema validation",
-  "description": "Partially completed. The manifest has been refactored to the new `.pinake/pinake.json` source-of-truth shape, the JSON schema was updated, validation now checks document paths/frontmatter/ADR names, and legacy `Pinake/` folders can be safely copied into `.pinake/docs`. Remaining work: runtime JSON Schema execution, a formal upgrade command, migration history application, and deeper compatibility handling.",
-  "status": "in-progress",
+  "description": "Completed. Runtime JSON Schema validation now checks `.pinake/pinake.json` and `.pinake/.state/*.json` against the shipped schemas during validation. A formal `Pinakes: Upgrade Pinake` flow upgrades legacy `Pinake/` folders into `.pinake/docs`, preserves discovered documents and legacy module flags, rebuilds state/index files, and records migration history.",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439724573,
-  "updatedAt": 1783502909000,
+  "updatedAt": 1783503872503,
   "position": 1783439724573,
   "labelIds": [
     "feat"
@@ -43,9 +43,9 @@
     {
       "id": "check-mrbvmcjc-dl8r5tq0",
       "text": "Implement runtime JSON Schema validation and formal upgrade flow",
-      "done": false,
+      "done": true,
       "createdAt": 1783502909000,
-      "updatedAt": 1783502909000
+      "updatedAt": 1783503872503
     }
   ],
   "relations": [

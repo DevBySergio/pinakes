@@ -1,8 +1,8 @@
 {
   "id": "task-mratyg3h-tzauzd4b",
   "title": "Add Pinake upgrade and migration command",
-  "description": "Implement pinakes upgrade behavior that reads schema versions, applies migrations, records history, and preserves user documents.",
-  "status": "todo",
+  "description": "Completed. Added `Pinakes: Upgrade Pinake` / `pinakes.upgrade` to normalize current manifests, convert legacy `Pinake/` content into `.pinake/docs`, preserve user documents, sync state/version files, rebuild the index, and record migration history.",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439737573,
-  "updatedAt": 1783439737573,
+  "updatedAt": 1783503872503,
   "position": 1783439737573,
   "labelIds": [
     "feat"
