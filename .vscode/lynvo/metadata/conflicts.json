@@ -207,7 +207,7 @@
     "localValue": "Completed. The local index now stores heading metadata, tags, links, backlinks, broken references, and graph edges; search supports snippets plus tag:/heading: filters and improved ranking; changed and deleted Markdown documents can update the index incrementally.",
     "remoteValue": "Completed. The local index now stores heading metadata, tags, links, backlinks, broken references, and graph edges; search supports snippets plus tag:/heading: filters and improved ranking.",
     "createdAt": 1783522783696,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3g-txcl4tcy-status": {
     "id": "task-task-mratyg3g-txcl4tcy-status",
