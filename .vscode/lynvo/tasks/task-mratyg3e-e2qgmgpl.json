@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783523795206,
+  "updatedAt": 1783541458107,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -92,9 +92,9 @@
     {
       "id": "check-mratyg3h-j8e7ippc",
       "text": "Expand the documentation component catalog",
-      "done": false,
+      "done": true,
       "createdAt": 1783439716573,
-      "updatedAt": 1783439716573
+      "updatedAt": 1783541458107
     },
     {
       "id": "check-mratyg3h-5joe34hm",
