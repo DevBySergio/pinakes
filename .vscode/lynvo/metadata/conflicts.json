@@ -424,9 +424,9 @@
     "entityType": "task",
     "entityId": "task-mrcitd50-diagprob",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783543635010,
-    "resolved": true
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783543874999,
+    "resolved": false
   }
 }

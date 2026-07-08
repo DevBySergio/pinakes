@@ -2,7 +2,7 @@
   "id": "task-mrcitd50-diagprob",
   "title": "Promote Pinake validation results into VS Code diagnostics",
   "description": "Created from the project state audit.\n\nKeep the current output-channel validation report, but also publish actionable validation results into VS Code Problems.\n\nScope:\n- Convert `ValidationResult` issues into a `DiagnosticCollection` scoped to Pinake files.\n- Preserve warning/error severity and line numbers where available.\n- Clear stale diagnostics after successful validation or when files are repaired.\n- Keep CLI validation output unchanged.\n- Add tests for diagnostic severity, file mapping, line mapping, and stale diagnostic clearing.\n\nWhy this matters:\n- Validation currently requires users to inspect the `Pinakes` output channel manually.\n- Problems integration gives direct file navigation and makes warnings/errors visible in the normal VS Code workflow.\n\nCode anchor: `src/services/ValidationService.ts:44`.",
-  "status": "in-progress",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783541934286,
-  "updatedAt": 1783543571377,
+  "updatedAt": 1783543787607,
   "position": 1783541934286,
   "labelIds": [
     "feat"
@@ -27,30 +27,30 @@
     {
       "id": "check-mrcitd50-dgchk01",
       "text": "Add a Pinake `DiagnosticCollection` lifecycle",
-      "done": false,
+      "done": true,
       "createdAt": 1783541934286,
-      "updatedAt": 1783541934286
+      "updatedAt": 1783543787607
     },
     {
       "id": "check-mrcitd50-dgchk02",
       "text": "Map validation issues to workspace files, ranges, and diagnostic severities",
-      "done": false,
+      "done": true,
       "createdAt": 1783541934286,
-      "updatedAt": 1783541934286
+      "updatedAt": 1783543787607
     },
     {
       "id": "check-mrcitd50-dgchk03",
       "text": "Clear stale diagnostics after passing validation or repair",
-      "done": false,
+      "done": true,
       "createdAt": 1783541934286,
-      "updatedAt": 1783541934286
+      "updatedAt": 1783543787607
     },
     {
       "id": "check-mrcitd50-dgchk04",
       "text": "Add extension-host tests for Problems integration",
-      "done": false,
+      "done": true,
       "createdAt": 1783541934286,
-      "updatedAt": 1783541934286
+      "updatedAt": 1783543787607
     }
   ],
   "relations": []
