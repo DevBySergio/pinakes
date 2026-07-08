@@ -1,8 +1,8 @@
 {
   "id": "task-mrc7hmkq-96uuar8q",
   "title": "Improve Pinake search validation and properties feedback",
-  "description": "Completed. Added a shared FeedbackFormatter for search QuickPick rows, no-result guidance, grouped validation reports with fix hints, and stable item properties output; wired PinakesCommands to use it and added extension tests for the formatted native feedback surfaces.",
-  "status": "in-progress",
+  "description": "Completed. Added and refined shared native feedback formatting for search QuickPick rows, no-result guidance, validation output, and item properties. Search details now keep paths visible and tags explicit; validation output groups by severity with path/line-first entries and fix hints; properties output is path-first with stable sections and human-readable document metadata.",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783522907018,
-  "updatedAt": 1783525410125,
+  "updatedAt": 1783525472176,
   "position": 1783522907018,
   "labelIds": [
     "feat"
