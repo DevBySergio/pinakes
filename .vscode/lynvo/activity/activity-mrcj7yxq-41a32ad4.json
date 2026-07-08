@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrcj7yxq-41a32ad4",
+  "type": "task_moved",
+  "message": "Moved \"Harden tree file operations and path containment\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783542611870,
+  "taskId": "task-mrcitd0w-pthsafe1",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}

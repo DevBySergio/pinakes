@@ -394,9 +394,9 @@
     "entityType": "task",
     "entityId": "task-mrcitd0w-pthsafe1",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783542314913,
-    "resolved": true
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783542675824,
+    "resolved": false
   }
 }

@@ -2,7 +2,7 @@
   "id": "task-mrcitd0w-pthsafe1",
   "title": "Harden tree file operations and path containment",
   "description": "Created from the project state audit.\n\nFix rename/path safety and stale Pinake UI state after tree file operations.\n\nContext:\n- `rename` currently validates only non-empty input, so path separators, traversal segments, and invalid document names are not blocked consistently.\n- `toWorkspaceRelative` falls back to a basename when a URI is outside the expected root, which can hide containment bugs instead of failing closed.\n- Rename/delete can leave favorites, expanded/collapsed paths, and last-opened state stale.\n\nImplementation notes:\n- Reuse the stricter new-file/new-folder validation rules for rename based on node kind.\n- Reject operations whose source or target is outside `.pinake/docs`.\n- Make relative-path conversion fail closed for out-of-root URIs.\n- Update favorites, expanded/collapsed paths, and last-opened state after rename/delete.\n- Add extension-host tests for traversal rejection, state cleanup, favorite preservation, manifest updates, and index updates.\n\nCode anchors: `src/commands/PinakesCommands.ts:405`, `src/services/uriUtils.ts:18`.",
-  "status": "in-progress",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783541930286,
-  "updatedAt": 1783542252980,
+  "updatedAt": 1783542611870,
   "position": 1783541930286,
   "labelIds": [
     "bug"
@@ -27,30 +27,30 @@
     {
       "id": "check-mrcitd0w-pthchk01",
       "text": "Add fail-closed path containment helpers for `.pinake/docs` operations",
-      "done": false,
+      "done": true,
       "createdAt": 1783541930286,
-      "updatedAt": 1783541930286
+      "updatedAt": 1783542611869
     },
     {
       "id": "check-mrcitd0w-pthchk02",
       "text": "Apply file/folder rename validation by node kind",
-      "done": false,
+      "done": true,
       "createdAt": 1783541930286,
-      "updatedAt": 1783541930286
+      "updatedAt": 1783542611870
     },
     {
       "id": "check-mrcitd0w-pthchk03",
       "text": "Clean up favorites, expanded/collapsed paths, and last-opened state after rename/delete",
-      "done": false,
+      "done": true,
       "createdAt": 1783541930286,
-      "updatedAt": 1783541930286
+      "updatedAt": 1783542611870
     },
     {
       "id": "check-mrcitd0w-pthchk04",
       "text": "Add command tests for traversal rejection, state cleanup, manifest updates, and index updates",
-      "done": false,
+      "done": true,
       "createdAt": 1783541930286,
-      "updatedAt": 1783541930286
+      "updatedAt": 1783542611870
     }
   ],
   "relations": []
