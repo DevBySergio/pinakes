@@ -308,5 +308,15 @@
     "remoteValue": "Improve the visual design and usability of the Pinake Project Documentation TreeView while staying inside native VS Code UI patterns.\n\nFocus on hierarchy, labels, descriptions, tooltips, ThemeIcons, Favorites, generated/internal files, and an onboarding empty state using VS Code contributions such as viewsWelcome where appropriate.",
     "createdAt": 1783524463581,
     "resolved": true
+  },
+  "task-task-mrc7hmkq-96uuar8q-status": {
+    "id": "task-task-mrc7hmkq-96uuar8q-status",
+    "entityType": "task",
+    "entityId": "task-mrc7hmkq-96uuar8q",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783524703775,
+    "resolved": false
   }
 }

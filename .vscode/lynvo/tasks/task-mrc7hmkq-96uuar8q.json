@@ -2,7 +2,7 @@
   "id": "task-mrc7hmkq-96uuar8q",
   "title": "Improve Pinake search validation and properties feedback",
   "description": "Improve the functional interface surfaces that explain results and system state to users.\n\nFocus on search result scanability, validation output formatting, properties output formatting, and consistent success, warning, and error messages across commands. The goal is clearer UX with native VS Code surfaces.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783522907018,
-  "updatedAt": 1783522907018,
+  "updatedAt": 1783524615541,
   "position": 1783522907018,
   "labelIds": [
     "feat"
