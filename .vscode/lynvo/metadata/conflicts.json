@@ -314,9 +314,19 @@
     "entityType": "task",
     "entityId": "task-mrc7hmkq-96uuar8q",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783524703775,
-    "resolved": true
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783524823609,
+    "resolved": false
+  },
+  "task-task-mrc7hmkq-96uuar8q-description": {
+    "id": "task-task-mrc7hmkq-96uuar8q-description",
+    "entityType": "task",
+    "entityId": "task-mrc7hmkq-96uuar8q",
+    "field": "description",
+    "localValue": "Completed. Added a shared FeedbackFormatter for search QuickPick rows, no-result guidance, grouped validation reports with fix hints, and stable item properties output; wired PinakesCommands to use it and added extension tests for the formatted native feedback surfaces.",
+    "remoteValue": "Improve the functional interface surfaces that explain results and system state to users.\n\nFocus on search result scanability, validation output formatting, properties output formatting, and consistent success, warning, and error messages across commands. The goal is clearer UX with native VS Code surfaces.",
+    "createdAt": 1783524823609,
+    "resolved": false
   }
 }

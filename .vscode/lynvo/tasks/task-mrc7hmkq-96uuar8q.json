@@ -1,8 +1,8 @@
 {
   "id": "task-mrc7hmkq-96uuar8q",
   "title": "Improve Pinake search validation and properties feedback",
-  "description": "Improve the functional interface surfaces that explain results and system state to users.\n\nFocus on search result scanability, validation output formatting, properties output formatting, and consistent success, warning, and error messages across commands. The goal is clearer UX with native VS Code surfaces.",
-  "status": "in-progress",
+  "description": "Completed. Added a shared FeedbackFormatter for search QuickPick rows, no-result guidance, grouped validation reports with fix hints, and stable item properties output; wired PinakesCommands to use it and added extension tests for the formatted native feedback surfaces.",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783522907018,
-  "updatedAt": 1783524615541,
+  "updatedAt": 1783524756434,
   "position": 1783522907018,
   "labelIds": [
     "feat"
@@ -22,37 +22,37 @@
     {
       "id": "check-mrc7hmlh-f9vrwk3j",
       "text": "Review search result labels, descriptions, details, snippets, paths, and tag display.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907045,
-      "updatedAt": 1783522907045
+      "updatedAt": 1783524756434
     },
     {
       "id": "check-mrc7hmli-2y9rd7vz",
       "text": "Format validation output so issue severity, path, line, and remediation context are easy to scan.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907046,
-      "updatedAt": 1783522907046
+      "updatedAt": 1783524756434
     },
     {
       "id": "check-mrc7hmlj-c7y3he6r",
       "text": "Format properties output with stable labels and useful ordering.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907047,
-      "updatedAt": 1783522907047
+      "updatedAt": 1783524756434
     },
     {
       "id": "check-mrc7hmlk-mqz0auir",
       "text": "Normalize command feedback messages for success, warnings, errors, and no-result states.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907048,
-      "updatedAt": 1783522907048
+      "updatedAt": 1783524756434
     },
     {
       "id": "check-mrc7hmll-egb3dsng",
       "text": "Add tests for changed search or output formatting behavior where the extension can assert it.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907049,
-      "updatedAt": 1783522907049
+      "updatedAt": 1783524756434
     }
   ],
   "relations": [
