@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrcjiymw-4744547f",
+  "type": "task_moved",
+  "message": "Moved \"Add warning-only secret hygiene validation\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783543124696,
+  "taskId": "task-mrcitd61-secretqa",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}

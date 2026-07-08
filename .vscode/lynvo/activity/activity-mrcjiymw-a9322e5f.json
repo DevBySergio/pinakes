@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrcjiymw-a9322e5f",
+  "type": "checklist_updated",
+  "message": "Completed checklist item in \"Add warning-only secret hygiene validation\"",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783543124696,
+  "taskId": "task-mrcitd61-secretqa",
+  "metadata": {
+    "checklistItemId": "check-mrcitd61-sechk03",
+    "checklistItemText": "Add tests for true positives, placeholders, and false-positive control"
+  }
+}

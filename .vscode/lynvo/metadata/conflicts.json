@@ -414,9 +414,9 @@
     "entityType": "task",
     "entityId": "task-mrcitd61-secretqa",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783543035002,
-    "resolved": true
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783543155191,
+    "resolved": false
   }
 }
