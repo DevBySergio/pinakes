@@ -408,5 +408,15 @@
     "remoteValue": "in-progress",
     "createdAt": 1783542916424,
     "resolved": true
+  },
+  "task-task-mrcitd61-secretqa-status": {
+    "id": "task-task-mrcitd61-secretqa-status",
+    "entityType": "task",
+    "entityId": "task-mrcitd61-secretqa",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783543035002,
+    "resolved": false
   }
 }

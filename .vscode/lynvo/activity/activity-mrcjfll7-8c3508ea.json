@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrcjfll7-8c3508ea",
+  "type": "task_moved",
+  "message": "Moved \"Add warning-only secret hygiene validation\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783542967819,
+  "taskId": "task-mrcitd61-secretqa",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}
