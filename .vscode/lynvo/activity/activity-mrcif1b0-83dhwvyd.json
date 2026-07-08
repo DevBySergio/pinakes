@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrcif1b0-83dhwvyd",
+  "type": "task_moved",
+  "message": "Moved \"Expand documentation component catalog\" from todo to in-progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783541261915,
+  "taskId": "task-mratyg3h-j0ourc6d",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}

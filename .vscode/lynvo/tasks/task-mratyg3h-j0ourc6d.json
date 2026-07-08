@@ -2,7 +2,7 @@
   "id": "task-mratyg3h-j0ourc6d",
   "title": "Expand documentation component catalog",
   "description": "Grow from the initial 8 modules to the full component set from the guide, including GraphQL, gRPC, WebSocket, Backend, Cache, MessageQueue, OAuth, IaC, Monitoring, Security, CLI, SDK, Microservice, and more.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,13 +12,49 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439730573,
-  "updatedAt": 1783439730573,
+  "updatedAt": 1783541261915,
   "position": 0,
   "labelIds": [
     "feat"
   ],
   "priority": "high",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mrcif1b0-lgbiq4ov",
+      "text": "Audit existing generated module catalog and missing guide components.",
+      "done": true,
+      "createdAt": 1783541261915,
+      "updatedAt": 1783541261915
+    },
+    {
+      "id": "check-mrcif1b0-uxmghkrm",
+      "text": "Add new component descriptors for API styles, backend, infrastructure, operations, and tooling modules.",
+      "done": false,
+      "createdAt": 1783541261916,
+      "updatedAt": 1783541261916
+    },
+    {
+      "id": "check-mrcif1b0-d4w3gngs",
+      "text": "Add useful presets that expose the expanded catalog without extra UI work.",
+      "done": false,
+      "createdAt": 1783541261917,
+      "updatedAt": 1783541261917
+    },
+    {
+      "id": "check-mrcif1b0-7cgbhy2h",
+      "text": "Cover catalog coverage and generation behavior with tests.",
+      "done": false,
+      "createdAt": 1783541261918,
+      "updatedAt": 1783541261918
+    },
+    {
+      "id": "check-mrcif1b0-21pif8fq",
+      "text": "Verify compile, lint, tests, and package dry run.",
+      "done": false,
+      "createdAt": 1783541261919,
+      "updatedAt": 1783541261919
+    }
+  ],
   "relations": [
     {
       "id": "rel-mratyg3h-7s3iwz21",
