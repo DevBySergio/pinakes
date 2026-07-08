@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrc7oisx-hr39pdoj",
+  "type": "task_moved",
+  "message": "Moved \"Audit Pinake interface flows and design principles\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783523228721,
+  "taskId": "task-mrc7hmkn-a353nn8o",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}
