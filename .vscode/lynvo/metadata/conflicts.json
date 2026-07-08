@@ -247,7 +247,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783523829655,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mraub5i2-9aw5x8sd-status": {
     "id": "task-task-mraub5i2-9aw5x8sd-status",
@@ -257,7 +257,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783523829656,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mraub5i2-7ysys3gr-description": {
     "id": "task-task-mraub5i2-7ysys3gr-description",
@@ -277,7 +277,7 @@
     "localValue": "Completed. Added `docs/security-privacy.md` with user-facing local-first behavior, telemetry/network boundaries, workspace write locations, secret-handling guidance, commit policy, and auditability notes. Linked it from `README.md`.",
     "remoteValue": "Add explicit user-facing security documentation for local-only behavior, no telemetry/network calls, workspace filesystem permissions, secret-handling guidance, auditability, and which Pinake files should or should not be committed.",
     "createdAt": 1783523829656,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mrc7xk0t-upj1m2y7-status": {
     "id": "task-task-mrc7xk0t-upj1m2y7-status",
@@ -287,6 +287,6 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783523829656,
-    "resolved": false
+    "resolved": true
   }
 }
