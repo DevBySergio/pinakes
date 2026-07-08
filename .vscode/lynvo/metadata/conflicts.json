@@ -348,5 +348,15 @@
     "remoteValue": "Refine the UX/UI copy and interaction design for Pinake setup flows so creating documentation feels faster, clearer, and more intuitive.\n\nTarget the template picker, module selection, Explorer visibility choice, legacy migration prompt, existing workspace confirmation, new file and folder prompts, and module generation prompts.",
     "createdAt": 1783540514397,
     "resolved": true
+  },
+  "task-task-mrc8tqo3-0jtx6b3p-status": {
+    "id": "task-task-mrc8tqo3-0jtx6b3p-status",
+    "entityType": "task",
+    "entityId": "task-mrc8tqo3-0jtx6b3p",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783540755507,
+    "resolved": false
   }
 }
