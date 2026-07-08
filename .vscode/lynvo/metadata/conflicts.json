@@ -404,9 +404,9 @@
     "entityType": "task",
     "entityId": "task-mrcitd1x-reconcil",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783542795149,
-    "resolved": true
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783542916424,
+    "resolved": false
   }
 }

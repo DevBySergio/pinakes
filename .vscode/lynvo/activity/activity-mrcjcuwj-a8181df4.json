@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrcjcuwj-a8181df4",
+  "type": "checklist_updated",
+  "message": "Completed checklist item in \"Make manifest and filesystem reconciliation explicit\"",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783542839923,
+  "taskId": "task-mrcitd1x-reconcil",
+  "metadata": {
+    "checklistItemId": "check-mrcitd1x-recchk01",
+    "checklistItemText": "Show filesystem directories alongside manifest-backed children"
+  }
+}

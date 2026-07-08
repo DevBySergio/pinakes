@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrcjcuwk-e2964481",
+  "type": "task_moved",
+  "message": "Moved \"Make manifest and filesystem reconciliation explicit\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783542839924,
+  "taskId": "task-mrcitd1x-reconcil",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}

@@ -2,7 +2,7 @@
   "id": "task-mrcitd1x-reconcil",
   "title": "Make manifest and filesystem reconciliation explicit",
   "description": "Created from the project state audit.\n\nFix workflows where filesystem changes exist but do not appear in the manifest-backed Pinake tree.\n\nContext:\n- `newFolder` creates empty folders but the TreeView uses manifest children whenever manifest documents exist, so empty folders can be hidden.\n- Directory duplicate copies files and rebuilds the index, but copied Markdown files are not added to `pinake.json`, so duplicated folders can disappear from the TreeView.\n- Repair/import should provide a deliberate path for untracked Markdown files instead of relying on incidental filesystem fallback behavior.\n\nImplementation notes:\n- Merge filesystem directories into manifest-backed tree children, including empty folders.\n- When duplicating directories, add copied Markdown documents to `pinake.json` with stable generated metadata.\n- Keep index rebuild behavior after bulk directory operations.\n- Decide whether repair should discover untracked Markdown files or whether this belongs to import.\n- Add tests for new empty folder visibility, directory duplication visibility, and untracked Markdown handling.\n\nCode anchors: `src/tree/PinakeTreeProvider.ts:133`, `src/commands/PinakesCommands.ts:170`, `src/commands/PinakesCommands.ts:390`.",
-  "status": "in-progress",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783541931286,
-  "updatedAt": 1783542701063,
+  "updatedAt": 1783542839924,
   "position": 1783541931286,
   "labelIds": [
     "bug",
@@ -28,30 +28,30 @@
     {
       "id": "check-mrcitd1x-recchk01",
       "text": "Show filesystem directories alongside manifest-backed children",
-      "done": false,
+      "done": true,
       "createdAt": 1783541931286,
-      "updatedAt": 1783541931286
+      "updatedAt": 1783542839923
     },
     {
       "id": "check-mrcitd1x-recchk02",
       "text": "Add duplicated directory Markdown files to `pinake.json`",
-      "done": false,
+      "done": true,
       "createdAt": 1783541931286,
-      "updatedAt": 1783541931286
+      "updatedAt": 1783542839924
     },
     {
       "id": "check-mrcitd1x-recchk03",
       "text": "Define repair/import behavior for untracked Markdown files",
-      "done": false,
+      "done": true,
       "createdAt": 1783541931286,
-      "updatedAt": 1783541931286
+      "updatedAt": 1783542839924
     },
     {
       "id": "check-mrcitd1x-recchk04",
       "text": "Add tests for empty folders, directory duplicate, and untracked document visibility",
-      "done": false,
+      "done": true,
       "createdAt": 1783541931286,
-      "updatedAt": 1783541931286
+      "updatedAt": 1783542839924
     }
   ],
   "relations": []
