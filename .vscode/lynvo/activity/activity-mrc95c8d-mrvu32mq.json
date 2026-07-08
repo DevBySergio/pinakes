@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrc95c8d-mrvu32mq",
+  "type": "task_moved",
+  "message": "Moved \"Modernize Pinake creation and module selection flows\" from todo to in-progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783525692972,
+  "taskId": "task-mrc7hmkp-jhvgszcy",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}

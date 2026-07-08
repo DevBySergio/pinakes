@@ -2,17 +2,17 @@
   "id": "task-mrc7hmkp-jhvgszcy",
   "title": "Modernize Pinake creation and module selection flows",
   "description": "Refine the UX/UI copy and interaction design for Pinake setup flows so creating documentation feels faster, clearer, and more intuitive.\n\nTarget the template picker, module selection, Explorer visibility choice, legacy migration prompt, existing workspace confirmation, new file and folder prompts, and module generation prompts.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
   },
   "lastModifiedBy": {
-    "githubId": "175159121",
-    "username": "DevBySergio"
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
   },
   "createdAt": 1783522907017,
-  "updatedAt": 1783525027230,
+  "updatedAt": 1783525692972,
   "position": 8,
   "labelIds": [
     "feat"
@@ -22,9 +22,9 @@
     {
       "id": "check-mrc7hmlc-x45ywgcb",
       "text": "Audit QuickPick and InputBox titles, placeholders, descriptions, defaults, and validation messages.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907040,
-      "updatedAt": 1783522907040
+      "updatedAt": 1783525692972
     },
     {
       "id": "check-mrc7hmld-sac8yzq5",
