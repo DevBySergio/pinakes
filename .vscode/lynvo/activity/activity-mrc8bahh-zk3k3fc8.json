@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrc8bahh-zk3k3fc8",
+  "type": "task_moved",
+  "message": "Moved \"Polish Pinake TreeView hierarchy and empty states\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783524291029,
+  "taskId": "task-mrc7hmko-3vflq93l",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}

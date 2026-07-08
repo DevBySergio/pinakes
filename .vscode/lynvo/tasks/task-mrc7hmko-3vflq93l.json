@@ -2,7 +2,7 @@
   "id": "task-mrc7hmko-3vflq93l",
   "title": "Polish Pinake TreeView hierarchy and empty states",
   "description": "Improve the visual design and usability of the Pinake Project Documentation TreeView while staying inside native VS Code UI patterns.\n\nFocus on hierarchy, labels, descriptions, tooltips, ThemeIcons, Favorites, generated/internal files, and an onboarding empty state using VS Code contributions such as viewsWelcome where appropriate.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783522907016,
-  "updatedAt": 1783522907016,
+  "updatedAt": 1783524291029,
   "position": 1783522907016,
   "labelIds": [
     "feat"
@@ -22,9 +22,9 @@
     {
       "id": "check-mrc7hml7-szsgr77b",
       "text": "Review current TreeView labels, descriptions, tooltip content, and icon choices.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907035,
-      "updatedAt": 1783522907035
+      "updatedAt": 1783524291029
     },
     {
       "id": "check-mrc7hml8-shy93lto",
