@@ -418,5 +418,15 @@
     "remoteValue": "in-progress",
     "createdAt": 1783543155191,
     "resolved": true
+  },
+  "task-task-mrcitd50-diagprob-status": {
+    "id": "task-task-mrcitd50-diagprob-status",
+    "entityType": "task",
+    "entityId": "task-mrcitd50-diagprob",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783543635010,
+    "resolved": false
   }
 }

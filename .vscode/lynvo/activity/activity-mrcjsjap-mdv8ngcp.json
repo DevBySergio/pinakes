@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrcjsjap-mdv8ngcp",
+  "type": "task_moved",
+  "message": "Moved \"Promote Pinake validation results into VS Code diagnostics\" from todo to in-progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783543571377,
+  "taskId": "task-mrcitd50-diagprob",
+  "metadata": {
+    "fromStatus": "todo",
+    "toStatus": "in-progress"
+  }
+}
