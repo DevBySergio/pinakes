@@ -377,7 +377,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783541474539,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3h-j0ourc6d-description": {
     "id": "task-task-mratyg3h-j0ourc6d-description",
@@ -387,6 +387,6 @@
     "localValue": "Completed. Expanded the generated module catalog beyond the initial 8 modules with GraphQL, gRPC, WebSocket, Backend, Cache, MessageQueue, OAuth, IaC, Monitoring, Security, CLI, SDK, and Microservice descriptors, plus API Platform, Platform Services, Cloud Native, and Microservice presets. Added tests for catalog coverage, preset wiring, dependency-aware generation, and representative generated files.",
     "remoteValue": "Grow from the initial 8 modules to the full component set from the guide, including GraphQL, gRPC, WebSocket, Backend, Cache, MessageQueue, OAuth, IaC, Monitoring, Security, CLI, SDK, Microservice, and more.",
     "createdAt": 1783541474539,
-    "resolved": false
+    "resolved": true
   }
 }
