@@ -1,7 +1,7 @@
 {
   "id": "task-mratyg3g-txcl4tcy",
   "title": "Expand search and cross-reference system",
-  "description": "Completed. The local index now stores heading metadata, tags, links, backlinks, broken references, and graph edges; search supports snippets plus tag:/heading: filters and improved ranking.",
+  "description": "Completed. The local index now stores heading metadata, tags, links, backlinks, broken references, and graph edges; search supports snippets plus tag:/heading: filters and improved ranking; changed and deleted Markdown documents can update the index incrementally.",
   "status": "done",
   "createdBy": {
     "githubId": "unknown",
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439725573,
-  "updatedAt": 1783522453628,
+  "updatedAt": 1783522664596,
   "position": 1783439725573,
   "labelIds": [
     "feat"
