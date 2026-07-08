@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrc8x6z0-kyb4ijvr",
+  "type": "task_moved",
+  "message": "Moved \"Improve Pinake search validation and properties feedback\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783525312908,
+  "taskId": "task-mrc7hmkq-96uuar8q",
+  "metadata": {
+    "from": "done",
+    "to": "in-progress"
+  }
+}

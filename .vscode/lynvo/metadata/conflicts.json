@@ -314,10 +314,10 @@
     "entityType": "task",
     "entityId": "task-mrc7hmkq-96uuar8q",
     "field": "status",
-    "localValue": "done",
-    "remoteValue": "in-progress",
-    "createdAt": 1783524823609,
-    "resolved": true
+    "localValue": "in-progress",
+    "remoteValue": "done",
+    "createdAt": 1783525423454,
+    "resolved": false
   },
   "task-task-mrc7hmkq-96uuar8q-description": {
     "id": "task-task-mrc7hmkq-96uuar8q-description",
