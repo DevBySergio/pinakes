@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrbtzsek-v0bjs2be",
+  "type": "task_moved",
+  "message": "Moved \"Implement explicit remaining tree context actions\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783500239756,
+  "taskId": "task-mraub5i2-q86jsozl",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}

@@ -8,5 +8,15 @@
     "remoteValue": "in-progress",
     "createdAt": 1783442791101,
     "resolved": true
+  },
+  "task-task-mraub5i2-q86jsozl-status": {
+    "id": "task-task-mraub5i2-q86jsozl-status",
+    "entityType": "task",
+    "entityId": "task-mraub5i2-q86jsozl",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783500361762,
+    "resolved": false
   }
 }
