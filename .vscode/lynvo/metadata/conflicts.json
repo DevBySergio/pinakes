@@ -294,9 +294,19 @@
     "entityType": "task",
     "entityId": "task-mrc7hmko-3vflq93l",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783524343812,
-    "resolved": true
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783524463581,
+    "resolved": false
+  },
+  "task-task-mrc7hmko-3vflq93l-description": {
+    "id": "task-task-mrc7hmko-3vflq93l-description",
+    "entityType": "task",
+    "entityId": "task-mrc7hmko-3vflq93l",
+    "field": "description",
+    "localValue": "Completed. Added native TreeView onboarding rows for no-workspace, missing Pinake, and empty `.pinake/docs` states; improved file, folder, favorites, and generated-module icon/tooltips/descriptions; and added extension-host tests for placeholder states and TreeItem metadata.",
+    "remoteValue": "Improve the visual design and usability of the Pinake Project Documentation TreeView while staying inside native VS Code UI patterns.\n\nFocus on hierarchy, labels, descriptions, tooltips, ThemeIcons, Favorites, generated/internal files, and an onboarding empty state using VS Code contributions such as viewsWelcome where appropriate.",
+    "createdAt": 1783524463581,
+    "resolved": false
   }
 }
