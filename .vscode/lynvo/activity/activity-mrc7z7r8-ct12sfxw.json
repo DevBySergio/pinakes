@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrc7z7r8-ct12sfxw",
+  "type": "task_moved",
+  "message": "Moved \"Detail full component catalog task breakdown\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783523727620,
+  "taskId": "task-mraub5i2-7ysys3gr",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}

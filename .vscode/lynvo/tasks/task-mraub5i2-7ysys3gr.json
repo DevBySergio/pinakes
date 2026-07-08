@@ -2,7 +2,7 @@
   "id": "task-mraub5i2-7ysys3gr",
   "title": "Detail full component catalog task breakdown",
   "description": "Make the component catalog backlog explicit by enumerating remaining modules from the guide, including Payments, GraphQL, gRPC, WebSocket, Backend, Cache, MessageQueue, Authorization, OAuth, IaC, Monitoring, Logging, Search, Email, DataPipeline, ML, GraphDB, Plugin/Extension, Library/SDK, CLI, Monorepo, Microservice, LegacyMigration, Documentation, Testing, Security, and DevTools.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783440310369,
-  "updatedAt": 1783440310369,
+  "updatedAt": 1783523727620,
   "position": 1783440314369,
   "labelIds": [
     "feat"

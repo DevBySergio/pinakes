@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrc7z7r8-p5ufnfd3",
+  "type": "task_moved",
+  "message": "Moved \"Document security and privacy guidance\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783523727620,
+  "taskId": "task-mraub5i2-9aw5x8sd",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}

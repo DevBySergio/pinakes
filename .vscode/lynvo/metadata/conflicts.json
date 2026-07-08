@@ -238,5 +238,25 @@
     "remoteValue": "Create a focused UX/UI and visual design audit for the Pinake VS Code extension interface.\n\nScope the native sidebar, creation wizard, module picker, search results, validation output, properties output, command feedback, and empty states. The outcome should define modern, intuitive, minimalist, and functional design principles that future implementation tasks can follow without introducing a custom webview.",
     "createdAt": 1783523503252,
     "resolved": true
+  },
+  "task-task-mraub5i2-7ysys3gr-status": {
+    "id": "task-task-mraub5i2-7ysys3gr-status",
+    "entityType": "task",
+    "entityId": "task-mraub5i2-7ysys3gr",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783523744147,
+    "resolved": false
+  },
+  "task-task-mraub5i2-9aw5x8sd-status": {
+    "id": "task-task-mraub5i2-9aw5x8sd-status",
+    "entityType": "task",
+    "entityId": "task-mraub5i2-9aw5x8sd",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783523744147,
+    "resolved": false
   }
 }
