@@ -1,7 +1,7 @@
 {
   "id": "task-mratyg3g-g98b588w",
   "title": "Broaden validation and CI integration",
-  "description": "Validation command exists. Add markdownlint, richer schema checks, output formats, CLI or CI callable validator, and GitHub Actions workflow support.",
+  "description": "Partially completed. The current refactor added richer manifest/document validation and expanded VS Code extension tests around `.pinake` storage, legacy copy migration, Explorer settings merge, TreeView preview/edit behavior, and favorites. Remaining work: markdownlint, output formats, CLI or CI callable validator, and GitHub Actions workflow support.",
   "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
@@ -12,13 +12,35 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439728573,
-  "updatedAt": 1783439728573,
+  "updatedAt": 1783502909000,
   "position": 1783439728573,
   "labelIds": [
     "feat"
   ],
   "priority": "high",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mrbvmcjc-cax67j3u",
+      "text": "Expand tests for .pinake storage, migration, settings merge, and TreeView preview/edit",
+      "done": true,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    },
+    {
+      "id": "check-mrbvmcjc-7uilk97n",
+      "text": "Keep compile, lint, and VS Code extension tests passing after the refactor",
+      "done": true,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    },
+    {
+      "id": "check-mrbvmcjc-n5h9h253",
+      "text": "Add markdownlint, CLI/CI validator output, and GitHub Actions workflow support",
+      "done": false,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    }
+  ],
   "relations": [
     {
       "id": "rel-mratyg3h-26gh21k9",

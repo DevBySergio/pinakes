@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783500550874,
+  "updatedAt": 1783502909000,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -71,16 +71,16 @@
     {
       "id": "check-mratyg3h-dpi0x1j8",
       "text": "Finish the multi-step module wizard",
-      "done": false,
+      "done": true,
       "createdAt": 1783439716573,
-      "updatedAt": 1783439716573
+      "updatedAt": 1783502909000
     },
     {
       "id": "check-mratyg3h-1ix3gauq",
       "text": "Bring tree UX closer to Explorer parity",
-      "done": false,
+      "done": true,
       "createdAt": 1783439716573,
-      "updatedAt": 1783439716573
+      "updatedAt": 1783502909000
     },
     {
       "id": "check-mratyg3h-mjbdhds2",
@@ -148,9 +148,9 @@
     {
       "id": "check-mraub5i2-qotnqvq5",
       "text": "Implement explicit tree actions: open Pinake, duplicate, reveal, copy path, properties, and sort children",
-      "done": false,
+      "done": true,
       "createdAt": 1783440310369,
-      "updatedAt": 1783440310369
+      "updatedAt": 1783502909000
     },
     {
       "id": "check-mraub5i2-msf83zyz",

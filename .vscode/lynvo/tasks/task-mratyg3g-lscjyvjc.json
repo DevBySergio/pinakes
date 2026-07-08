@@ -1,7 +1,7 @@
 {
   "id": "task-mratyg3g-lscjyvjc",
-  "title": "Completed: Pinake storage contract inside Pinake/",
-  "description": "Moved generated Pinake-owned state under Pinake/, including Pinake/pinake.json, Pinake/.pinake/*, and Pinake/.gitignore.",
+  "title": "Completed: Pinake storage contract in .pinake/docs",
+  "description": "Updated the storage contract to use `.pinake/pinake.json` as the source of truth, `.pinake/docs` for documentation, and `.pinake/.state` for generated local state. The old visible `Pinake/` folder is now treated as legacy input for safe copy migration.",
   "status": "done",
   "createdBy": {
     "githubId": "unknown",
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439718573,
-  "updatedAt": 1783439718573,
+  "updatedAt": 1783502909000,
   "position": 1783439718573,
   "labelIds": [
     "feat"

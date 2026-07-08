@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrbvlfwl-xg2f3wtf",
+  "type": "task_moved",
+  "message": "Moved \"Complete multi-step module wizard presets\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783502909000,
+  "taskId": "task-mratyg3g-q6phgvy4",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}

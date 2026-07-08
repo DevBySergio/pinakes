@@ -1,8 +1,8 @@
 {
   "id": "task-mratyg3g-q6phgvy4",
   "title": "Complete multi-step module wizard presets",
-  "description": "Basic preset/module selection exists. Build the full wizard flows for Backend, Frontend, Fullstack, Microservice, Library, and Mobile with conditional questions.",
-  "status": "in-progress",
+  "description": "Completed the current Pinake setup wizard scope: users select a documentation template, choose optional modules with template defaults, explicitly confirm whether `.pinake` should be hidden from the VS Code Explorer, and generate `.pinake/docs` from data-driven template/module definitions.",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,13 +12,42 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439726573,
-  "updatedAt": 1783439726573,
+  "updatedAt": 1783502909000,
   "position": 1783439726573,
   "labelIds": [
     "feat"
   ],
   "priority": "high",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mrbvl0ky-6hwwtidh",
+      "text": "Add template selection step",
+      "done": true,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    },
+    {
+      "id": "check-mrbvl0ky-tepfv1n2",
+      "text": "Add module multi-select with template defaults",
+      "done": true,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    },
+    {
+      "id": "check-mrbvl0ky-vhuo7je2",
+      "text": "Add explicit Explorer hiding confirmation",
+      "done": true,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    },
+    {
+      "id": "check-mrbvl0ky-zpeiasw0",
+      "text": "Generate selected template and modules under .pinake/docs",
+      "done": true,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    }
+  ],
   "relations": [
     {
       "id": "rel-mratyg3h-82cyz7rf",

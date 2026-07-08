@@ -1,7 +1,7 @@
 {
   "id": "task-mratyg3g-03rnzuz4",
   "title": "Finish manifest migrations and runtime schema validation",
-  "description": "Schemas exist, but runtime JSON Schema validation, upgrade flow, migration history application, and compatibility handling still need implementation.",
+  "description": "Partially completed. The manifest has been refactored to the new `.pinake/pinake.json` source-of-truth shape, the JSON schema was updated, validation now checks document paths/frontmatter/ADR names, and legacy `Pinake/` folders can be safely copied into `.pinake/docs`. Remaining work: runtime JSON Schema execution, a formal upgrade command, migration history application, and deeper compatibility handling.",
   "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
@@ -12,13 +12,42 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439724573,
-  "updatedAt": 1783439724573,
+  "updatedAt": 1783502909000,
   "position": 1783439724573,
   "labelIds": [
     "feat"
   ],
   "priority": "high",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mrbvmcja-qbsltx8v",
+      "text": "Refactor pinake.json to version/storage/project/modules/documents schema",
+      "done": true,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    },
+    {
+      "id": "check-mrbvmcjc-no9ki0s6",
+      "text": "Update JSON schema for the new manifest shape",
+      "done": true,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    },
+    {
+      "id": "check-mrbvmcjc-tsremwc8",
+      "text": "Add safe copy migration from legacy Pinake/ into .pinake/docs",
+      "done": true,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    },
+    {
+      "id": "check-mrbvmcjc-dl8r5tq0",
+      "text": "Implement runtime JSON Schema validation and formal upgrade flow",
+      "done": false,
+      "createdAt": 1783502909000,
+      "updatedAt": 1783502909000
+    }
+  ],
   "relations": [
     {
       "id": "rel-mratyg3h-pwtfie0a",

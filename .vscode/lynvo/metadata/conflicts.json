@@ -18,5 +18,85 @@
     "remoteValue": "in-progress",
     "createdAt": 1783500601655,
     "resolved": true
+  },
+  "task-task-mratyg3g-03rnzuz4-description": {
+    "id": "task-task-mratyg3g-03rnzuz4-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-03rnzuz4",
+    "field": "description",
+    "localValue": "Partially completed. The manifest has been refactored to the new `.pinake/pinake.json` source-of-truth shape, the JSON schema was updated, validation now checks document paths/frontmatter/ADR names, and legacy `Pinake/` folders can be safely copied into `.pinake/docs`. Remaining work: runtime JSON Schema execution, a formal upgrade command, migration history application, and deeper compatibility handling.",
+    "remoteValue": "Schemas exist, but runtime JSON Schema validation, upgrade flow, migration history application, and compatibility handling still need implementation.",
+    "createdAt": 1783503039603,
+    "resolved": false
+  },
+  "task-task-mratyg3g-g98b588w-description": {
+    "id": "task-task-mratyg3g-g98b588w-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-g98b588w",
+    "field": "description",
+    "localValue": "Partially completed. The current refactor added richer manifest/document validation and expanded VS Code extension tests around `.pinake` storage, legacy copy migration, Explorer settings merge, TreeView preview/edit behavior, and favorites. Remaining work: markdownlint, output formats, CLI or CI callable validator, and GitHub Actions workflow support.",
+    "remoteValue": "Validation command exists. Add markdownlint, richer schema checks, output formats, CLI or CI callable validator, and GitHub Actions workflow support.",
+    "createdAt": 1783503039603,
+    "resolved": false
+  },
+  "task-task-mratyg3g-lscjyvjc-title": {
+    "id": "task-task-mratyg3g-lscjyvjc-title",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-lscjyvjc",
+    "field": "title",
+    "localValue": "Completed: Pinake storage contract in .pinake/docs",
+    "remoteValue": "Completed: Pinake storage contract inside Pinake/",
+    "createdAt": 1783503039603,
+    "resolved": false
+  },
+  "task-task-mratyg3g-lscjyvjc-description": {
+    "id": "task-task-mratyg3g-lscjyvjc-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-lscjyvjc",
+    "field": "description",
+    "localValue": "Updated the storage contract to use `.pinake/pinake.json` as the source of truth, `.pinake/docs` for documentation, and `.pinake/.state` for generated local state. The old visible `Pinake/` folder is now treated as legacy input for safe copy migration.",
+    "remoteValue": "Moved generated Pinake-owned state under Pinake/, including Pinake/pinake.json, Pinake/.pinake/*, and Pinake/.gitignore.",
+    "createdAt": 1783503039603,
+    "resolved": false
+  },
+  "task-task-mratyg3g-p3kiqv3z-description": {
+    "id": "task-task-mratyg3g-p3kiqv3z-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-p3kiqv3z",
+    "field": "description",
+    "localValue": "Completed the current TreeView UX scope: the Pinake tree is generated from `pinake.json` when available, document clicks open Markdown Preview by default, source editing is exposed through an explicit context action, and existing reveal/copy/properties/sort/rename/delete actions remain available.",
+    "remoteValue": "Basic tree actions exist. Finish Explorer-like behavior: richer context actions, keyboard coverage, reveal/copy path/properties, sorting, and polished open behavior.",
+    "createdAt": 1783503039603,
+    "resolved": false
+  },
+  "task-task-mratyg3g-p3kiqv3z-status": {
+    "id": "task-task-mratyg3g-p3kiqv3z-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-p3kiqv3z",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783503039603,
+    "resolved": false
+  },
+  "task-task-mratyg3g-q6phgvy4-description": {
+    "id": "task-task-mratyg3g-q6phgvy4-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-q6phgvy4",
+    "field": "description",
+    "localValue": "Completed the current Pinake setup wizard scope: users select a documentation template, choose optional modules with template defaults, explicitly confirm whether `.pinake` should be hidden from the VS Code Explorer, and generate `.pinake/docs` from data-driven template/module definitions.",
+    "remoteValue": "Basic preset/module selection exists. Build the full wizard flows for Backend, Frontend, Fullstack, Microservice, Library, and Mobile with conditional questions.",
+    "createdAt": 1783503039603,
+    "resolved": false
+  },
+  "task-task-mratyg3g-q6phgvy4-status": {
+    "id": "task-task-mratyg3g-q6phgvy4-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-q6phgvy4",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783503039603,
+    "resolved": false
   }
 }

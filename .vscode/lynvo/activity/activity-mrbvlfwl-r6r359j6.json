@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrbvlfwl-r6r359j6",
+  "type": "task_moved",
+  "message": "Moved \"Bring Pinake tree UX to Explorer parity\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783502909000,
+  "taskId": "task-mratyg3g-p3kiqv3z",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}
