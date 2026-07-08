@@ -357,7 +357,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783540994593,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mrc8tqo3-0jtx6b3p-description": {
     "id": "task-task-mrc8tqo3-0jtx6b3p-description",
