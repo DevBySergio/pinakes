@@ -1,0 +1,323 @@
+{
+  "version": 1,
+  "storage": {
+    "root": ".pinake/docs",
+    "hiddenFromExplorer": false
+  },
+  "project": {
+    "name": "Pinake Editor",
+    "documentationType": "internal",
+    "audience": [
+      "developers",
+      "maintainers",
+      "operators",
+      "documentation-authors",
+      "automation-authors"
+    ],
+    "template": "full-product-handbook"
+  },
+  "modules": {
+    "overview": true,
+    "gettingStarted": true,
+    "development": true,
+    "decisions": true,
+    "architecture": true,
+    "quality": true,
+    "operations": true,
+    "projectManagement": true,
+    "reference": true,
+    "Security": true,
+    "CLI": true,
+    "CI/CD": true
+  },
+  "documents": [
+    {
+      "id": "full-overview",
+      "title": "Overview",
+      "path": "00_Overview/Overview.md",
+      "type": "overview",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "overview-product-context",
+      "title": "Product Context",
+      "path": "00_Overview/ProductContext.md",
+      "type": "explanation",
+      "status": "draft",
+      "order": 2
+    },
+    {
+      "id": "full-configuration",
+      "title": "Configuration",
+      "path": "01_GettingStarted/Configuration.md",
+      "type": "reference",
+      "status": "draft",
+      "order": 2
+    },
+    {
+      "id": "getting-started-first-run",
+      "title": "First Run",
+      "path": "01_GettingStarted/FirstRun.md",
+      "type": "how-to",
+      "status": "draft",
+      "order": 3
+    },
+    {
+      "id": "full-installation",
+      "title": "Installation",
+      "path": "01_GettingStarted/Installation.md",
+      "type": "tutorial",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "architecture-command-flows",
+      "title": "Command Flows",
+      "path": "02_Architecture/CommandFlows.md",
+      "type": "architecture",
+      "status": "draft",
+      "order": 4
+    },
+    {
+      "id": "full-containers",
+      "title": "Containers",
+      "path": "02_Architecture/Containers.md",
+      "type": "architecture",
+      "status": "draft",
+      "order": 2
+    },
+    {
+      "id": "full-context",
+      "title": "Context",
+      "path": "02_Architecture/Context.md",
+      "type": "architecture",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "security-overview",
+      "title": "Security Overview",
+      "path": "02_Architecture/Security/Overview.md",
+      "type": "architecture",
+      "status": "draft",
+      "order": 5
+    },
+    {
+      "id": "security-threat-model",
+      "title": "Threat Model",
+      "path": "02_Architecture/Security/ThreatModel.md",
+      "type": "architecture",
+      "status": "draft",
+      "order": 6
+    },
+    {
+      "id": "architecture-storage-state",
+      "title": "Storage And State",
+      "path": "02_Architecture/StorageAndState.md",
+      "type": "architecture",
+      "status": "draft",
+      "order": 3
+    },
+    {
+      "id": "cli-validator",
+      "title": "Validator CLI",
+      "path": "03_Development/CLI/Validator.md",
+      "type": "reference",
+      "status": "draft",
+      "order": 5
+    },
+    {
+      "id": "full-development-standards",
+      "title": "Coding Standards",
+      "path": "03_Development/CodingStandards.md",
+      "type": "reference",
+      "status": "draft",
+      "order": 2
+    },
+    {
+      "id": "development-templates-modules",
+      "title": "Templates And Modules",
+      "path": "03_Development/TemplatesAndModules.md",
+      "type": "reference",
+      "status": "draft",
+      "order": 4
+    },
+    {
+      "id": "full-development-testing",
+      "title": "Testing",
+      "path": "03_Development/Testing.md",
+      "type": "testing",
+      "status": "draft",
+      "order": 3
+    },
+    {
+      "id": "full-development-workflow",
+      "title": "Workflow",
+      "path": "03_Development/Workflow.md",
+      "type": "process",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "full-code-review",
+      "title": "Code Review",
+      "path": "04_Quality/CodeReview.md",
+      "type": "process",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "full-metrics",
+      "title": "Metrics",
+      "path": "04_Quality/Metrics.md",
+      "type": "reference",
+      "status": "draft",
+      "order": 4
+    },
+    {
+      "id": "full-testing",
+      "title": "Testing",
+      "path": "04_Quality/Testing.md",
+      "type": "testing",
+      "status": "draft",
+      "order": 2
+    },
+    {
+      "id": "quality-validation-strategy",
+      "title": "Validation Strategy",
+      "path": "04_Quality/ValidationStrategy.md",
+      "type": "testing",
+      "status": "draft",
+      "order": 3
+    },
+    {
+      "id": "full-backups",
+      "title": "Backups",
+      "path": "05_Operations/Backups.md",
+      "type": "runbook",
+      "status": "draft",
+      "order": 4
+    },
+    {
+      "id": "ci-cd-workflows",
+      "title": "CI/CD Workflows",
+      "path": "05_Operations/CI-CD/Workflows.md",
+      "type": "runbook",
+      "status": "draft",
+      "order": 2
+    },
+    {
+      "id": "full-logging",
+      "title": "Logging",
+      "path": "05_Operations/Logging.md",
+      "type": "runbook",
+      "status": "draft",
+      "order": 5
+    },
+    {
+      "id": "full-monitoring",
+      "title": "Monitoring",
+      "path": "05_Operations/Monitoring.md",
+      "type": "runbook",
+      "status": "draft",
+      "order": 6
+    },
+    {
+      "id": "operations-release-runbook",
+      "title": "Release Runbook",
+      "path": "05_Operations/ReleaseRunbook.md",
+      "type": "runbook",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "operations-troubleshooting",
+      "title": "Troubleshooting",
+      "path": "05_Operations/Troubleshooting.md",
+      "type": "troubleshooting",
+      "status": "draft",
+      "order": 3
+    },
+    {
+      "id": "adr-local-first-storage",
+      "title": "ADR-0001: Local First Pinake Storage",
+      "path": "06_Decisions/ADR-0001-local-first-storage.md",
+      "type": "adr",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "adr-native-vscode-surfaces",
+      "title": "ADR-0002: Native VS Code Surfaces",
+      "path": "06_Decisions/ADR-0002-native-vscode-surfaces.md",
+      "type": "adr",
+      "status": "draft",
+      "order": 2
+    },
+    {
+      "id": "adr-manifest-backed-markdown",
+      "title": "ADR-0003: Manifest Backed Markdown",
+      "path": "06_Decisions/ADR-0003-manifest-backed-markdown.md",
+      "type": "adr",
+      "status": "draft",
+      "order": 3
+    },
+    {
+      "id": "full-changelog",
+      "title": "Changelog",
+      "path": "07_ProjectManagement/Changelog.md",
+      "type": "changelog",
+      "status": "draft",
+      "order": 2
+    },
+    {
+      "id": "documentation-maintenance",
+      "title": "Documentation Maintenance",
+      "path": "07_ProjectManagement/DocumentationMaintenance.md",
+      "type": "process",
+      "status": "draft",
+      "order": 3
+    },
+    {
+      "id": "full-roadmap",
+      "title": "Roadmap",
+      "path": "07_ProjectManagement/Roadmap.md",
+      "type": "roadmap",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "command-catalog",
+      "title": "Command Catalog",
+      "path": "99_Appendix/CommandCatalog.md",
+      "type": "reference",
+      "status": "draft",
+      "order": 3
+    },
+    {
+      "id": "full-glossary",
+      "title": "Glossary",
+      "path": "99_Appendix/Glossary.md",
+      "type": "glossary",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "full-references",
+      "title": "References",
+      "path": "99_Appendix/References.md",
+      "type": "reference",
+      "status": "draft",
+      "order": 2
+    },
+    {
+      "id": "repository-map",
+      "title": "Repository Map",
+      "path": "99_Appendix/RepositoryMap.md",
+      "type": "reference",
+      "status": "draft",
+      "order": 4
+    }
+  ]
+}
