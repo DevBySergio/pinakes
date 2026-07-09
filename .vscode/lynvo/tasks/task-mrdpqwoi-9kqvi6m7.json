@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783614039282,
-  "updatedAt": 1783614309446,
+  "updatedAt": 1783614630711,
   "position": 1783614309446,
   "labelIds": [
     "feat"
@@ -27,44 +27,44 @@
     {
       "id": "check-mrdpqwoi-e6y8wcy9",
       "text": "Audit every module and template for low-value placeholders, missing owner/review/source-of-truth fields, weak examples, and ambiguous prompts.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614630711
     },
     {
       "id": "check-mrdpqwoi-4puyy1nm",
       "text": "Define the target audience, default modules, recommended modules, and generated value proposition for each setup template.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614630711
     },
     {
       "id": "check-mrdpqwoi-4l2zl3pt",
       "text": "Rewrite core starter document bodies with practical sections, examples, tables, decision prompts, maintenance guidance, and completion checks.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614630711
     },
     {
       "id": "check-mrdpqwoi-i4k5rm1a",
       "text": "Improve full-product-handbook overrides while preserving legacy folder compatibility and deciding whether its empty Development module should gain starter documents.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614630711
     },
     {
       "id": "check-mrdpqwoi-bnk0gsdf",
       "text": "If recommendedModules is activated, update template types, command module selection, QuickPick formatting, and formatter tests.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614630711
     },
     {
       "id": "check-mrdpqwoi-1py0bimo",
       "text": "Preserve stable template IDs, module IDs, document IDs, and paths unless a deliberate migration/update is handled end to end.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614630711
     },
     {
       "id": "check-mrdpqwoi-xakxjfew",
