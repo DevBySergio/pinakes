@@ -2,7 +2,7 @@
   "id": "task-mrc7hmkr-rfx8efcj",
   "title": "Run Pinake interface accessibility keyboard and theme QA",
   "description": "Run dedicated accessibility and interface QA for the native Pinake VS Code experience.\n\nThis complements the existing accessibility and large-tree performance task by focusing specifically on UX/UI behavior, keyboard operation, screen-reader-friendly metadata where supported, and visual design checks across Light, Dark, and High Contrast themes.",
-  "status": "in-progress",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783522907019,
-  "updatedAt": 1783587233753,
+  "updatedAt": 1783587359651,
   "position": 7,
   "labelIds": [
     "feat"
@@ -22,37 +22,37 @@
     {
       "id": "check-mrc7hmlm-9mf77mtd",
       "text": "Verify keyboard-only operation for tree actions, context menus, QuickPick flows, and InputBox prompts.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907050,
-      "updatedAt": 1783522907050
+      "updatedAt": 1783587359646
     },
     {
       "id": "check-mrc7hmln-61szxu9v",
       "text": "Check accessible labels, descriptions, and tooltips where VS Code APIs expose metadata.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907051,
-      "updatedAt": 1783522907051
+      "updatedAt": 1783587359647
     },
     {
       "id": "check-mrc7hmlo-6b1ifn2w",
       "text": "Inspect Light, Dark, and High Contrast theme behavior for visual clarity and contrast.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907052,
-      "updatedAt": 1783522907052
+      "updatedAt": 1783587359648
     },
     {
       "id": "check-mrc7hmlp-6uo4irz5",
       "text": "Verify the interface remains usable with long paths, long document titles, many folders, and many favorites.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907053,
-      "updatedAt": 1783522907053
+      "updatedAt": 1783587359649
     },
     {
       "id": "check-mrc7hmlq-3ui6vene",
       "text": "Record QA results and file follow-up tasks for any concrete defects found.",
-      "done": false,
+      "done": true,
       "createdAt": 1783522907054,
-      "updatedAt": 1783522907054
+      "updatedAt": 1783587359650
     }
   ],
   "relations": [

@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrd9v2jn-v4j7ny97",
+  "type": "task_moved",
+  "message": "Moved \"Run Pinake interface accessibility keyboard and theme QA\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783587359651,
+  "taskId": "task-mrc7hmkr-rfx8efcj",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}
