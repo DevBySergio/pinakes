@@ -527,7 +527,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783612153048,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3h-s4207htk-title": {
     "id": "task-task-mratyg3h-s4207htk-title",
@@ -537,7 +537,7 @@
     "localValue": "Post-release: Add Calimaco and AI interoperability hooks",
     "remoteValue": "Add Calimaco and AI interoperability hooks",
     "createdAt": 1783612153048,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3h-s4207htk-description": {
     "id": "task-task-mratyg3h-s4207htk-description",
