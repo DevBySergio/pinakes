@@ -1,10 +1,38 @@
 # Component Catalog Roadmap
 
-This roadmap breaks down the remaining Pinake component catalog work into small, testable slices. It complements the existing v0.1 generated modules in `src/modules/moduleDescriptors.ts`: API, Database, Docker, Kubernetes, CI/CD, Frontend, Mobile, and Authentication.
+This roadmap breaks down Pinake component catalog work into small, testable slices. The shipped catalog in `src/modules/moduleDescriptors.ts` now includes the original v0.1 modules plus the first expansion slice listed below. The deferred backlog records useful future modules that are intentionally not part of the current completion claim.
 
 ## Goal
 
 The component catalog should let users add focused documentation modules for the parts of a system they actually operate. Each module should provide a predictable folder, a concise set of starter documents, dependencies where useful, and tests that prove generated files are not overwritten.
+
+## Current Shipped Slice
+
+These modules have descriptors, starter files, manifest/state integration through `ScaffoldService`, command-palette generation, and representative tests.
+
+| Module id | Folder | Coverage |
+| --- | --- | --- |
+| `API` | `03_Development/API` | REST API contracts, authentication, endpoints, errors, versioning, rate limits, SDKs, examples, OpenAPI stub |
+| `Database` | `03_Development/Database` | schema, entities, relationships, indexes, migrations, performance, backup |
+| `Docker` | `05_Operations/Docker` | images, containers, volumes, networks, compose |
+| `Kubernetes` | `05_Operations/Kubernetes` | clusters, manifests, services, ingress, deployments, config maps, secrets |
+| `CI/CD` | `05_Operations/CI-CD` | pipelines, workflows, environments, release gates |
+| `Frontend` | `03_Development/Frontend` | components, routing, state, styling, accessibility |
+| `Mobile` | `03_Development/Mobile` | screens, plugins, state, store release |
+| `Authentication` | `03_Development/Authentication` | users, permissions, sessions, OAuth |
+| `GraphQL` | `03_Development/GraphQL` | schema, resolvers, operations, clients, errors |
+| `gRPC` | `03_Development/gRPC` | protobuf contracts, services, streaming, errors, compatibility |
+| `WebSocket` | `03_Development/WebSocket` | protocol, events, channels, reliability |
+| `Backend` | `03_Development/Backend` | architecture, domain model, jobs, configuration, dependencies |
+| `Cache` | `03_Development/Cache` | keys, invalidation, performance, operations |
+| `MessageQueue` | `03_Development/MessageQueue` | topics, producers/consumers, delivery semantics, failure handling |
+| `OAuth` | `03_Development/OAuth` | flows, clients, scopes, token lifecycle |
+| `IaC` | `05_Operations/IaC` | providers, modules, state, environments, change management |
+| `Monitoring` | `05_Operations/Monitoring` | metrics, dashboards, alerts, SLOs, incident review |
+| `Security` | `04_Architecture/Security` | threat model, secrets, data classification, access control, security review |
+| `CLI` | `03_Development/CLI` | commands, configuration, exit codes, distribution, examples |
+| `SDK` | `03_Development/SDK` | installation, API surface, versioning, examples, release |
+| `Microservice` | `04_Architecture/Microservice` | boundaries, communication, data ownership, deployment, operations |
 
 ## Module Definition Checklist
 
@@ -30,33 +58,22 @@ Each catalog module should include:
 | Developer-facing packages | CLI, Library/SDK, Plugin/Extension | Document install paths, public interfaces, versioning, examples, compatibility, and release processes. |
 | Repository and migration patterns | Monorepo, LegacyMigration, Documentation, Testing | Document repository structure, migration plans, documentation ownership, testing strategy, and quality gates. |
 
-## Backlog
+## Deferred Backlog
+
+These modules are intentionally deferred. They should not be treated as shipped until a future task adds descriptors, starter files, presets where useful, icon coverage or documented fallback behavior, and generation tests.
 
 | Module | Suggested folder | Starter documents |
 | --- | --- | --- |
-| Backend | `03_Development/Backend` | Overview, Runtime, Configuration, RequestLifecycle, Dependencies, Errors |
-| GraphQL | `03_Development/GraphQL` | Overview, Schema, Queries, Mutations, Subscriptions, Errors |
-| gRPC | `03_Development/gRPC` | Overview, Services, Protobuf, Streaming, Errors, Compatibility |
-| WebSocket | `03_Development/WebSocket` | Overview, Protocol, Events, Connections, Scaling, Troubleshooting |
-| Cache | `03_Development/Cache` | Overview, Keys, Expiration, Invalidation, Consistency, Operations |
-| MessageQueue | `03_Development/MessageQueue` | Overview, Topics, Producers, Consumers, RetryPolicy, DeadLetters |
 | Authorization | `03_Development/Authorization` | Overview, Roles, Policies, Permissions, Enforcement, Auditing |
-| OAuth | `03_Development/OAuth` | Overview, Providers, Flows, Scopes, Callbacks, TokenLifecycle |
 | Payments | `03_Development/Payments` | Overview, Providers, Checkout, Webhooks, Refunds, Reconciliation |
 | Search | `03_Development/Search` | Overview, Indexes, QuerySyntax, Ranking, Reindexing, Operations |
 | Email | `03_Development/Email` | Overview, Providers, Templates, Deliverability, Bounces, Compliance |
 | DataPipeline | `03_Development/DataPipeline` | Overview, Sources, Transforms, Sinks, Scheduling, DataQuality |
 | ML | `03_Development/ML` | Overview, Models, Training, Evaluation, Serving, Monitoring |
 | GraphDB | `03_Development/GraphDB` | Overview, Model, Queries, Traversals, Indexes, Operations |
-| IaC | `05_Operations/IaC` | Overview, Tooling, Modules, Environments, State, ChangeReview |
-| Monitoring | `05_Operations/Monitoring` | Overview, Dashboards, Alerts, SLOs, Runbooks, Ownership |
 | Logging | `05_Operations/Logging` | Overview, Sources, Format, Retention, Redaction, Queries |
-| Security | `05_Operations/Security` | Overview, ThreatModel, Secrets, VulnerabilityManagement, Incidents, ReviewChecklist |
-| CLI | `03_Development/CLI` | Overview, Commands, Configuration, ExitCodes, Distribution, Examples |
-| Library/SDK | `03_Development/SDK` | Overview, Installation, API, Versioning, Examples, Release |
 | Plugin/Extension | `03_Development/PluginExtension` | Overview, HostIntegration, Commands, Permissions, Packaging, Compatibility |
 | Monorepo | `02_Development/Monorepo` | Overview, Packages, DependencyGraph, Build, Testing, Release |
-| Microservice | `03_Development/Microservice` | Overview, Ownership, APIs, Data, Deployment, Operations |
 | LegacyMigration | `07_ProjectManagement/LegacyMigration` | Overview, CurrentState, TargetState, MigrationPlan, Rollback, Validation |
 | Documentation | `07_ProjectManagement/Documentation` | Overview, Ownership, Taxonomy, ReviewProcess, StyleGuide, Maintenance |
 | Testing | `05_Quality/Testing` | Overview, Strategy, TestTypes, Fixtures, CI, Gaps |
@@ -64,11 +81,12 @@ Each catalog module should include:
 
 ## Acceptance Criteria
 
-The component catalog expansion is complete when:
+The current shipped slice is complete when:
 
-- Every backlog module has a descriptor and starter files.
+- Every module in Current Shipped Slice has a descriptor and starter files.
 - Presets expose coherent combinations without forcing unrelated modules.
 - Existing generated modules still pass idempotency and no-overwrite tests.
-- README or public docs explain the difference between setup templates and generated component modules until those flows are unified.
+- Public docs explain the difference between setup templates, shipped generated component modules, and deferred component modules until those flows are unified.
 - Validation and search continue to work on generated module documents.
 
+The full catalog backlog is complete only when every Deferred Backlog module has a descriptor, starter files, preset treatment where useful, icon mapping or documented fallback behavior, and tests.

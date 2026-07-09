@@ -3,6 +3,7 @@
 src/**
 out/test/**
 .gitignore
+!examples/sample-pinake-workspace/.pinake/.gitignore
 .yarnrc
 vsc-extension-quickstart.md
 **/tsconfig.json

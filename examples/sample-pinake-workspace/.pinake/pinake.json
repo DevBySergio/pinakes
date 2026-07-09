@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "storage": {
+    "root": ".pinake/docs",
+    "hiddenFromExplorer": false
+  },
+  "project": {
+    "name": "Sample Pinake Workspace",
+    "documentationType": "internal",
+    "audience": [
+      "developers",
+      "maintainers"
+    ],
+    "template": "minimal-internal-docs"
+  },
+  "modules": {
+    "overview": true,
+    "gettingStarted": true,
+    "development": false,
+    "decisions": true,
+    "architecture": false,
+    "quality": false,
+    "operations": false,
+    "projectManagement": false,
+    "reference": false
+  },
+  "documents": [
+    {
+      "id": "sample-overview",
+      "title": "Overview",
+      "path": "00_overview/index.md",
+      "type": "overview",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "sample-installation",
+      "title": "Installation",
+      "path": "01_getting-started/installation.md",
+      "type": "tutorial",
+      "status": "draft",
+      "order": 1
+    },
+    {
+      "id": "sample-adr-0001",
+      "title": "ADR-0001: Adopt Pinake",
+      "path": "03_decisions/ADR-0001-adopt-pinake.md",
+      "type": "adr",
+      "status": "draft",
+      "order": 1
+    }
+  ]
+}
+

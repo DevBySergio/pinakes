@@ -5,11 +5,13 @@ import { AgentSkillInstaller } from './services/AgentSkillInstaller';
 import { FileService } from './services/FileService';
 import { IndexService } from './services/IndexService';
 import { ManifestService } from './services/ManifestService';
+import { PinakeTransferService } from './services/PinakeTransferService';
 import { ScaffoldService } from './services/ScaffoldService';
 import { StateService } from './services/StateService';
 import { ValidationDiagnosticsService } from './services/ValidationDiagnosticsService';
 import { ValidationService } from './services/ValidationService';
 import { WorkspaceService } from './services/WorkspaceService';
+import { PinakeTreeDragAndDropController } from './tree/PinakeTreeDragAndDropController';
 import { PinakeTreeProvider } from './tree/PinakeTreeProvider';
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -19,14 +21,25 @@ export function activate(context: vscode.ExtensionContext): void {
 	const stateService = new StateService(fileService);
 	const indexService = new IndexService(fileService);
 	const scaffoldService = new ScaffoldService(fileService, manifestService, stateService, indexService);
+	const transferService = new PinakeTransferService(fileService, manifestService, indexService);
 	const validationService = new ValidationService(fileService, manifestService);
 	const validationDiagnostics = vscode.languages.createDiagnosticCollection('pinakes');
 	const validationDiagnosticsService = new ValidationDiagnosticsService(fileService, validationDiagnostics);
 	const agentSkillInstaller = new AgentSkillInstaller(fileService, context.extensionUri);
 	const treeProvider = new PinakeTreeProvider(workspaceService.getWorkspaceRoot(), fileService, stateService);
+	const dragAndDropController = new PinakeTreeDragAndDropController(
+		fileService,
+		manifestService,
+		stateService,
+		indexService,
+		validationService,
+		treeProvider,
+		validationDiagnosticsService,
+	);
 	const outputChannel = vscode.window.createOutputChannel('Pinakes');
 	const treeView = vscode.window.createTreeView('pinakesView', {
 		treeDataProvider: treeProvider,
+		dragAndDropController,
 		showCollapseAll: true,
 	});
 
@@ -37,6 +50,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		scaffoldService,
 		validationService,
 		indexService,
+		transferService,
 		stateService,
 		treeProvider,
 		outputChannel,

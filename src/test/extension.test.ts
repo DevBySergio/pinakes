@@ -29,13 +29,15 @@ import {
 import { FileService } from '../services/FileService';
 import { IndexService } from '../services/IndexService';
 import { ManifestService } from '../services/ManifestService';
+import { PinakeTransferService } from '../services/PinakeTransferService';
 import { ScaffoldService } from '../services/ScaffoldService';
 import { StateService } from '../services/StateService';
 import { ValidationDiagnosticsService } from '../services/ValidationDiagnosticsService';
 import { ValidationService } from '../services/ValidationService';
 import { WorkspaceService } from '../services/WorkspaceService';
-import { allPinakeModuleIds, getPinakeModuleDefinition, pinakeTemplateDefinitions } from '../templates/pinakeTemplates';
+import { allPinakeModuleIds, getPinakeDocuments, getPinakeModuleDefinition, pinakeTemplateDefinitions } from '../templates/pinakeTemplates';
 import { PinakeDocumentDefinition } from '../types';
+import { PinakeTreeDragAndDropController } from '../tree/PinakeTreeDragAndDropController';
 import { PinakeTreeProvider } from '../tree/PinakeTreeProvider';
 
 const execFileAsync = promisify(execFile);
@@ -86,7 +88,37 @@ suite('Pinakes v0.1', () => {
 		assert.strictEqual(manifest?.project.template, 'full-product-handbook');
 		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '00_Overview', 'Overview.md')));
 		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '06_Decisions', 'ADR-0001-ExampleDecision.md')));
-		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '03_Development')));
+		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '03_Development', 'Workflow.md')));
+		assert.ok(manifest?.documents.some((document) => document.id === 'full-development-workflow'));
+	});
+
+	test('setup templates provide stable, actionable starter documents', () => {
+		for (const template of pinakeTemplateDefinitions) {
+			const defaultModuleIds = new Set(template.defaultModules);
+			const recommendedModuleIds = new Set(template.recommendedModules ?? []);
+			const documents = getPinakeDocuments(template, template.defaultModules);
+			const documentIds = new Set<string>();
+			const documentPaths = new Set<string>();
+
+			assert.ok(documents.length > 0, `${template.id} should generate documents`);
+			for (const moduleId of template.defaultModules) {
+				assert.ok(getPinakeModuleDefinition(template, moduleId).documents.length > 0, `${template.id}:${moduleId} should include starter documents`);
+			}
+
+			for (const moduleId of recommendedModuleIds) {
+				assert.ok(allPinakeModuleIds.includes(moduleId), `${template.id} recommends known module ${moduleId}`);
+				assert.ok(!defaultModuleIds.has(moduleId), `${template.id} should not recommend a default module`);
+			}
+
+			for (const document of documents) {
+				assert.ok(!documentIds.has(document.id), `${template.id} has duplicate document id ${document.id}`);
+				assert.ok(!documentPaths.has(document.path), `${template.id} has duplicate document path ${document.path}`);
+				assert.ok(document.content?.includes(`# ${document.title}`), `${document.id} should render its title`);
+				assert.ok((document.content?.match(/^## /gm) ?? []).length >= 2, `${document.id} should include actionable sections`);
+				documentIds.add(document.id);
+				documentPaths.add(document.path);
+			}
+		}
 	});
 
 	test('optionally hides .pinake from the VS Code Explorer without losing settings', async () => {
@@ -180,6 +212,9 @@ suite('Pinakes v0.1', () => {
 	});
 
 	test('includes the expanded component catalog and generates representative modules', async () => {
+		const rootPath = path.resolve(__dirname, '..', '..');
+		const roadmap = await fs.readFile(path.join(rootPath, 'docs', 'component-catalog-roadmap.md'), 'utf8');
+		const scaffoldReference = await fs.readFile(path.join(rootPath, 'docs', 'scaffold-reference.md'), 'utf8');
 		const requiredModuleIds = [
 			'GraphQL',
 			'gRPC',
@@ -195,13 +230,34 @@ suite('Pinakes v0.1', () => {
 			'SDK',
 			'Microservice',
 		];
+		const deferredModuleIds = [
+			'Authorization',
+			'Payments',
+			'Search',
+			'Email',
+			'DataPipeline',
+			'ML',
+			'GraphDB',
+			'Logging',
+			'PluginExtension',
+			'Monorepo',
+			'LegacyMigration',
+			'Documentation',
+			'Testing',
+			'DevTools',
+		];
 		const missingModuleIds = requiredModuleIds.filter((id) => !getModuleDescriptor(id));
+		const unexpectedlyShippedModuleIds = deferredModuleIds.filter((id) => getModuleDescriptor(id));
 		const duplicateModuleIds = moduleDescriptors
 			.map((descriptor) => descriptor.id)
 			.filter((id, index, ids) => ids.indexOf(id) !== index);
 
 		assert.deepStrictEqual(missingModuleIds, []);
+		assert.deepStrictEqual(unexpectedlyShippedModuleIds, []);
 		assert.deepStrictEqual(duplicateModuleIds, []);
+		assert.ok(roadmap.includes('## Current Shipped Slice'));
+		assert.ok(roadmap.includes('## Deferred Backlog'));
+		assert.ok(scaffoldReference.includes('## Deferred Component Modules'));
 		for (const id of requiredModuleIds) {
 			const descriptor = getModuleDescriptor(id);
 			assert.ok(descriptor);
@@ -209,7 +265,13 @@ suite('Pinakes v0.1', () => {
 			assert.ok(descriptor.files.length >= 5);
 			assert.ok(descriptor.files.every((file) => file.relativePath.startsWith(`${descriptor.rootFolder}/`)));
 			assert.ok(descriptor.files.every((file) => file.content.startsWith('# ')));
+			assert.ok(roadmap.includes(`| \`${id}\` |`));
 		}
+		for (const id of deferredModuleIds) {
+			assert.ok(roadmap.includes(id));
+		}
+		assert.ok(scaffoldReference.includes('| Authorization | `03_Development/Authorization` |'));
+		assert.ok(scaffoldReference.includes('| DevTools | `02_Development/DevTools` |'));
 
 		const apiPlatform = modulePresets.find((preset) => preset.id === 'api-platform');
 		const cloudNative = modulePresets.find((preset) => preset.id === 'cloud-native');
@@ -431,6 +493,37 @@ suite('Pinakes v0.1', () => {
 		assert.ok(result.valid);
 		assert.ok(result.issues.some((issue) => issue.message.includes('ADR file should match')));
 		assert.ok(result.issues.some((issue) => issue.message.includes('Broken Markdown link')));
+	});
+
+	test('reports frontmatter that drifts from manifest metadata', async () => {
+		const { root, fileService, scaffoldService, validationService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+		await fileService.writeText(
+			vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'index.md'),
+			[
+				'---',
+				'title: "Wrong Overview"',
+				'type: reference',
+				'status: stable',
+				'order: 99',
+				'---',
+				'',
+				'# Overview',
+				'',
+			].join('\n'),
+		);
+
+		const result = await validationService.validate(root);
+
+		assert.ok(result.valid);
+		assert.ok(result.issues.some((issue) =>
+			issue.path === '.pinake/docs/00_overview/index.md'
+			&& issue.message.includes('frontmatter title should match pinake.json')
+			&& issue.message.includes('Wrong Overview'),
+		));
+		assert.ok(result.issues.some((issue) => issue.message.includes('frontmatter type should match pinake.json')));
+		assert.ok(result.issues.some((issue) => issue.message.includes('frontmatter status should match pinake.json')));
+		assert.ok(result.issues.some((issue) => issue.message.includes('frontmatter order should match pinake.json')));
 	});
 
 	test('validates manifest shape', async () => {
@@ -811,10 +904,15 @@ suite('Pinakes v0.1', () => {
 			template,
 			template.defaultModules.map((moduleId) => getPinakeModuleDefinition(template, moduleId).title),
 			true,
+			(template.recommendedModules ?? []).map((moduleId) => getPinakeModuleDefinition(template, moduleId).title),
 		);
 		const includedModuleId = template.defaultModules[0];
 		const includedModule = getPinakeModuleDefinition(template, includedModuleId);
-		const includedModuleItem = formatTemplateModulePickItem(includedModule, includedModuleId, true);
+		const includedModuleItem = formatTemplateModulePickItem(includedModule, includedModuleId, 'included');
+		const recommendedModuleId = template.recommendedModules?.[0];
+		assert.ok(recommendedModuleId);
+		const recommendedModule = getPinakeModuleDefinition(template, recommendedModuleId);
+		const recommendedModuleItem = formatTemplateModulePickItem(recommendedModule, recommendedModuleId, 'recommended');
 		const preset = modulePresets[0];
 		const presetItem = formatModulePresetPickItem(preset);
 		const descriptor = moduleDescriptors[0];
@@ -824,9 +922,14 @@ suite('Pinakes v0.1', () => {
 		assert.strictEqual(templateItem.description, `Default - ${template.defaultModules.length} modules`);
 		assert.ok(templateItem.detail.includes(template.description));
 		assert.ok(templateItem.detail.includes('Starts with: Overview, Getting Started'));
+		assert.ok(templateItem.detail.includes('Recommended optional modules: Quality, Project Management'));
 		assert.strictEqual(includedModuleItem.description, `Included - ${includedModule.folder}`);
 		assert.strictEqual(includedModuleItem.detail, `${includedModule.documents.length} documents`);
 		assert.strictEqual(includedModuleItem.picked, true);
+		assert.strictEqual(recommendedModuleItem.description, `Recommended - ${recommendedModule.folder}`);
+		assert.ok(recommendedModuleItem.detail.includes(`${recommendedModule.documents.length} documents`));
+		assert.ok(recommendedModuleItem.detail.includes('Suggested optional coverage'));
+		assert.strictEqual(recommendedModuleItem.picked, false);
 		assert.strictEqual(presetItem.description, `${preset.moduleIds.length} modules`);
 		assert.strictEqual(presetItem.detail, preset.description);
 		assert.strictEqual(generatedModuleItem.description, descriptor.rootFolder);
@@ -925,6 +1028,7 @@ suite('Pinakes v0.1', () => {
 			contributes: {
 				commands: { command: string; title: string; icon?: string }[];
 				menus: { 'view/title': { command: string; when: string; group: string }[] };
+				keybindings: { command: string; key: string; mac?: string; when?: string }[];
 			};
 		};
 		const skill = await fs.readFile(skillPath, 'utf8');
@@ -939,9 +1043,20 @@ suite('Pinakes v0.1', () => {
 		const registeredCommands = await vscode.commands.getCommands(true);
 
 		assert.ok(packageJson.activationEvents.includes('onCommand:pinakes.installAgentSkill'));
-		assert.strictEqual(command?.title, 'Pinakes: Install Agent Skill');
+		assert.strictEqual(command?.title, 'Pinake: Install Agent Skill');
+		assert.ok(packageJson.contributes.commands.every((item) => item.title.startsWith('Pinake: ')));
 		assert.strictEqual(viewButton?.when, 'view == pinakesView');
-		assert.strictEqual(viewButton?.group, '3_maintenance@4');
+		assert.strictEqual(viewButton?.group, '3_maintenance@6');
+		assert.ok(packageJson.activationEvents.includes('onCommand:pinakes.export'));
+		assert.ok(packageJson.activationEvents.includes('onCommand:pinakes.import'));
+		assert.strictEqual(
+			packageJson.contributes.commands.find((item) => item.command === 'pinakes.export')?.title,
+			'Pinake: Export',
+		);
+		assert.strictEqual(
+			packageJson.contributes.commands.find((item) => item.command === 'pinakes.import')?.title,
+			'Pinake: Import Markdown',
+		);
 		assert.deepStrictEqual(primaryViewActions, [
 			'pinakes.createPinake',
 			'pinakes.newFile',
@@ -950,12 +1065,195 @@ suite('Pinakes v0.1', () => {
 			'pinakes.refresh',
 		]);
 		assert.deepStrictEqual(primaryIcons, ['$(add)', '$(new-file)', '$(new-folder)', '$(search)', '$(refresh)']);
+		assertCommandKeybinding(packageJson.contributes.keybindings, 'pinake.openPreview', 'ctrl+alt+p');
+		assertCommandKeybinding(packageJson.contributes.keybindings, 'pinake.editDocument', 'ctrl+alt+e');
+		assertCommandKeybinding(packageJson.contributes.keybindings, 'pinakes.addFavorite', 'ctrl+alt+s');
+		assertCommandKeybinding(packageJson.contributes.keybindings, 'pinakes.removeFavorite', 'ctrl+alt+s');
+		assertCommandKeybinding(packageJson.contributes.keybindings, 'pinakes.revealInExplorer', 'ctrl+alt+r');
+		assertCommandKeybinding(packageJson.contributes.keybindings, 'pinakes.copyPath', 'ctrl+alt+c');
+		assertCommandKeybinding(packageJson.contributes.keybindings, 'pinakes.validate', 'ctrl+alt+v');
 		assert.ok(registeredCommands.includes('pinakes.installAgentSkill'));
+		assert.ok(registeredCommands.includes('pinakes.export'));
+		assert.ok(registeredCommands.includes('pinakes.import'));
 		assert.match(skill, /^name: pinake$/m);
-		assert.match(skill, /^description: .*mentions Pinake.*create, maintain, validate, search, extend, or organize project documentation/m);
-		assert.match(skill, /Pinakes: Create Pinake/);
-		assert.match(skill, /Pinakes: Validate/);
+		assert.match(skill, /^description: .*mentions Pinake.*create, maintain, validate, search, extend, import, export, repair, or organize project documentation/m);
+		assert.ok(!/^license:/m.test(skill));
+		assert.match(skill, /Pinake: Create Documentation/);
+		assert.match(skill, /Pinake: Validate/);
+		assert.match(skill, /## Create A New Pinake/);
+		assert.match(skill, /When commands are unavailable/);
+		assert.match(skill, /## Generate Modules And Extra Structure/);
+		assert.match(skill, /references\/component-modules\.md/);
+		assert.match(skill, /Pinake: Repair/);
+		assert.match(skill, /Pinake: Import Markdown/);
+		assert.match(skill, /Pinake: Export/);
+		assert.match(skill, /Pinake: Generate CI Validation Workflow/);
+		assert.match(skill, /## Completion Checklist/);
 		assert.match(skill, /\.pinake\/docs/);
+	});
+
+	test('ships Pinake skill references and helper automation', async () => {
+		const rootPath = path.resolve(__dirname, '..', '..');
+		const helperPath = path.join(rootPath, 'resources', 'skills', 'pinake', 'scripts', 'pinake-docs-helper.mjs');
+		const referencesPath = path.join(rootPath, 'resources', 'skills', 'pinake', 'references');
+		const componentModules = await fs.readFile(path.join(referencesPath, 'component-modules.md'), 'utf8');
+		const manualContract = await fs.readFile(path.join(referencesPath, 'manual-storage-contract.md'), 'utf8');
+		const { stdout: inventoryStdout } = await execFileAsync(process.execPath, [helperPath, 'inventory', '--root', rootPath, '--format', 'json']);
+		const { stdout: recommendationStdout } = await execFileAsync(process.execPath, [helperPath, 'recommend', '--root', rootPath, '--format', 'json']);
+		const { stdout: syncStdout } = await execFileAsync(process.execPath, [helperPath, 'check-skill-sync', '--root', rootPath, '--format', 'json']);
+		const inventory = JSON.parse(inventoryStdout) as { signals: Record<string, boolean>; packageManager?: string };
+		const recommendation = JSON.parse(recommendationStdout) as { templateId: string; generatedModules: string[] };
+		const sync = JSON.parse(syncStdout) as { ok: boolean; missingModules: string[]; missingPresets: string[] };
+		const { root, fileService, scaffoldService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+		await fileService.writeText(
+			vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'index.md'),
+			[
+				'---',
+				'title: "Wrong"',
+				'type: reference',
+				'status: stable',
+				'order: 99',
+				'---',
+				'',
+				'# Overview',
+				'',
+			].join('\n'),
+		);
+		const { stdout: dryRunStdout } = await execFileAsync(process.execPath, [helperPath, 'normalize-frontmatter', '--root', root.fsPath, '--format', 'json']);
+		const dryRun = JSON.parse(dryRunStdout) as { wrote: boolean; changedCount: number; changed: string[] };
+		await execFileAsync(process.execPath, [helperPath, 'normalize-frontmatter', '--root', root.fsPath, '--format', 'json', '--write']);
+		const normalizedOverview = await fileService.readText(vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'index.md'));
+
+		assert.match(componentModules, /Frontend \(React\).*`Docker`/s);
+		assert.match(componentModules, /Platform Services.*`Database`.*`Authentication`.*`OAuth`/s);
+		assert.match(manualContract, /frontmatter aligned with the manifest/);
+		assert.strictEqual(inventory.signals.node, true);
+		assert.strictEqual(inventory.signals.typescript, true);
+		assert.strictEqual(inventory.packageManager, 'npm');
+		assert.ok(['api-service-docs', 'technical-architecture', 'minimal-internal-docs'].includes(recommendation.templateId));
+		assert.ok(recommendation.generatedModules.includes('CLI'));
+		assert.deepStrictEqual(sync, {
+			ok: true,
+			missingModules: [],
+			missingPresets: [],
+		});
+		assert.strictEqual(dryRun.wrote, false);
+		assert.strictEqual(dryRun.changedCount, 1);
+		assert.deepStrictEqual(dryRun.changed, ['.pinake/docs/00_overview/index.md']);
+		assert.match(normalizedOverview, /^---\ntitle: "Overview"\ntype: overview\nstatus: draft\norder: 1\n---/);
+	});
+
+	test('ships public Pinake specification docs and sample workspace', async () => {
+		const rootPath = path.resolve(__dirname, '..', '..');
+		const packageJson = JSON.parse(await fs.readFile(path.join(rootPath, 'package.json'), 'utf8')) as {
+			files: string[];
+		};
+		const publicSpec = await fs.readFile(path.join(rootPath, 'docs', 'public-specification.md'), 'utf8');
+		const scaffoldReference = await fs.readFile(path.join(rootPath, 'docs', 'scaffold-reference.md'), 'utf8');
+		const flows = await fs.readFile(path.join(rootPath, 'docs', 'extension-architecture-and-flows.md'), 'utf8');
+		const sampleRoot = path.join(rootPath, 'examples', 'sample-pinake-workspace');
+		const sampleManifest = JSON.parse(await fs.readFile(path.join(sampleRoot, '.pinake', 'pinake.json'), 'utf8')) as {
+			documents: { path: string }[];
+		};
+
+		assert.ok(packageJson.files.includes('docs/**'));
+		assert.ok(packageJson.files.includes('examples/**'));
+		assert.match(publicSpec, /## Manifest/);
+		assert.match(publicSpec, /## State Files/);
+		assert.match(scaffoldReference, /## Component Module Matrix/);
+		assert.match(scaffoldReference, /## Setup Templates/);
+		assert.match(flows, /## UI Flow Diagram/);
+		assert.match(flows, /## Command Table/);
+
+		for (const document of sampleManifest.documents) {
+			assert.ok(await fileExists(path.join(sampleRoot, '.pinake', 'docs', document.path)), `Missing sample document ${document.path}`);
+		}
+	});
+
+	test('documents architecture boundaries and keeps pure modules free of VS Code imports', async () => {
+		const rootPath = path.resolve(__dirname, '..', '..');
+		const boundaryDoc = await fs.readFile(path.join(rootPath, 'docs', 'clean-architecture-boundaries.md'), 'utf8');
+		const allowedVscodeImports = new Set([
+			'src/commands/PinakesCommands.ts',
+			'src/commands/registerCommands.ts',
+			'src/extension.ts',
+			'src/services/AgentSkillInstaller.ts',
+			'src/services/FileService.ts',
+			'src/services/IndexService.ts',
+			'src/services/ManifestService.ts',
+			'src/services/PinakeTransferService.ts',
+			'src/services/ScaffoldService.ts',
+			'src/services/StateService.ts',
+			'src/services/ValidationDiagnosticsService.ts',
+			'src/services/ValidationService.ts',
+			'src/services/WorkspaceService.ts',
+			'src/services/uriUtils.ts',
+			'src/tree/PinakeNode.ts',
+			'src/tree/PinakeTreeDragAndDropController.ts',
+			'src/tree/PinakeTreeProvider.ts',
+		]);
+		const pureModules = [
+			'src/constants.ts',
+			'src/modules/moduleDescriptors.ts',
+			'src/services/FeedbackFormatter.ts',
+			'src/services/JsonSchemaValidator.ts',
+			'src/templates/coreTemplates.ts',
+			'src/templates/pinakeTemplates.ts',
+			'src/types.ts',
+		];
+		const sourceFiles = await collectSourceFiles(path.join(rootPath, 'src'));
+		const vscodeImportPattern = /\bfrom\s+['"]vscode['"]/;
+		const disallowedImports: string[] = [];
+
+		assert.match(boundaryDoc, /## Layer Ownership/);
+		assert.match(boundaryDoc, /## VS Code API Boundary/);
+		assert.match(boundaryDoc, /Domain and definitions/);
+		assert.match(boundaryDoc, /Template catalog/);
+
+		for (const filePath of sourceFiles) {
+			const relativePath = path.relative(rootPath, filePath).replace(/\\/g, '/');
+			if (relativePath.startsWith('src/test/')) {
+				continue;
+			}
+
+			const source = await fs.readFile(filePath, 'utf8');
+			if (vscodeImportPattern.test(source) && !allowedVscodeImports.has(relativePath)) {
+				disallowedImports.push(relativePath);
+			}
+		}
+		assert.deepStrictEqual(disallowedImports, []);
+
+		for (const relativePath of pureModules) {
+			const source = await fs.readFile(path.join(rootPath, relativePath), 'utf8');
+			assert.ok(!vscodeImportPattern.test(source), `${relativePath} must not import vscode.`);
+		}
+	});
+
+	test('confirms setup summary before writing Pinake files', async () => {
+		const fixture = await createFixture();
+		const { root, fileService } = fixture;
+		const { commands, outputChannel } = createCommandHarness(fixture);
+		const summaryPrompts: { message: string; detail?: string }[] = [];
+
+		try {
+			await withDefaultSetupQuickPicks(() =>
+				withShowInformationMessage('Cancel', summaryPrompts, () => commands.createPinake()));
+
+			assert.ok(!(await fileService.exists(vscode.Uri.joinPath(root, '.pinake'))));
+			const summary = summaryPrompts.find((prompt) => prompt.message === 'Create Pinake documentation?');
+			assert.ok(summary);
+			assert.ok(summary.detail?.includes(`Workspace: ${root.fsPath}`));
+			assert.ok(summary.detail?.includes('Template: Minimal Internal Docs'));
+			assert.ok(summary.detail?.includes('Explorer: Hide .pinake'));
+
+			await withDefaultSetupQuickPicks(() =>
+				withShowInformationMessage('Create Documentation', summaryPrompts, () => commands.createPinake()));
+
+			assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'pinake.json')));
+		} finally {
+			outputChannel.dispose();
+		}
 	});
 
 	test('generates CI validation workflow and standalone validator', async () => {
@@ -967,13 +1265,207 @@ suite('Pinakes v0.1', () => {
 		const validatorUri = vscode.Uri.joinPath(root, '.pinake', 'tools', 'validate-pinake.mjs');
 		const validator = await fileService.readText(validatorUri);
 		const { stdout } = await execFileAsync(process.execPath, [validatorUri.fsPath, '--root', root.fsPath, '--format', 'json']);
-		const report = JSON.parse(stdout) as { valid: boolean };
+		const report = JSON.parse(stdout) as { valid: boolean; issues: { message: string; path?: string; line?: number }[] };
 
 		assert.ok(result.created.includes('.github/workflows/pinake-validate.yml'));
 		assert.ok(result.created.includes('.pinake/tools/validate-pinake.mjs'));
 		assert.match(workflow, /node \.pinake\/tools\/validate-pinake\.mjs --format github/);
 		assert.match(validator, /Usage: node validate-pinake\.mjs/);
 		assert.strictEqual(report.valid, true);
+
+		await fileService.writeText(
+			vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'index.md'),
+			[
+				'---',
+				'title: "Wrong Overview"',
+				'type: overview',
+				'status: draft',
+				'order: 1',
+				'---',
+				'',
+				'# Overview',
+				'github_token = "ghp_1234567890abcdefghijklmnopqrstuvwxyzAB"',
+				'',
+			].join('\n'),
+		);
+		const { stdout: warningStdout } = await execFileAsync(process.execPath, [validatorUri.fsPath, '--root', root.fsPath, '--format', 'json']);
+		const warningReport = JSON.parse(warningStdout) as { valid: boolean; issues: { message: string; path?: string; line?: number }[] };
+
+		assert.strictEqual(warningReport.valid, true);
+		assert.ok(warningReport.issues.some((issue) =>
+			issue.path === '.pinake/docs/00_overview/index.md'
+			&& issue.message.includes('frontmatter title should match pinake.json'),
+		));
+		assert.ok(warningReport.issues.some((issue) =>
+			issue.path === '.pinake/docs/00_overview/index.md'
+			&& issue.line === 9
+			&& issue.message.includes('GitHub token'),
+		));
+	});
+
+	test('exports Pinake bundles and imports Markdown folders into the manifest', async () => {
+		const { root, fileService, indexService, manifestService, scaffoldService, transferService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+
+		const exportParentPath = await fs.mkdtemp(path.join(os.tmpdir(), 'pinakes-export-'));
+		tempRoots.push(exportParentPath);
+		const exportResult = await transferService.exportWorkspace(root, vscode.Uri.file(exportParentPath));
+		const exportRoot = vscode.Uri.file(exportResult.targetPath);
+		const exportedManifest = await fileService.readJson<{ storage: { root: string } }>(vscode.Uri.joinPath(exportRoot, 'pinake.json'));
+		const exportedIndex = await fileService.readText(vscode.Uri.joinPath(exportRoot, 'index.html'));
+
+		assert.ok(exportResult.created.some((entry) => entry.endsWith('/pinake.json')));
+		assert.strictEqual(exportedManifest?.storage.root, 'docs');
+		assert.ok(await fileService.exists(vscode.Uri.joinPath(exportRoot, 'docs', '00_overview', 'index.md')));
+		assert.match(exportedIndex, /SampleApp Pinake Export/);
+		assert.match(exportedIndex, /docs\/00_overview\/index.md/);
+
+		const sourcePath = await fs.mkdtemp(path.join(os.tmpdir(), 'pinakes-import-'));
+		tempRoots.push(sourcePath);
+		await fs.mkdir(path.join(sourcePath, 'nested'), { recursive: true });
+		await fs.writeFile(path.join(sourcePath, 'Guide.md'), '# Imported Guide\n\nUseful imported notes.\n');
+		await fs.writeFile(path.join(sourcePath, 'nested', 'Runbook.md'), '# Imported Runbook\n\nOperational steps.\n');
+		await fs.writeFile(path.join(sourcePath, 'ignore.txt'), 'Not Markdown.\n');
+
+		const importResult = await transferService.importMarkdownDirectory(root, vscode.Uri.file(sourcePath));
+		const manifest = await manifestService.readManifest(root);
+		const index = await indexService.read(root);
+		const importedGuide = await fileService.readText(vscode.Uri.joinPath(root, '.pinake', 'docs', 'imported', 'Guide.md'));
+
+		assert.strictEqual(importResult.sourceCount, 2);
+		assert.strictEqual(importResult.importedCount, 2);
+		assert.ok(importResult.created.includes('.pinake/docs/imported/Guide.md'));
+		assert.ok(importResult.created.includes('.pinake/docs/imported/nested/Runbook.md'));
+		assert.ok(importResult.updated.includes('.pinake/pinake.json'));
+		assert.ok(manifest?.documents.some((document) =>
+			document.path === 'imported/Guide.md'
+			&& document.title === 'Imported Guide'
+			&& document.type === 'reference',
+		));
+		assert.ok(manifest?.documents.some((document) =>
+			document.path === 'imported/nested/Runbook.md'
+			&& document.title === 'Imported Runbook'
+			&& document.type === 'runbook',
+		));
+		assert.match(importedGuide, /^---\ntitle: "Imported Guide"\ntype: reference\nstatus: draft\norder: \d+\n---\n\n# Imported Guide/m);
+		assert.ok(index?.documents.some((document) => document.path === 'imported/Guide.md'));
+		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', 'imported', 'nested', 'Runbook.md')));
+	});
+
+	test('rejects export destinations inside Pinake docs to avoid recursive self-copy', async () => {
+		const { root, fileService, scaffoldService, transferService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+
+		const docsDirectory = vscode.Uri.joinPath(root, '.pinake', 'docs');
+		await assert.rejects(
+			() => transferService.exportWorkspace(root, docsDirectory),
+			/outside \.pinake\/docs/,
+		);
+		assert.ok(!(await fileService.exists(vscode.Uri.joinPath(docsDirectory, 'pinake-export-sampleapp'))));
+	});
+
+	test('exports Pinake bundles through the command folder picker', async () => {
+		const fixture = await createFixture();
+		const { fileService, scaffoldService } = fixture;
+		await scaffoldService.initializePinake(fixture.root, 'SampleApp');
+
+		const exportParentPath = await fs.mkdtemp(path.join(os.tmpdir(), 'pinakes-command-export-'));
+		tempRoots.push(exportParentPath);
+		const messages: { message: string; detail?: string }[] = [];
+		const { commands, outputChannel } = createCommandHarness(fixture);
+
+		try {
+			await withShowOpenDialog([vscode.Uri.file(exportParentPath)], () =>
+				withShowInformationMessage(undefined, messages, () => commands.exportPinake()));
+
+			const exportRoot = vscode.Uri.joinPath(vscode.Uri.file(exportParentPath), 'pinake-export-sampleapp');
+			const exportedManifest = await fileService.readJson<{ storage: { root: string } }>(
+				vscode.Uri.joinPath(exportRoot, 'pinake.json'),
+			);
+
+			assert.strictEqual(exportedManifest?.storage.root, 'docs');
+			assert.ok(await fileService.exists(vscode.Uri.joinPath(exportRoot, 'docs', '00_overview', 'index.md')));
+			assert.ok(await fileService.exists(vscode.Uri.joinPath(exportRoot, 'index.html')));
+			assert.ok(messages.some((prompt) => prompt.message.startsWith('Pinake exported:')));
+		} finally {
+			outputChannel.dispose();
+		}
+	});
+
+	test('imports Markdown through the command confirmation flow', async () => {
+		const fixture = await createFixture();
+		const { fileService, manifestService, scaffoldService } = fixture;
+		await scaffoldService.initializePinake(fixture.root, 'SampleApp');
+
+		const sourcePath = await fs.mkdtemp(path.join(os.tmpdir(), 'pinakes-command-import-'));
+		tempRoots.push(sourcePath);
+		await fs.writeFile(path.join(sourcePath, 'CommandGuide.md'), '# Command Import Guide\n\nImported through the command handler.\n');
+		const messages: { message: string; detail?: string }[] = [];
+		const { commands, treeProvider, outputChannel } = createCommandHarness(fixture);
+
+		try {
+			await withShowOpenDialog([vscode.Uri.file(sourcePath)], () =>
+				withShowInformationMessage('Import Documents', messages, () => commands.importDocumentation()));
+
+			const manifest = await manifestService.readManifest(fixture.root);
+			assert.ok(await fileService.exists(vscode.Uri.joinPath(fixture.root, '.pinake', 'docs', 'imported', 'CommandGuide.md')));
+			assert.ok(manifest?.documents.some((document) =>
+				document.path === 'imported/CommandGuide.md'
+				&& document.title === 'Command Import Guide',
+			));
+			assert.ok(await treeProvider.getNodeByRelativePath('imported/CommandGuide.md'));
+			assert.ok(messages.some((prompt) =>
+				prompt.message === 'Import Markdown documents into Pinake?'
+				&& prompt.detail?.includes('Target: .pinake/docs/imported'),
+			));
+			assert.ok(messages.some((prompt) => prompt.message.startsWith('Pinake import complete:')));
+		} finally {
+			outputChannel.dispose();
+		}
+	});
+
+	test('does not import Markdown when the command confirmation is cancelled', async () => {
+		const fixture = await createFixture();
+		const { fileService, manifestService, scaffoldService } = fixture;
+		await scaffoldService.initializePinake(fixture.root, 'SampleApp');
+
+		const sourcePath = await fs.mkdtemp(path.join(os.tmpdir(), 'pinakes-command-import-cancel-'));
+		tempRoots.push(sourcePath);
+		await fs.writeFile(path.join(sourcePath, 'Cancelled.md'), '# Cancelled Import\n\nThis should not be copied.\n');
+		const messages: { message: string; detail?: string }[] = [];
+		const { commands, outputChannel } = createCommandHarness(fixture);
+
+		try {
+			await withShowOpenDialog([vscode.Uri.file(sourcePath)], () =>
+				withShowInformationMessage('Cancel', messages, () => commands.importDocumentation()));
+
+			const manifest = await manifestService.readManifest(fixture.root);
+			assert.ok(!(await fileService.exists(vscode.Uri.joinPath(fixture.root, '.pinake', 'docs', 'imported', 'Cancelled.md'))));
+			assert.ok(!manifest?.documents.some((document) => document.path === 'imported/Cancelled.md'));
+			assert.ok(messages.some((prompt) => prompt.message === 'Import Markdown documents into Pinake?'));
+			assert.ok(!messages.some((prompt) => prompt.message.startsWith('Pinake import complete:')));
+		} finally {
+			outputChannel.dispose();
+		}
+	});
+
+	test('shows a no-results message for unmatched search command queries', async () => {
+		const fixture = await createFixture();
+		const { scaffoldService } = fixture;
+		await scaffoldService.initializePinake(fixture.root, 'SampleApp');
+
+		const messages: { message: string; detail?: string }[] = [];
+		const { commands, outputChannel } = createCommandHarness(fixture);
+
+		try {
+			await withShowInputBox('tag:__pinakes_absent_tag__', () =>
+				withShowInformationMessage(undefined, messages, () => commands.searchDocumentation()));
+
+			assert.ok(messages.some((prompt) =>
+				prompt.message === formatNoSearchResultsMessage('tag:__pinakes_absent_tag__')));
+		} finally {
+			outputChannel.dispose();
+		}
 	});
 
 	test('sorts tree children and opens documents with Markdown preview by default', async () => {
@@ -1098,6 +1590,79 @@ suite('Pinakes v0.1', () => {
 		assert.notStrictEqual((await provider.getChildren())[0]?.label, 'Favorites');
 	});
 
+	test('keeps tree metadata usable with long paths, long titles, and many favorites', async () => {
+		const countingFileService = new CountingFileService();
+		const { root, fileService, manifestService, scaffoldService, stateService } = await createFixture(countingFileService);
+		await scaffoldService.initializePinake(root, 'SampleApp');
+
+		const longPath = '02_development/platform/domain/billing/subscriptions/reconciliation/quarterly-close-runbook.md';
+		const longTitle = 'Quarterly Close Subscription Reconciliation Runbook With Regional Exceptions And Escalation Notes';
+		const generatedDocuments: PinakeDocumentDefinition[] = [
+			createTestDocument('stress-long-runbook', longTitle, longPath, 'runbook'),
+		];
+		for (let index = 1; index <= 24; index += 1) {
+			const suffix = index.toString().padStart(2, '0');
+			generatedDocuments.push(createTestDocument(
+				`stress-favorite-${suffix}`,
+				`Favorite Stress Document ${suffix}`,
+				`02_development/stress/favorites/favorite-${suffix}.md`,
+				'reference',
+			));
+		}
+
+		for (const document of generatedDocuments) {
+			await fileService.ensureDirectory(vscode.Uri.joinPath(root, '.pinake', 'docs', ...path.posix.dirname(document.path).split('/')));
+			await fileService.writeText(vscode.Uri.joinPath(root, '.pinake', 'docs', ...document.path.split('/')), `# ${document.title}\n`);
+		}
+
+		const manifest = await manifestService.readManifest(root);
+		if (!manifest) {
+			assert.fail('Expected Pinake manifest.');
+		}
+		manifestService.addDocuments(manifest, generatedDocuments);
+		await manifestService.writeManifest(root, manifest);
+		for (const document of generatedDocuments) {
+			await stateService.addFavorite(root, document.path);
+		}
+
+		const provider = new PinakeTreeProvider(root, fileService, stateService);
+		const longNode = await provider.getNodeByRelativePath(longPath);
+		if (!longNode) {
+			assert.fail('Expected long-path document node.');
+		}
+		const longItem = provider.getTreeItem(longNode);
+
+		assert.strictEqual(longNode.label, longTitle);
+		assert.strictEqual(longItem.contextValue, 'pinakeDocument');
+		assert.strictEqual(longItem.description, 'Runbook - Draft');
+		assert.ok(String(longItem.tooltip).includes(longTitle));
+		assert.ok(String(longItem.tooltip).includes(longPath));
+		assert.strictEqual(longItem.command?.command, 'pinake.openPreview');
+		assert.strictEqual((await provider.getParent(longNode))?.relativePath, path.posix.dirname(longPath));
+
+		countingFileService.resetCounts();
+		const rootChildren = await provider.getChildren();
+		const favorites = rootChildren[0];
+		assert.strictEqual(favorites?.label, 'Favorites');
+		assert.strictEqual(countingFileService.pinakeManifestReads, 1);
+		if (!favorites) {
+			assert.fail('Expected favorites group.');
+		}
+
+		countingFileService.resetCounts();
+		const favoriteChildren = await provider.getChildren(favorites);
+		const favoriteLabels = favoriteChildren.map((node) => node.label);
+		assert.strictEqual(countingFileService.pinakeManifestReads, 1);
+		assert.strictEqual(favoriteChildren.length, generatedDocuments.length);
+		assert.deepStrictEqual(favoriteLabels, [...favoriteLabels].sort((left, right) =>
+			left.localeCompare(right, undefined, { numeric: true, sensitivity: 'base' })));
+
+		const favoriteItem = provider.getTreeItem(favoriteChildren[0]);
+		assert.strictEqual(favoriteItem.contextValue, 'favoritePinakeDocument');
+		assert.strictEqual(favoriteItem.command?.command, 'pinake.openPreview');
+		assert.ok(typeof favoriteItem.description === 'string' && favoriteItem.description.endsWith('.md'));
+	});
+
 	test('renames Pinake documents and preserves related manifest, index, and UI state', async () => {
 		const fixture = await createFixture();
 		const { root, fileService, indexService, manifestService, scaffoldService, stateService } = fixture;
@@ -1133,6 +1698,156 @@ suite('Pinakes v0.1', () => {
 		} finally {
 			outputChannel.dispose();
 		}
+	});
+
+	test('moves Pinake documents with tree drag and drop and refreshes metadata', async () => {
+		const fixture = await createFixture();
+		const { root, fileService, indexService, manifestService, scaffoldService, stateService, validationService } = fixture;
+		await scaffoldService.initializePinake(root, 'SampleApp');
+		const sourceRelativePath = '02_development/drag-source.md';
+		const targetRelativePath = '00_overview/drag-source.md';
+		const sourceUri = vscode.Uri.joinPath(root, '.pinake', 'docs', '02_development', 'drag-source.md');
+		await fileService.writeText(sourceUri, '# Drag Source\n\nStandalone document for drag and drop.\n');
+		const manifest = await manifestService.readManifest(root);
+		if (!manifest) {
+			assert.fail('Expected Pinake manifest.');
+		}
+		manifestService.addDocuments(manifest, [createTestDocument('drag-source', 'Drag Source', sourceRelativePath, 'reference')]);
+		await manifestService.writeManifest(root, manifest);
+		await indexService.rebuild(root);
+		await stateService.addFavorite(root, sourceRelativePath);
+		await stateService.recordLastOpened(root, sourceRelativePath);
+
+		const treeProvider = new PinakeTreeProvider(root, fileService, stateService);
+		const dragAndDrop = new PinakeTreeDragAndDropController(
+			fileService,
+			manifestService,
+			stateService,
+			indexService,
+			validationService,
+			treeProvider,
+		);
+		const source = await treeProvider.getNodeByRelativePath(sourceRelativePath);
+		const target = await treeProvider.getNodeByRelativePath('00_overview');
+		if (!source || !target) {
+			assert.fail('Expected source document and target folder nodes.');
+		}
+		const dataTransfer = new vscode.DataTransfer();
+		const tokenSource = new vscode.CancellationTokenSource();
+		const messages: { message: string; detail?: string }[] = [];
+
+		await withShowInformationMessage(undefined, messages, async () => {
+			dragAndDrop.handleDrag([source], dataTransfer, tokenSource.token);
+			await dragAndDrop.handleDrop(target, dataTransfer, tokenSource.token);
+		});
+		tokenSource.dispose();
+
+		const nextManifest = await manifestService.readManifest(root);
+		const state = await stateService.readUiState(root);
+		const index = await indexService.read(root);
+
+		assert.ok(!(await fileService.exists(sourceUri)));
+		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'drag-source.md')));
+		assert.ok(nextManifest?.documents.some((document) => document.path === targetRelativePath && document.title === 'Drag Source'));
+		assert.ok(!nextManifest?.documents.some((document) => document.path === sourceRelativePath));
+		assert.deepStrictEqual(state.favorites, [targetRelativePath]);
+		assert.strictEqual(state.lastOpened, targetRelativePath);
+		assert.ok(index?.documents.some((document) => document.path === targetRelativePath));
+		assert.ok(!index?.documents.some((document) => document.path === sourceRelativePath));
+		assert.ok(messages.some((prompt) => prompt.message === 'Moved 1 Pinake item.'));
+	});
+
+	test('moves Pinake directories with tree drag and drop and rewrites descendants', async () => {
+		const fixture = await createFixture();
+		const { root, fileService, indexService, manifestService, scaffoldService, stateService, validationService } = fixture;
+		await scaffoldService.initializePinake(root, 'SampleApp');
+		const sourceRelativePath = '02_development/DragFolder';
+		const oldDocumentPath = `${sourceRelativePath}/Guide.md`;
+		const newDocumentPath = '00_overview/DragFolder/Guide.md';
+		const sourceDirectory = vscode.Uri.joinPath(root, '.pinake', 'docs', '02_development', 'DragFolder');
+		await fileService.ensureDirectory(sourceDirectory);
+		await fileService.writeText(vscode.Uri.joinPath(sourceDirectory, 'Guide.md'), '# Drag Folder Guide\n\nNested drag content.\n');
+		const manifest = await manifestService.readManifest(root);
+		if (!manifest) {
+			assert.fail('Expected Pinake manifest.');
+		}
+		manifestService.addDocuments(manifest, [createTestDocument('drag-folder-guide', 'Drag Folder Guide', oldDocumentPath, 'reference')]);
+		await manifestService.writeManifest(root, manifest);
+		await indexService.rebuild(root);
+		await stateService.recordExpanded(root, sourceRelativePath);
+		await stateService.addFavorite(root, oldDocumentPath);
+		await stateService.recordLastOpened(root, oldDocumentPath);
+
+		const treeProvider = new PinakeTreeProvider(root, fileService, stateService);
+		const dragAndDrop = new PinakeTreeDragAndDropController(
+			fileService,
+			manifestService,
+			stateService,
+			indexService,
+			validationService,
+			treeProvider,
+		);
+		const source = await treeProvider.getNodeByRelativePath(sourceRelativePath);
+		const target = await treeProvider.getNodeByRelativePath('00_overview');
+		if (!source || !target) {
+			assert.fail('Expected source directory and target folder nodes.');
+		}
+		const dataTransfer = new vscode.DataTransfer();
+		const tokenSource = new vscode.CancellationTokenSource();
+
+		dragAndDrop.handleDrag([source], dataTransfer, tokenSource.token);
+		await dragAndDrop.handleDrop(target, dataTransfer, tokenSource.token);
+		tokenSource.dispose();
+
+		const nextManifest = await manifestService.readManifest(root);
+		const state = await stateService.readUiState(root);
+		const index = await indexService.read(root);
+
+		assert.ok(!(await fileService.exists(sourceDirectory)));
+		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'DragFolder', 'Guide.md')));
+		assert.ok(nextManifest?.documents.some((document) => document.path === newDocumentPath));
+		assert.ok(!nextManifest?.documents.some((document) => document.path === oldDocumentPath));
+		assert.deepStrictEqual(state.expanded, ['00_overview/DragFolder']);
+		assert.deepStrictEqual(state.favorites, [newDocumentPath]);
+		assert.strictEqual(state.lastOpened, newDocumentPath);
+		assert.ok(index?.documents.some((document) => document.path === newDocumentPath));
+		assert.ok(!index?.documents.some((document) => document.path === oldDocumentPath));
+	});
+
+	test('rejects drag and drop moves that would place a folder inside itself', async () => {
+		const fixture = await createFixture();
+		const { root, fileService, indexService, manifestService, scaffoldService, stateService, validationService } = fixture;
+		await scaffoldService.initializePinake(root, 'SampleApp');
+
+		const treeProvider = new PinakeTreeProvider(root, fileService, stateService);
+		const dragAndDrop = new PinakeTreeDragAndDropController(
+			fileService,
+			manifestService,
+			stateService,
+			indexService,
+			validationService,
+			treeProvider,
+		);
+		const source = await treeProvider.getNodeByRelativePath('00_overview');
+		const target = await treeProvider.getNodeByRelativePath('00_overview/index.md');
+		if (!source || !target) {
+			assert.fail('Expected overview folder and child document nodes.');
+		}
+		const dataTransfer = new vscode.DataTransfer();
+		const tokenSource = new vscode.CancellationTokenSource();
+		const warnings: string[] = [];
+
+		await withShowWarningMessage(undefined, warnings, async () => {
+			dragAndDrop.handleDrag([source], dataTransfer, tokenSource.token);
+			await dragAndDrop.handleDrop(target, dataTransfer, tokenSource.token);
+		});
+		tokenSource.dispose();
+
+		const manifest = await manifestService.readManifest(root);
+		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'index.md')));
+		assert.ok(!(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', '00_overview'))));
+		assert.ok(manifest?.documents.some((document) => document.path === '00_overview/index.md'));
+		assert.ok(warnings.some((message) => message === 'Cannot move a Pinake folder into itself.'));
 	});
 
 	test('duplicates Pinake directories into manifest-backed tree documents', async () => {
@@ -1228,15 +1943,15 @@ suite('Pinakes v0.1', () => {
 		}
 	});
 
-	async function createFixture(): Promise<Fixture> {
+	async function createFixture(fileService: FileService = new FileService()): Promise<Fixture> {
 		const rootPath = await fs.mkdtemp(path.join(os.tmpdir(), 'pinakes-test-'));
 		tempRoots.push(rootPath);
 		const root = vscode.Uri.file(rootPath);
-		const fileService = new FileService();
 		const manifestService = new ManifestService(fileService);
 		const stateService = new StateService(fileService);
 		const indexService = new IndexService(fileService);
 		const scaffoldService = new ScaffoldService(fileService, manifestService, stateService, indexService);
+		const transferService = new PinakeTransferService(fileService, manifestService, indexService);
 		const validationService = new ValidationService(fileService, manifestService);
 
 		return {
@@ -1245,6 +1960,7 @@ suite('Pinakes v0.1', () => {
 			indexService,
 			manifestService,
 			scaffoldService,
+			transferService,
 			stateService,
 			validationService,
 		};
@@ -1262,16 +1978,44 @@ function createTestDocument(id: string, title: string, documentPath: string, typ
 	};
 }
 
+async function fileExists(filePath: string): Promise<boolean> {
+	try {
+		await fs.access(filePath);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+async function collectSourceFiles(directory: string): Promise<string[]> {
+	const entries = await fs.readdir(directory, { withFileTypes: true });
+	const files: string[] = [];
+	for (const entry of entries) {
+		const filePath = path.join(directory, entry.name);
+		if (entry.isDirectory()) {
+			files.push(...await collectSourceFiles(filePath));
+			continue;
+		}
+
+		if (entry.isFile() && entry.name.endsWith('.ts')) {
+			files.push(filePath);
+		}
+	}
+
+	return files;
+}
+
 function createCommandHarness(fixture: Fixture, validationDiagnosticsService?: ValidationDiagnosticsService): CommandHarness {
 	const treeProvider = new PinakeTreeProvider(fixture.root, fixture.fileService, fixture.stateService);
 	const outputChannel = vscode.window.createOutputChannel('Pinakes Test');
 	const commands = new PinakesCommands(
-		new WorkspaceService(),
+		new TestWorkspaceService(fixture.root),
 		fixture.fileService,
 		fixture.manifestService,
 		fixture.scaffoldService,
 		fixture.validationService,
 		fixture.indexService,
+		fixture.transferService,
 		fixture.stateService,
 		treeProvider,
 		outputChannel,
@@ -1284,6 +2028,73 @@ function createCommandHarness(fixture: Fixture, validationDiagnosticsService?: V
 		treeProvider,
 		outputChannel,
 	};
+}
+
+function assertCommandKeybinding(
+	keybindings: { command: string; key: string; mac?: string; when?: string }[],
+	command: string,
+	key: string,
+): void {
+	const keybinding = keybindings.find((item) => item.command === command);
+	assert.ok(keybinding, `Expected keybinding for ${command}.`);
+	assert.strictEqual(keybinding.key, key);
+	assert.match(keybinding.when ?? '', /view == pinakesView/);
+}
+
+async function withDefaultSetupQuickPicks<T>(callback: () => Promise<T>): Promise<T> {
+	return withShowQuickPick((items, options) => {
+		if (options?.canPickMany) {
+			return items.filter((item) => isPickedQuickPickItem(item));
+		}
+
+		return items[0];
+	}, callback);
+}
+
+async function withShowQuickPick<T>(
+	resolver: (items: readonly unknown[], options?: vscode.QuickPickOptions) => unknown,
+	callback: () => Promise<T>,
+): Promise<T> {
+	const window = vscode.window as unknown as { showQuickPick: typeof vscode.window.showQuickPick };
+	const original = window.showQuickPick;
+	window.showQuickPick = (async (items: readonly unknown[], options?: vscode.QuickPickOptions) =>
+		resolver(items, options)) as typeof vscode.window.showQuickPick;
+	try {
+		return await callback();
+	} finally {
+		window.showQuickPick = original;
+	}
+}
+
+async function withShowOpenDialog<T>(value: vscode.Uri[] | undefined, callback: () => Promise<T>): Promise<T> {
+	const window = vscode.window as unknown as { showOpenDialog: typeof vscode.window.showOpenDialog };
+	const original = window.showOpenDialog;
+	window.showOpenDialog = (async () => value) as typeof vscode.window.showOpenDialog;
+	try {
+		return await callback();
+	} finally {
+		window.showOpenDialog = original;
+	}
+}
+
+async function withShowInformationMessage<T>(
+	response: string | undefined,
+	messages: { message: string; detail?: string }[],
+	callback: () => Promise<T>,
+): Promise<T> {
+	const window = vscode.window as unknown as { showInformationMessage: typeof vscode.window.showInformationMessage };
+	const original = window.showInformationMessage;
+	window.showInformationMessage = (async (message: string, ...items: unknown[]) => {
+		const options = items.find((item): item is vscode.MessageOptions =>
+			typeof item === 'object' && item !== null && ('modal' in item || 'detail' in item));
+		messages.push({ message, detail: options?.detail });
+		return response;
+	}) as typeof vscode.window.showInformationMessage;
+	try {
+		return await callback();
+	} finally {
+		window.showInformationMessage = original;
+	}
 }
 
 async function withShowInputBox<T>(value: string | undefined, callback: () => Promise<T>): Promise<T> {
@@ -1311,12 +2122,51 @@ async function withShowWarningMessage<T>(response: string | undefined, messages:
 	}
 }
 
+function isPickedQuickPickItem(item: unknown): boolean {
+	return typeof item === 'object' && item !== null && 'picked' in item && Boolean((item as { picked?: boolean }).picked);
+}
+
+class TestWorkspaceService extends WorkspaceService {
+	public constructor(private readonly root: vscode.Uri) {
+		super();
+	}
+
+	public override getWorkspaceRoot(): vscode.Uri {
+		return this.root;
+	}
+
+	public override async pickWorkspaceRoot(): Promise<vscode.Uri> {
+		return this.root;
+	}
+
+	public override requireWorkspaceRoot(): vscode.Uri {
+		return this.root;
+	}
+}
+
+class CountingFileService extends FileService {
+	public pinakeManifestReads = 0;
+
+	public resetCounts(): void {
+		this.pinakeManifestReads = 0;
+	}
+
+	public override async readJson<T>(uri: vscode.Uri): Promise<T | undefined> {
+		if (uri.path.endsWith('/.pinake/pinake.json')) {
+			this.pinakeManifestReads += 1;
+		}
+
+		return super.readJson<T>(uri);
+	}
+}
+
 interface Fixture {
 	root: vscode.Uri;
 	fileService: FileService;
 	indexService: IndexService;
 	manifestService: ManifestService;
 	scaffoldService: ScaffoldService;
+	transferService: PinakeTransferService;
 	stateService: StateService;
 	validationService: ValidationService;
 }

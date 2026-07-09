@@ -4,7 +4,7 @@ import { pinakeDirectoryName, pinakeDocsDirectoryName, pinakeManifestFileName, p
 import { FileService } from '../services/FileService';
 import { StateService } from '../services/StateService';
 import { joinUri, toWorkspaceRelative } from '../services/uriUtils';
-import { PinakeDocumentDefinition, PinakeManifest, PinakeTreeSortMode } from '../types';
+import { PinakeDocumentDefinition, PinakeManifest, PinakeTreeSortMode, PinakeUiState } from '../types';
 import { PinakeNode } from './PinakeNode';
 
 export class PinakeTreeProvider implements vscode.TreeDataProvider<PinakeNode> {
@@ -132,14 +132,15 @@ export class PinakeTreeProvider implements vscode.TreeDataProvider<PinakeNode> {
 
 		const state = await this.stateService.readUiState(this.root);
 		const sortMode = state.sortMode ?? 'foldersFirst';
-		const manifestChildren = await this.getManifestChildren(element?.relativePath ?? '', sortMode);
+		const manifest = await this.readManifest();
+		const manifestChildren = this.getManifestChildren(element?.relativePath ?? '', sortMode, manifest);
 		const filesystemChildren = await this.getFilesystemChildren(element, sortMode);
 		const children = manifestChildren.length > 0
 			? mergeFilesystemDirectories(manifestChildren, filesystemChildren, sortMode)
 			: filesystemChildren;
 
 		if (!element) {
-			const favoriteChildren = await this.getFavoriteChildren();
+			const favoriteChildren = await this.getFavoriteChildren(state, manifest ?? null);
 			const rootChildren = favoriteChildren.length > 0
 				? [this.createFavoritesNode(this.getDocsDirectory()), ...children]
 				: children;
@@ -173,8 +174,11 @@ export class PinakeTreeProvider implements vscode.TreeDataProvider<PinakeNode> {
 		}
 	}
 
-	private async getManifestChildren(parentRelativePath: string, sortMode: PinakeTreeSortMode): Promise<PinakeNode[]> {
-		const manifest = await this.readManifest();
+	private getManifestChildren(
+		parentRelativePath: string,
+		sortMode: PinakeTreeSortMode,
+		manifest: PinakeManifest | undefined,
+	): PinakeNode[] {
 		if (!manifest || manifest.documents.length === 0) {
 			return [];
 		}
@@ -374,16 +378,26 @@ export class PinakeTreeProvider implements vscode.TreeDataProvider<PinakeNode> {
 		return new vscode.ThemeIcon(iconByFolder.get(element.label) ?? 'folder');
 	}
 
-	private async getFavoriteChildren(): Promise<PinakeNode[]> {
+	private async getFavoriteChildren(state?: PinakeUiState, manifest?: PinakeManifest | null): Promise<PinakeNode[]> {
 		if (!this.root) {
 			return [];
 		}
 
-		const state = await this.stateService.readUiState(this.root);
+		const activeState = state ?? (await this.stateService.readUiState(this.root));
+		const activeManifest = manifest === undefined ? await this.readManifest() : manifest;
+		const documentsByPath = new Map((activeManifest?.documents ?? []).map((document) => [document.path, document]));
 		const favorites: PinakeNode[] = [];
-		for (const relativePath of state.favorites) {
-			const node = await this.getNodeByRelativePath(relativePath);
-			if (node?.kind !== 'file') {
+		for (const relativePath of activeState.favorites) {
+			const normalized = normalizeRelativePath(relativePath);
+			if (!normalized || normalized.split('/').some((segment) => isHiddenFromPinakeTree(segment))) {
+				continue;
+			}
+
+			const document = documentsByPath.get(normalized);
+			const node = document
+				? this.createDocumentNode(document)
+				: await this.getLooseFavoriteFileNode(normalized);
+			if (!node) {
 				continue;
 			}
 
@@ -400,6 +414,20 @@ export class PinakeTreeProvider implements vscode.TreeDataProvider<PinakeNode> {
 				? labelOrder
 				: left.relativePath.localeCompare(right.relativePath, undefined, { numeric: true, sensitivity: 'base' });
 		});
+	}
+
+	private async getLooseFavoriteFileNode(relativePath: string): Promise<PinakeNode | undefined> {
+		const uri = joinUri(this.getDocsDirectory(), relativePath);
+		if (!(await this.fileService.exists(uri)) || await this.fileService.isDirectory(uri)) {
+			return undefined;
+		}
+
+		return {
+			uri,
+			label: path.posix.basename(relativePath),
+			relativePath,
+			kind: 'file',
+		};
 	}
 
 	private createFavoritesNode(docsDirectory: vscode.Uri): PinakeNode {

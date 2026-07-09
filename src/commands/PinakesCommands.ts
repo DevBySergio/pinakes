@@ -20,6 +20,7 @@ import {
 } from '../services/FeedbackFormatter';
 import { IndexService } from '../services/IndexService';
 import { ManifestService } from '../services/ManifestService';
+import { PinakeTransferService } from '../services/PinakeTransferService';
 import { ScaffoldService } from '../services/ScaffoldService';
 import { StateService } from '../services/StateService';
 import { ValidationDiagnosticsService } from '../services/ValidationDiagnosticsService';
@@ -52,6 +53,7 @@ export class PinakesCommands {
 		private readonly scaffoldService: ScaffoldService,
 		private readonly validationService: ValidationService,
 		private readonly indexService: IndexService,
+		private readonly transferService: PinakeTransferService,
 		private readonly stateService: StateService,
 		private readonly treeProvider: PinakeTreeProvider,
 		private readonly outputChannel: vscode.OutputChannel,
@@ -87,6 +89,10 @@ export class PinakesCommands {
 		}
 
 		if (!(await this.confirmExistingPinakeUpdate(root))) {
+			return;
+		}
+
+		if (!(await this.confirmPinakeCreation(root, template, moduleIds, hiddenFromExplorer, migrateLegacy))) {
 			return;
 		}
 
@@ -618,6 +624,78 @@ export class PinakesCommands {
 		}
 	}
 
+	public async exportPinake(): Promise<void> {
+		const root = this.requireRootForCommand();
+		if (!root) {
+			return;
+		}
+
+		const destination = await vscode.window.showOpenDialog({
+			title: 'Pinake: Export',
+			openLabel: 'Export Here',
+			canSelectFiles: false,
+			canSelectFolders: true,
+			canSelectMany: false,
+		});
+		const destinationDirectory = destination?.[0];
+		if (!destinationDirectory) {
+			return;
+		}
+
+		try {
+			const result = await this.transferService.exportWorkspace(root, destinationDirectory);
+			this.showScaffoldSummary('Pinake exported', result);
+		} catch (error) {
+			this.outputChannel.appendLine(`Export Pinake failed: ${error instanceof Error ? error.stack ?? error.message : String(error)}`);
+			vscode.window.showErrorMessage(`Pinake export failed: ${error instanceof Error ? error.message : String(error)}`);
+		}
+	}
+
+	public async importDocumentation(): Promise<void> {
+		const root = this.requireRootForCommand();
+		if (!root) {
+			return;
+		}
+
+		const source = await vscode.window.showOpenDialog({
+			title: 'Pinake: Import Markdown',
+			openLabel: 'Import Folder',
+			canSelectFiles: false,
+			canSelectFolders: true,
+			canSelectMany: false,
+		});
+		const sourceDirectory = source?.[0];
+		if (!sourceDirectory) {
+			return;
+		}
+
+		const answer = await vscode.window.showInformationMessage(
+			'Import Markdown documents into Pinake?',
+			{
+				modal: true,
+				detail: [
+					`Source: ${sourceDirectory.fsPath}`,
+					'Target: .pinake/docs/imported',
+					'Existing target files will be skipped.',
+				].join('\n'),
+			},
+			'Import Documents',
+			'Cancel',
+		);
+		if (answer !== 'Import Documents') {
+			return;
+		}
+
+		try {
+			const result = await this.transferService.importMarkdownDirectory(root, sourceDirectory);
+			this.treeProvider.refresh();
+			this.showScaffoldSummary('Pinake import complete', result);
+		} catch (error) {
+			this.outputChannel.appendLine(`Import Pinake documents failed: ${error instanceof Error ? error.stack ?? error.message : String(error)}`);
+			vscode.window.showErrorMessage(`Pinake import failed: ${error instanceof Error ? error.message : String(error)}`);
+		}
+	}
+
 	public async validate(): Promise<void> {
 		const root = this.requireRootForCommand();
 		if (!root) {
@@ -675,6 +753,7 @@ export class PinakesCommands {
 				template,
 				template.defaultModules.map((moduleId) => getPinakeModuleDefinition(template, moduleId).title),
 				index === 0,
+				(template.recommendedModules ?? []).map((moduleId) => getPinakeModuleDefinition(template, moduleId).title),
 			)),
 			{
 				title: 'Pinake: Select Template',
@@ -687,10 +766,16 @@ export class PinakesCommands {
 
 	private async pickTemplateModules(template: PinakeTemplateDefinition): Promise<PinakeModuleId[] | undefined> {
 		const defaultModuleIds = new Set(template.defaultModules);
+		const recommendedModuleIds = new Set(template.recommendedModules ?? []);
 		const selected = await vscode.window.showQuickPick(
 			allPinakeModuleIds.map((moduleId) => {
 				const definition = getPinakeModuleDefinition(template, moduleId);
-				return formatTemplateModulePickItem(definition, moduleId, defaultModuleIds.has(moduleId));
+				const selectionState = defaultModuleIds.has(moduleId)
+					? 'included'
+					: recommendedModuleIds.has(moduleId)
+						? 'recommended'
+						: 'optional';
+				return formatTemplateModulePickItem(definition, moduleId, selectionState);
 			}),
 			{
 				title: 'Pinake: Select Modules',
@@ -784,6 +869,43 @@ export class PinakesCommands {
 		);
 
 		return answer === 'Create Missing Files';
+	}
+
+	private async confirmPinakeCreation(
+		root: vscode.Uri,
+		template: PinakeTemplateDefinition,
+		moduleIds: PinakeModuleId[],
+		hiddenFromExplorer: boolean,
+		migrateLegacy: boolean,
+	): Promise<boolean> {
+		const answer = await vscode.window.showInformationMessage(
+			'Create Pinake documentation?',
+			{
+				modal: true,
+				detail: this.formatPinakeCreationSummary(root, template, moduleIds, hiddenFromExplorer, migrateLegacy),
+			},
+			'Create Documentation',
+			'Cancel',
+		);
+
+		return answer === 'Create Documentation';
+	}
+
+	private formatPinakeCreationSummary(
+		root: vscode.Uri,
+		template: PinakeTemplateDefinition,
+		moduleIds: PinakeModuleId[],
+		hiddenFromExplorer: boolean,
+		migrateLegacy: boolean,
+	): string {
+		const moduleTitles = moduleIds.map((moduleId) => getPinakeModuleDefinition(template, moduleId).title);
+		return [
+			`Workspace: ${root.fsPath}`,
+			`Template: ${template.title}`,
+			`Modules: ${moduleTitles.length > 0 ? moduleTitles.join(', ') : 'None'}`,
+			`Explorer: ${hiddenFromExplorer ? 'Hide .pinake' : 'Show .pinake'}`,
+			`Legacy Pinake/: ${migrateLegacy ? 'Copy into .pinake/docs' : 'No copy'}`,
+		].join('\n');
 	}
 
 	private async addDocumentToManifest(root: vscode.Uri, document: PinakeDocumentDefinition): Promise<void> {

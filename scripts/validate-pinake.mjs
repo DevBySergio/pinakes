@@ -26,6 +26,34 @@ const schemaSpecs = [
 	[`${pinakeDirectoryName}/${pinakeStateDirectoryName}/${internalStateFileNames.version}`, createVersionSchema()],
 ];
 
+const secretPatterns = [
+	{
+		name: 'private key material',
+		pattern: /-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----/,
+	},
+	{
+		name: 'GitHub token',
+		pattern: /\bgh[pousr]_[A-Za-z0-9_]{36,}\b/,
+	},
+	{
+		name: 'AWS access key id',
+		pattern: /\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/,
+	},
+	{
+		name: 'Slack token',
+		pattern: /\bxox[baprs]-[A-Za-z0-9-]{20,}\b/,
+	},
+	{
+		name: 'JWT-like token',
+		pattern: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/,
+	},
+	{
+		name: 'credential assignment',
+		pattern: /\b(?:api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|password|passwd|secret|token)\b\s*[:=]\s*["']?([^"'\s`]{12,})["']?/i,
+		getValue: (match) => match[1],
+	},
+];
+
 const options = parseArgs(process.argv.slice(2));
 const result = await validatePinake(path.resolve(options.root));
 writeResult(result, options.format);
@@ -42,6 +70,7 @@ async function validatePinake(root) {
 	}
 
 	await validateMarkdownDocuments(root, issues);
+	await validateMarkdownSecretHygiene(root, issues);
 	return {
 		valid: issues.every((issue) => issue.severity !== 'error'),
 		issueCount: issues.length,
@@ -150,12 +179,15 @@ async function validateManifestDocuments(root, manifest, issues) {
 
 		if (document.path.toLowerCase().endsWith('.md')) {
 			const content = await fs.readFile(documentPath, 'utf8');
-			if (!content.trimStart().startsWith('---')) {
+			const frontmatter = parseMarkdownFrontmatter(content);
+			if (!frontmatter) {
 				issues.push({
 					severity: 'warning',
 					message: `Markdown document should include frontmatter: ${relativePath}.`,
 					path: relativePath,
 				});
+			} else {
+				validateFrontmatterAlignment(relativePath, document, frontmatter, issues);
 			}
 		}
 	}
@@ -196,6 +228,15 @@ async function validateMarkdownDocuments(root, issues) {
 	}
 }
 
+async function validateMarkdownSecretHygiene(root, issues) {
+	const docsDirectory = path.join(root, pinakeDirectoryName, pinakeDocsDirectoryName);
+	for (const relativePath of await collectMarkdownFiles(docsDirectory, [])) {
+		const absolutePath = path.join(docsDirectory, relativePath);
+		const content = await fs.readFile(absolutePath, 'utf8');
+		validateSecretHygiene(`${pinakeDirectoryName}/${pinakeDocsDirectoryName}/${relativePath}`, content, issues);
+	}
+}
+
 async function collectMarkdownFiles(directory, relativeSegments) {
 	if (!(await exists(directory))) {
 		return [];
@@ -217,6 +258,109 @@ async function collectMarkdownFiles(directory, relativeSegments) {
 	}
 
 	return files;
+}
+
+function parseMarkdownFrontmatter(content) {
+	const normalized = content.replace(/^\uFEFF/, '');
+	if (!normalized.startsWith('---')) {
+		return undefined;
+	}
+
+	const lines = normalized.split(/\r?\n/);
+	if (lines[0]?.trim() !== '---') {
+		return undefined;
+	}
+
+	const frontmatterLines = [];
+	for (let index = 1; index < lines.length; index += 1) {
+		const line = lines[index] ?? '';
+		if (line.trim() === '---') {
+			return {
+				values: parseFrontmatterScalars(frontmatterLines),
+				closed: true,
+			};
+		}
+
+		frontmatterLines.push(line);
+	}
+
+	return {
+		values: parseFrontmatterScalars(frontmatterLines),
+		closed: false,
+	};
+}
+
+function parseFrontmatterScalars(lines) {
+	const values = {};
+	for (const line of lines) {
+		if (/^\s/.test(line)) {
+			continue;
+		}
+
+		const match = /^([A-Za-z][\w-]*)\s*:\s*(.*)$/.exec(line);
+		if (!match) {
+			continue;
+		}
+
+		values[match[1]] = normalizeFrontmatterValue(match[2]);
+	}
+
+	return values;
+}
+
+function normalizeFrontmatterValue(rawValue) {
+	const value = rawValue.trim();
+	if (value.startsWith('"') && value.endsWith('"')) {
+		try {
+			return JSON.parse(value);
+		} catch {
+			return value.slice(1, -1);
+		}
+	}
+
+	if (value.startsWith("'") && value.endsWith("'")) {
+		return value.slice(1, -1).replace(/''/g, "'");
+	}
+
+	return value;
+}
+
+function validateFrontmatterAlignment(relativePath, document, frontmatter, issues) {
+	if (!frontmatter.closed) {
+		issues.push({
+			severity: 'warning',
+			message: `Markdown frontmatter should close with ---: ${relativePath}.`,
+			path: relativePath,
+		});
+		return;
+	}
+
+	const expectedValues = {
+		title: document.title,
+		type: document.type,
+		status: document.status,
+		order: String(document.order),
+	};
+
+	for (const [field, expected] of Object.entries(expectedValues)) {
+		const actual = frontmatter.values[field];
+		if (actual === undefined) {
+			issues.push({
+				severity: 'warning',
+				message: `Markdown frontmatter should include ${field}: ${relativePath}.`,
+				path: relativePath,
+			});
+			continue;
+		}
+
+		if (field === 'order' ? Number(actual) !== document.order : actual !== expected) {
+			issues.push({
+				severity: 'warning',
+				message: `Markdown frontmatter ${field} should match pinake.json for ${relativePath}: expected ${JSON.stringify(expected)}, found ${JSON.stringify(actual)}.`,
+				path: relativePath,
+			});
+		}
+	}
 }
 
 function validateMarkdownStyle(relativePath, content, issues) {
@@ -281,6 +425,60 @@ function validateMarkdownStyle(relativePath, content, issues) {
 			line: fenceStartLine,
 		});
 	}
+}
+
+function validateSecretHygiene(relativePath, content, issues) {
+	const lines = content.split(/\r?\n/);
+	for (const [index, line] of lines.entries()) {
+		if (isSecretPlaceholderLine(line)) {
+			continue;
+		}
+
+		for (const secretPattern of secretPatterns) {
+			const match = line.match(secretPattern.pattern);
+			if (!match) {
+				continue;
+			}
+
+			const value = secretPattern.getValue?.(match) ?? match[0];
+			if (isSafePlaceholderValue(value)) {
+				continue;
+			}
+
+			issues.push({
+				severity: 'warning',
+				message: `Possible secret-like content detected (${secretPattern.name}) in ${relativePath}.`,
+				path: relativePath,
+				line: index + 1,
+			});
+			break;
+		}
+	}
+}
+
+function isSecretPlaceholderLine(line) {
+	const trimmed = line.trim();
+	if (!trimmed) {
+		return true;
+	}
+
+	return /^(?:[-*]\s*)?(?:`)?[A-Z][A-Z0-9_]*(?:`)?(?:\s+-\s+|\s*:\s*$|\s*$)/.test(trimmed)
+		&& /(?:TOKEN|SECRET|PASSWORD|API_KEY|KEY)$/i.test(trimmed);
+}
+
+function isSafePlaceholderValue(value) {
+	const normalized = value.toUpperCase();
+	return normalized.includes('EXAMPLE')
+		|| normalized.includes('SAMPLE')
+		|| normalized.includes('PLACEHOLDER')
+		|| normalized.includes('REDACTED')
+		|| normalized.includes('CHANGEME')
+		|| normalized.includes('CHANGE_ME')
+		|| normalized.includes('YOUR_')
+		|| normalized.includes('XXXX')
+		|| normalized.includes('***')
+		|| /^<[^>]+>$/.test(value)
+		|| /^\$\{[^}]+}$/.test(value);
 }
 
 function extractMarkdownLinkTargets(content) {

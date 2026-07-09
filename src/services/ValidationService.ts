@@ -206,12 +206,15 @@ export class ValidationService {
 
 			if (document.path.toLowerCase().endsWith('.md')) {
 				const content = await this.fileService.readText(documentUri);
-				if (!content.trimStart().startsWith('---')) {
+				const frontmatter = parseMarkdownFrontmatter(content);
+				if (!frontmatter) {
 					issues.push({
 						severity: 'warning',
 						message: `Markdown document should include frontmatter: ${relativePath}.`,
 						path: relativePath,
 					});
+				} else {
+					validateFrontmatterAlignment(relativePath, document, frontmatter, issues);
 				}
 			}
 		}
@@ -282,8 +285,13 @@ export class ValidationService {
 			}
 		}
 
-		return files;
+	return files;
 	}
+}
+
+interface MarkdownFrontmatter {
+	values: Record<string, string>;
+	closed: boolean;
 }
 
 interface SecretPattern {
@@ -319,6 +327,114 @@ const secretPatterns: SecretPattern[] = [
 		getValue: (match) => match[1],
 	},
 ];
+
+function parseMarkdownFrontmatter(content: string): MarkdownFrontmatter | undefined {
+	const normalized = content.replace(/^\uFEFF/, '');
+	if (!normalized.startsWith('---')) {
+		return undefined;
+	}
+
+	const lines = normalized.split(/\r?\n/);
+	if (lines[0]?.trim() !== '---') {
+		return undefined;
+	}
+
+	const frontmatterLines: string[] = [];
+	for (let index = 1; index < lines.length; index += 1) {
+		const line = lines[index] ?? '';
+		if (line.trim() === '---') {
+			return {
+				values: parseFrontmatterScalars(frontmatterLines),
+				closed: true,
+			};
+		}
+
+		frontmatterLines.push(line);
+	}
+
+	return {
+		values: parseFrontmatterScalars(frontmatterLines),
+		closed: false,
+	};
+}
+
+function parseFrontmatterScalars(lines: string[]): Record<string, string> {
+	const values: Record<string, string> = {};
+	for (const line of lines) {
+		if (/^\s/.test(line)) {
+			continue;
+		}
+
+		const match = /^([A-Za-z][\w-]*)\s*:\s*(.*)$/.exec(line);
+		if (!match) {
+			continue;
+		}
+
+		values[match[1]] = normalizeFrontmatterValue(match[2]);
+	}
+
+	return values;
+}
+
+function normalizeFrontmatterValue(rawValue: string): string {
+	const value = rawValue.trim();
+	if (value.startsWith('"') && value.endsWith('"')) {
+		try {
+			return JSON.parse(value) as string;
+		} catch {
+			return value.slice(1, -1);
+		}
+	}
+
+	if (value.startsWith("'") && value.endsWith("'")) {
+		return value.slice(1, -1).replace(/''/g, "'");
+	}
+
+	return value;
+}
+
+function validateFrontmatterAlignment(
+	relativePath: string,
+	document: PinakeManifest['documents'][number],
+	frontmatter: MarkdownFrontmatter,
+	issues: ValidationIssue[],
+): void {
+	if (!frontmatter.closed) {
+		issues.push({
+			severity: 'warning',
+			message: `Markdown frontmatter should close with ---: ${relativePath}.`,
+			path: relativePath,
+		});
+		return;
+	}
+
+	const expectedValues: Record<string, string> = {
+		title: document.title,
+		type: document.type,
+		status: document.status,
+		order: String(document.order),
+	};
+
+	for (const [field, expected] of Object.entries(expectedValues)) {
+		const actual = frontmatter.values[field];
+		if (actual === undefined) {
+			issues.push({
+				severity: 'warning',
+				message: `Markdown frontmatter should include ${field}: ${relativePath}.`,
+				path: relativePath,
+			});
+			continue;
+		}
+
+		if (field === 'order' ? Number(actual) !== document.order : actual !== expected) {
+			issues.push({
+				severity: 'warning',
+				message: `Markdown frontmatter ${field} should match pinake.json for ${relativePath}: expected ${JSON.stringify(expected)}, found ${JSON.stringify(actual)}.`,
+				path: relativePath,
+			});
+		}
+	}
+}
 
 function validateSecretHygiene(relativePath: string, content: string, issues: ValidationIssue[]): void {
 	const lines = content.split(/\r?\n/);

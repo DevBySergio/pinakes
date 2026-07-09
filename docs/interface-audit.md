@@ -41,7 +41,7 @@ The audited surfaces are:
 
 The interface is strongest when it behaves like the native Explorer: TreeView navigation, context menus, command palette access, preview/edit split, and filesystem-safe operations all fit VS Code expectations. The main friction is not visual complexity; it is inconsistent language and uneven guidance between surfaces.
 
-Command naming should be normalized. User-facing titles currently mix `Pinake:` and `Pinakes:` while the product name is `Pinake Editor`. The extension can keep existing command IDs for compatibility, but future titles and docs should use singular `Pinake:` unless there is a strong reason not to.
+Command naming should stay normalized. User-facing titles use singular `Pinake:` while existing command IDs remain in place for compatibility.
 
 The setup flow is safe but opaque. A user makes several choices before seeing what will be created. The wizard should keep the native QuickPick approach, but each step should expose the effect of the choice in `detail`, and the final step should summarize template, selected modules, storage location, Explorer visibility, legacy migration behavior, and overwrite policy.
 

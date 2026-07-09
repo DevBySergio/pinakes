@@ -43,6 +43,8 @@ export interface PinakeTemplateModuleQuickPickItem {
 	picked: boolean;
 }
 
+export type PinakeTemplateModuleSelectionState = 'included' | 'recommended' | 'optional';
+
 export interface PinakeModulePresetQuickPickItem {
 	label: string;
 	description: string;
@@ -81,6 +83,7 @@ export function formatTemplatePickItem(
 	template: PinakeTemplateDefinition,
 	defaultModuleTitles: string[],
 	isDefault: boolean,
+	recommendedModuleTitles: string[] = [],
 ): PinakeTemplateQuickPickItem {
 	const moduleSummary = formatCount(template.defaultModules.length, 'module');
 	return {
@@ -89,7 +92,8 @@ export function formatTemplatePickItem(
 		detail: [
 			template.description,
 			`Starts with: ${formatInlineList(defaultModuleTitles)}`,
-		].join('\n'),
+			recommendedModuleTitles.length > 0 ? `Recommended optional modules: ${formatInlineList(recommendedModuleTitles)}` : undefined,
+		].filter((line): line is string => Boolean(line)).join('\n'),
 		template,
 	};
 }
@@ -97,14 +101,20 @@ export function formatTemplatePickItem(
 export function formatTemplateModulePickItem(
 	definition: PinakeModuleDefinition,
 	moduleId: PinakeModuleId,
-	picked: boolean,
+	selectionState: PinakeTemplateModuleSelectionState | boolean,
 ): PinakeTemplateModuleQuickPickItem {
+	const state = typeof selectionState === 'boolean'
+		? selectionState ? 'included' : 'optional'
+		: selectionState;
 	return {
 		label: definition.title,
-		description: `${picked ? 'Included' : 'Optional'} - ${definition.folder}`,
-		detail: formatCount(definition.documents.length, 'document'),
+		description: `${formatModuleSelectionState(state)} - ${definition.folder}`,
+		detail: [
+			formatCount(definition.documents.length, 'document'),
+			state === 'recommended' ? 'Suggested optional coverage for this template.' : undefined,
+		].filter((line): line is string => Boolean(line)).join('\n'),
 		moduleId,
-		picked,
+		picked: state === 'included',
 	};
 }
 
@@ -258,6 +268,14 @@ function formatTags(tags: string[]): string | undefined {
 
 function formatCount(count: number, noun: string): string {
 	return `${count} ${noun}${count === 1 ? '' : 's'}`;
+}
+
+function formatModuleSelectionState(state: PinakeTemplateModuleSelectionState): string {
+	return state === 'included'
+		? 'Included'
+		: state === 'recommended'
+			? 'Recommended'
+			: 'Optional';
 }
 
 function formatInlineList(values: string[], maxItems = 4): string {

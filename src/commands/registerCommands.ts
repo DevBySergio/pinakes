@@ -30,6 +30,8 @@ export function registerPinakesCommands(context: vscode.ExtensionContext, comman
 		vscode.commands.registerCommand('pinakes.repair', () => commands.repairPinake()),
 		vscode.commands.registerCommand('pinakes.upgrade', () => commands.upgradePinake()),
 		vscode.commands.registerCommand('pinakes.generateCiValidation', () => commands.generateCiValidation()),
+		vscode.commands.registerCommand('pinakes.export', () => commands.exportPinake()),
+		vscode.commands.registerCommand('pinakes.import', () => commands.importDocumentation()),
 		vscode.commands.registerCommand('pinakes.validate', () => commands.validate()),
 		vscode.commands.registerCommand('pinakes.installAgentSkill', () => commands.installAgentSkill()),
 	);
