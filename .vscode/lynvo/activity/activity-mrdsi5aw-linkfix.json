@@ -1,0 +1,16 @@
+{
+  "id": "activity-mrdsi5aw-linkfix",
+  "type": "task_moved",
+  "message": "Completed \"Bug: Align Markdown link parsing between validation and index\" and moved it to Done",
+  "createdAt": 1783618669400,
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "taskId": "task-mrdrz552-uh5miqyc",
+  "metadata": {
+    "from": "todo",
+    "to": "done",
+    "targetFile": "src/services/markdownLinks.ts"
+  }
+}
