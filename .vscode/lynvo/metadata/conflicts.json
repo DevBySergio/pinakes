@@ -504,9 +504,9 @@
     "entityType": "task",
     "entityId": "task-mrcitd2y-catalog2",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783588993972,
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783589112814,
     "resolved": false
   }
 }

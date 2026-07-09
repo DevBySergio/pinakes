@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrdavd04-s6sdpluh",
+  "type": "task_moved",
+  "message": "Moved \"Finish or rescope the component catalog roadmap\" from In Progress to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783589052820,
+  "taskId": "task-mrcitd2y-catalog2",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}
