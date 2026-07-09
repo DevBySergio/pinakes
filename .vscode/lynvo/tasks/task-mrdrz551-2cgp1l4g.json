@@ -2,7 +2,7 @@
   "id": "task-mrdrz551-2cgp1l4g",
   "title": "Bug: Guard Pinake import/export against self-copy and stale bundles",
   "description": "Project audit finding.\n\nContext:\n- Export rejects destinations inside `.pinake/docs`, but repeated exports to the same parent reuse `pinake-export-<project>` and skip existing files, which can leave stale `pinake.json`, `index.html`, or docs in the bundle.\n- Import can use `.pinake/docs` as the source. If an `imported/` folder already exists under docs, repeated imports can copy prior imports into `imported/imported/...`.\n- These are easy mistakes from the folder picker and create confusing local state without failing tests today.\n\nAction plan:\n1. Add service tests for exporting twice after changing a document or manifest and verify the second result is not stale.\n2. Add service/command tests that reject importing from `.pinake/docs` or any source that contains the target import folder.\n3. Decide export behavior: create a unique timestamped export directory, ask command users to overwrite, or fail with a clear message. Prefer unique directory at the service layer unless UX requires overwrite.\n4. Add import guards with clear errors before collecting Markdown files.\n5. Ensure command handlers show actionable error messages and do not partially write files.\n6. Run compile, lint, validator, and extension tests.\n\nAcceptance checks:\n- Repeated export never silently returns an outdated bundle.\n- Importing from `.pinake/docs` is rejected before writes.\n- Import/export command errors are clear and tested.",
-  "status": "todo",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,8 +12,8 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783617782725,
-  "updatedAt": 1783617782725,
-  "position": 1783617782725,
+  "updatedAt": 1783620057567,
+  "position": 1783620057567,
   "labelIds": [
     "bug"
   ],
@@ -27,44 +27,44 @@
     {
       "id": "check-mrdrz55j-s8mi9cht",
       "text": "Add a failing repeated-export stale bundle test",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782725,
-      "updatedAt": 1783617782725
+      "updatedAt": 1783620057567
     },
     {
       "id": "check-mrdrz55k-nt0hg1tl",
       "text": "Add a failing self-import or nested-import test",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782725,
-      "updatedAt": 1783617782725
+      "updatedAt": 1783620057567
     },
     {
       "id": "check-mrdrz55l-kz2m3ok5",
       "text": "Make export produce a fresh bundle or explicit overwrite path",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782725,
-      "updatedAt": 1783617782725
+      "updatedAt": 1783620057567
     },
     {
       "id": "check-mrdrz55m-iilo52ij",
       "text": "Reject import sources that are inside docs or contain the target import folder",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782725,
-      "updatedAt": 1783617782725
+      "updatedAt": 1783620057567
     },
     {
       "id": "check-mrdrz55n-yj01woof",
       "text": "Update command-level messages for guarded import/export cases",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782725,
-      "updatedAt": 1783617782725
+      "updatedAt": 1783620057567
     },
     {
       "id": "check-mrdrz55o-srj7m4qo",
       "text": "Run compile, lint, validator, and extension tests",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782725,
-      "updatedAt": 1783617782725
+      "updatedAt": 1783620057567
     }
   ],
   "relations": [

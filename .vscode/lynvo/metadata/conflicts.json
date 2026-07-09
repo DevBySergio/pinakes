@@ -618,5 +618,15 @@
     "remoteValue": "todo",
     "createdAt": 1783619380208,
     "resolved": true
+  },
+  "task-task-mrdrz551-2cgp1l4g-status": {
+    "id": "task-task-mrdrz551-2cgp1l4g-status",
+    "entityType": "task",
+    "entityId": "task-mrdrz551-2cgp1l4g",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "todo",
+    "createdAt": 1783620100285,
+    "resolved": false
   }
 }
