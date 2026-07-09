@@ -2,7 +2,7 @@
   "id": "task-mrdpqwoi-9kqvi6m7",
   "title": "Improve Pinake setup templates for higher-value generated docs",
   "description": "Create a second-pass improvement to `src/templates/pinakeTemplates.ts` so generated Pinake documentation is more immediately useful to real projects while preserving scaffold compatibility.\n\n## Findings From Current Template Analysis\n\n- Core module bodies in `pinakeModuleDefinitions` are structurally sound but mostly generic prompts. Several files ask one broad question, use empty tables, or omit concrete examples, ownership fields, review cadence, source-of-truth links, risks, and acceptance criteria.\n- `fullProductHandbookModules` preserves the legacy large handbook shape, but many override documents are single-sentence bodies. The `development` override creates the legacy folder with no starter documents, which may be intentional compatibility but produces a low-value section for new users.\n- `pinakeTemplateDefinitions` currently differentiates templates only by default module sets and brief descriptions. The optional `recommendedModules` field exists in the type but is not used by the command flow or formatter.\n- Template changes flow into scaffold creation, repair, manifest document metadata, QuickPick labels/details, docs/scaffold-reference.md, examples, and extension tests.\n\n## Goal\n\nImprove the templates so a user who runs `Pinake: Create Documentation` gets actionable starter documentation, not placeholder pages. The output should help teams document architecture, setup, operations, quality, roadmap, decisions, and reference material with enough structure to be useful on day one.\n\n## Implementation Plan\n\n1. Audit every current module and template, grouping gaps by user outcome: onboarding, local development, architecture understanding, operational readiness, product planning, quality practices, and maintenance.\n2. Define a template matrix that names each template's target audience, default modules, recommended optional modules, and expected generated value.\n3. Rewrite starter document bodies to include practical sections such as purpose, owner, last reviewed, inputs, source of truth, key decisions, examples, common pitfalls, review cadence, and completion checklist where appropriate.\n4. Keep template IDs, module IDs, document IDs, and established paths stable unless a path/id change has a specific migration reason. If any path/id must change, update repair behavior, manifest expectations, docs, examples, and tests in the same change.\n5. Improve the full product handbook overrides so legacy-style folders remain compatible while the generated documents are as useful as the lowercase core templates. Decide explicitly whether the empty `03_Development` override should remain folder-only or gain curated starter docs.\n6. Evaluate whether to activate `recommendedModules`. If used, wire it through `PinakesCommands.pickTemplateModules`, `FeedbackFormatter.formatTemplateModulePickItem`, and tests so the setup flow can distinguish Included, Recommended, and Optional modules.\n7. Update dependent documentation, especially `docs/scaffold-reference.md`, and refresh sample/example outputs if they represent generated template content.\n8. Add tests that lock the template contract without making future content edits painful: unique IDs, stable paths, no empty default generated templates, manifest metadata excludes content, formatter behavior for recommended modules if added, and scaffold/repair behavior for representative templates.\n9. Verify the project with `npm run compile`, `npm run lint`, `npm test`, and `npm run pinake:validate`.\n\n## Acceptance Criteria\n\n- Every generated starter document in the selected default modules has actionable content beyond a one-line placeholder.\n- Each template clearly communicates who it is for and why its module set is valuable.\n- Existing scaffolds, repair behavior, manifest writes, QuickPick formatting, docs, examples, and tests are updated when affected.\n- Existing user-authored Markdown is still not overwritten during repair or repeated scaffold generation.\n- The default minimal template remains lightweight, while API/service, operations, architecture, product/project, and full handbook templates provide richer domain-specific guidance.\n- Compile, lint, extension tests, and Pinake validation pass.",
-  "status": "in-progress",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783614039282,
-  "updatedAt": 1783614630711,
+  "updatedAt": 1783614908335,
   "position": 1783614309446,
   "labelIds": [
     "feat"
@@ -69,30 +69,30 @@
     {
       "id": "check-mrdpqwoi-xakxjfew",
       "text": "Update docs/scaffold-reference.md, README or changelog notes if applicable, and sample workspace artifacts that describe or demonstrate generated templates.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614908335
     },
     {
       "id": "check-mrdpqwoi-vyr237lj",
       "text": "Add or update tests for template integrity, generated scaffold contents, manifest metadata, QuickPick text, repair behavior, and duplicate/path validation.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614908335
     },
     {
       "id": "check-mrdpqwoi-8xfxhzum",
       "text": "Generate representative minimal, API/service, operations, technical architecture, and full handbook scaffolds to inspect usefulness and frontmatter consistency.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614908335
     },
     {
       "id": "check-mrdpqwoi-5m6pc62p",
       "text": "Run npm run compile, npm run lint, npm test, and npm run pinake:validate; fix any regressions before closing.",
-      "done": false,
+      "done": true,
       "createdAt": 1783614039282,
-      "updatedAt": 1783614039282
+      "updatedAt": 1783614908335
     }
   ],
   "relations": [
