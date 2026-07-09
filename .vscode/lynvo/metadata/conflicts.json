@@ -547,6 +547,6 @@
     "localValue": "Deferred until after the current Pinake Editor release. Define stable metadata and command surfaces for future Calimaco desktop sync, AI assistant integration, and external tooling.",
     "remoteValue": "Define stable metadata and command surfaces for future Calimaco desktop sync, AI assistant integration, and external tooling.",
     "createdAt": 1783612153048,
-    "resolved": false
+    "resolved": true
   }
 }
