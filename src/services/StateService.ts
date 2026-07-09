@@ -56,13 +56,18 @@ export class StateService {
 		return created;
 	}
 
-	public async syncModulesState(root: vscode.Uri, manifest: PinakeManifest): Promise<void> {
+	public async syncModulesState(root: vscode.Uri, manifest: PinakeManifest): Promise<boolean> {
 		const internalDirectory = this.getInternalDirectoryUri(root);
+		const modulesUri = vscode.Uri.joinPath(internalDirectory, internalStateFileNames.modules);
+		const nextState = this.createModulesState(manifest);
 		await this.fileService.ensureDirectory(internalDirectory);
-		await this.fileService.writeJson(
-			vscode.Uri.joinPath(internalDirectory, internalStateFileNames.modules),
-			this.createModulesState(manifest),
-		);
+		const existingState = await this.fileService.readJson<PinakeModulesState>(modulesUri);
+		if (JSON.stringify(existingState) === JSON.stringify(nextState)) {
+			return false;
+		}
+
+		await this.fileService.writeJson(modulesUri, nextState);
+		return true;
 	}
 
 	public async syncVersionState(root: vscode.Uri): Promise<void> {

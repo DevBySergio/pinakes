@@ -12,6 +12,7 @@ import { PinakeManifest, ValidationIssue, ValidationResult } from '../types';
 import { FileService } from './FileService';
 import { JsonSchema, JsonSchemaValidator } from './JsonSchemaValidator';
 import { ManifestService } from './ManifestService';
+import { extractMarkdownLinkTargets, resolveMarkdownLinkCandidates } from './markdownLinks';
 import { joinUri } from './uriUtils';
 
 interface RuntimeSchemaValidationResult {
@@ -241,8 +242,8 @@ export class ValidationService {
 			const content = await this.fileService.readText(fileUri);
 			validateMarkdownStyle(`${pinakeDirectoryName}/${pinakeDocsDirectoryName}/${relativePath}`, content, issues);
 			for (const target of extractMarkdownLinkTargets(content)) {
-				const resolved = resolveMarkdownLink(docsDirectory, relativePath, target);
-				if (!resolved || await this.fileService.exists(resolved)) {
+				const candidates = resolveMarkdownLinkCandidates(relativePath, target);
+				if (!candidates || await this.anyMarkdownLinkCandidateExists(docsDirectory, candidates)) {
 					continue;
 				}
 
@@ -253,6 +254,16 @@ export class ValidationService {
 				});
 			}
 		}
+	}
+
+	private async anyMarkdownLinkCandidateExists(docsDirectory: vscode.Uri, candidates: string[]): Promise<boolean> {
+		for (const candidate of candidates) {
+			if (await this.fileService.exists(joinUri(docsDirectory, candidate))) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private async validateMarkdownSecretHygiene(root: vscode.Uri, issues: ValidationIssue[]): Promise<void> {
@@ -552,54 +563,6 @@ function validateMarkdownStyle(relativePath: string, content: string, issues: Va
 			line: fenceStartLine,
 		});
 	}
-}
-
-function extractMarkdownLinkTargets(content: string): string[] {
-	const targets: string[] = [];
-	const linkPattern = /!?\[[^\]]*]\(([^)]+)\)/g;
-	let match = linkPattern.exec(content);
-	while (match) {
-		const target = match[1]?.trim();
-		if (target && !target.startsWith('#') && !/^(https?:|mailto:|tel:)/i.test(target)) {
-			targets.push(target);
-		}
-
-		match = linkPattern.exec(content);
-	}
-
-	return targets;
-}
-
-function resolveMarkdownLink(docsDirectory: vscode.Uri, sourceRelativePath: string, rawTarget: string): vscode.Uri | undefined {
-	const withoutAnchor = rawTarget.split('#')[0]?.split('?')[0];
-	if (!withoutAnchor || withoutAnchor.length === 0) {
-		return undefined;
-	}
-
-	let decodedTarget: string;
-	try {
-		decodedTarget = decodeURIComponent(withoutAnchor);
-	} catch {
-		decodedTarget = withoutAnchor;
-	}
-
-	if (decodedTarget.startsWith('/')) {
-		return joinUri(
-			docsDirectory,
-			decodedTarget
-				.replace(/^\/?\.pinake\/docs\//, '')
-				.replace(/^\/?Pinake\//, '')
-				.replace(/^\//, ''),
-		);
-	}
-
-	const sourceDirectory = path.posix.dirname(sourceRelativePath);
-	const normalized = path.posix.normalize(path.posix.join(sourceDirectory, decodedTarget));
-	if (normalized.startsWith('..')) {
-		return undefined;
-	}
-
-	return joinUri(docsDirectory, normalized);
 }
 
 async function readJsonSchema(schemaFileName: string): Promise<JsonSchema> {

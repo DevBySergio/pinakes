@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { pinakeDirectoryName, pinakeDocsDirectoryName, pinakeManifestFileName } from '../constants';
-import { getDefaultPinakeTemplate, getPinakeDocuments, getPinakeTemplate } from '../templates/pinakeTemplates';
+import { allPinakeModuleIds, getDefaultPinakeTemplate, getPinakeDocuments, getPinakeTemplate } from '../templates/pinakeTemplates';
 import {
 	PinakeDocumentDefinition,
 	PinakeDocumentStatus,
@@ -9,6 +9,7 @@ import {
 	PinakeModuleDescriptor,
 	PinakeModuleId,
 } from '../types';
+import { createDocumentIdVariant } from './documentIds';
 import { FileService } from './FileService';
 
 export class ManifestService {
@@ -133,21 +134,55 @@ export class ManifestService {
 		templateId: string,
 		moduleIds: PinakeModuleId[],
 		hiddenFromExplorer: boolean,
-	): void {
-		manifest.storage.root = `${pinakeDirectoryName}/${pinakeDocsDirectoryName}`;
-		manifest.storage.hiddenFromExplorer = hiddenFromExplorer;
-		manifest.project.template = getPinakeTemplate(templateId).id;
-		for (const moduleId of moduleIds) {
-			manifest.modules[moduleId] = true;
+	): boolean {
+		let changed = false;
+		const storageRoot = `${pinakeDirectoryName}/${pinakeDocsDirectoryName}`;
+		const normalizedTemplateId = getPinakeTemplate(templateId).id;
+		const selectedModuleIds = new Set(moduleIds);
+
+		if (manifest.storage.root !== storageRoot) {
+			manifest.storage.root = storageRoot;
+			changed = true;
 		}
+
+		if (manifest.storage.hiddenFromExplorer !== hiddenFromExplorer) {
+			manifest.storage.hiddenFromExplorer = hiddenFromExplorer;
+			changed = true;
+		}
+
+		if (manifest.project.template !== normalizedTemplateId) {
+			manifest.project.template = normalizedTemplateId;
+			changed = true;
+		}
+
+		for (const moduleId of allPinakeModuleIds) {
+			const enabled = selectedModuleIds.has(moduleId);
+			if (manifest.modules[moduleId] !== enabled) {
+				manifest.modules[moduleId] = enabled;
+				changed = true;
+			}
+		}
+
+		for (const moduleId of moduleIds) {
+			if (manifest.modules[moduleId] !== true) {
+				manifest.modules[moduleId] = true;
+				changed = true;
+			}
+		}
+
+		return changed;
 	}
 
 	public addDocuments(manifest: PinakeManifest, documents: PinakeDocumentDefinition[]): boolean {
 		let changed = false;
-		for (const document of documents.map(toManifestDocument)) {
-			const existingIndex = manifest.documents.findIndex((entry) => entry.id === document.id || entry.path === document.path);
+		for (const incomingDocument of documents.map(toManifestDocument)) {
+			const existingIndex = manifest.documents.findIndex((entry) => entry.path === incomingDocument.path);
 			if (existingIndex >= 0) {
 				const existing = manifest.documents[existingIndex];
+				const document = {
+					...incomingDocument,
+					id: existing.id,
+				};
 				if (JSON.stringify(existing) !== JSON.stringify(document)) {
 					manifest.documents[existingIndex] = {
 						...existing,
@@ -158,6 +193,7 @@ export class ManifestService {
 				continue;
 			}
 
+			const document = this.resolveDocumentIdCollision(manifest, incomingDocument);
 			manifest.documents.push(document);
 			changed = true;
 		}
@@ -167,6 +203,25 @@ export class ManifestService {
 		}
 
 		return changed;
+	}
+
+	private resolveDocumentIdCollision(manifest: PinakeManifest, document: PinakeDocumentDefinition): PinakeDocumentDefinition {
+		if (!manifest.documents.some((entry) => entry.id === document.id && entry.path !== document.path)) {
+			return document;
+		}
+
+		const baseId = createDocumentIdVariant(document.id, document.path);
+		let id = baseId;
+		let suffix = 2;
+		while (manifest.documents.some((entry) => entry.id === id && entry.path !== document.path)) {
+			id = `${baseId}-${suffix}`;
+			suffix += 1;
+		}
+
+		return {
+			...document,
+			id,
+		};
 	}
 
 	public removeDocument(manifest: PinakeManifest, relativePath: string): boolean {

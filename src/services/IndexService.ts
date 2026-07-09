@@ -6,12 +6,12 @@ import {
 	PinakeBrokenReference,
 	PinakeIndexedDocument,
 	PinakeIndexedHeading,
-	PinakeIndexedLink,
 	PinakeIndexesState,
 	PinakeReferenceGraph,
 	PinakeSearchResult,
 } from '../types';
 import { FileService } from './FileService';
+import { extractMarkdownLinks, resolveMarkdownLinkPath } from './markdownLinks';
 import { joinUri } from './uriUtils';
 
 interface ParsedSearchQuery {
@@ -475,63 +475,6 @@ function addTag(tags: Set<string>, value: string): void {
 	if (normalized.length > 0) {
 		tags.add(normalized);
 	}
-}
-
-function extractMarkdownLinks(content: string): Pick<PinakeIndexedLink, 'target' | 'line'>[] {
-	const links: Pick<PinakeIndexedLink, 'target' | 'line'>[] = [];
-	for (const [index, line] of content.split(/\r?\n/).entries()) {
-		const linkPattern = /!?\[[^\]]*]\(([^)]+)\)/g;
-		let match = linkPattern.exec(line);
-		while (match) {
-			const target = match[1]?.trim();
-			if (target && !target.startsWith('#') && !/^(https?:|mailto:|tel:)/i.test(target)) {
-				links.push({
-					target,
-					line: index + 1,
-				});
-			}
-			match = linkPattern.exec(line);
-		}
-	}
-
-	return links;
-}
-
-function resolveMarkdownLinkPath(sourceRelativePath: string, rawTarget: string, markdownFileSet: Set<string>): string | undefined {
-	const withoutAnchor = rawTarget.split('#')[0]?.split('?')[0];
-	if (!withoutAnchor || withoutAnchor.length === 0) {
-		return undefined;
-	}
-
-	let decodedTarget: string;
-	try {
-		decodedTarget = decodeURIComponent(withoutAnchor);
-	} catch {
-		decodedTarget = withoutAnchor;
-	}
-
-	const normalized = decodedTarget.startsWith('/')
-		? path.posix.normalize(decodedTarget
-			.replace(/^\/?\.pinake\/docs\//, '')
-			.replace(/^\/?Pinake\//, '')
-			.replace(/^\//, ''))
-		: path.posix.normalize(path.posix.join(path.posix.dirname(sourceRelativePath), decodedTarget));
-
-	if (normalized.startsWith('..') || path.posix.isAbsolute(normalized)) {
-		return undefined;
-	}
-
-	if (markdownFileSet.has(normalized)) {
-		return normalized;
-	}
-
-	const withMarkdownExtension = `${normalized}.md`;
-	if (markdownFileSet.has(withMarkdownExtension)) {
-		return withMarkdownExtension;
-	}
-
-	const indexPath = path.posix.join(normalized, 'index.md');
-	return markdownFileSet.has(indexPath) ? indexPath : undefined;
 }
 
 function normalizeReferencePath(targetPath: string): string {

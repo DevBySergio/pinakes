@@ -27,6 +27,7 @@ import {
 	ScaffoldResult,
 	TemplateFile,
 } from '../types';
+import { createDocumentId } from './documentIds';
 import { FileService } from './FileService';
 import { IndexService } from './IndexService';
 import { ManifestService } from './ManifestService';
@@ -71,9 +72,10 @@ export class ScaffoldService {
 			result.created.push(`${pinakeDirectoryName}/${pinakeManifestFileName}`);
 			manifestChanged = true;
 		} else {
-			this.manifestService.setTemplateSelection(manifest, template.id, moduleIds, options.hiddenFromExplorer ?? manifest.storage.hiddenFromExplorer);
-			manifestChanged = this.manifestService.addDocuments(manifest, documents);
-			result.updated.push(`${pinakeDirectoryName}/${pinakeManifestFileName}`);
+			manifestChanged = this.manifestService.setTemplateSelection(manifest, template.id, moduleIds, options.hiddenFromExplorer ?? manifest.storage.hiddenFromExplorer);
+			if (this.manifestService.addDocuments(manifest, documents)) {
+				manifestChanged = true;
+			}
 		}
 
 		const discoveredDocuments = await this.collectUntrackedMarkdownDocuments(docsDirectory, manifest.documents);
@@ -83,9 +85,15 @@ export class ScaffoldService {
 
 		if (manifestChanged) {
 			await this.manifestService.writeManifest(root, manifest);
+			if (!result.created.includes(`${pinakeDirectoryName}/${pinakeManifestFileName}`)) {
+				result.updated.push(`${pinakeDirectoryName}/${pinakeManifestFileName}`);
+			}
 		}
 
 		result.created.push(...await this.stateService.ensureInitialState(root, manifest));
+		if (await this.stateService.syncModulesState(root, manifest)) {
+			result.updated.push(`${pinakeDirectoryName}/${pinakeStateDirectoryName}/${internalStateFileNames.modules}`);
+		}
 		if (await this.ensurePinakeGitignoreEntry(pinakeDirectory)) {
 			result.updated.push(`${pinakeDirectoryName}/${pinakeGitignoreFileName}`);
 		}
@@ -512,7 +520,7 @@ function descriptorToDocuments(descriptor: PinakeModuleDescriptor): PinakeDocume
 		.map((file, index) => documentFromPath(file.relativePath, index + 1, `module-${slug(descriptor.id)}-${slug(file.relativePath)}`));
 }
 
-function documentFromPath(relativePath: string, order: number, id = `document-${slug(relativePath)}`): PinakeDocumentDefinition {
+function documentFromPath(relativePath: string, order: number, id = createDocumentId('document', relativePath)): PinakeDocumentDefinition {
 	const title = titleFromPath(relativePath);
 	return {
 		id,

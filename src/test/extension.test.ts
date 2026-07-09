@@ -36,7 +36,7 @@ import { ValidationDiagnosticsService } from '../services/ValidationDiagnosticsS
 import { ValidationService } from '../services/ValidationService';
 import { WorkspaceService } from '../services/WorkspaceService';
 import { allPinakeModuleIds, getPinakeDocuments, getPinakeModuleDefinition, pinakeTemplateDefinitions } from '../templates/pinakeTemplates';
-import { PinakeDocumentDefinition } from '../types';
+import { PinakeDocumentDefinition, PinakeModulesState } from '../types';
 import { PinakeTreeDragAndDropController } from '../tree/PinakeTreeDragAndDropController';
 import { PinakeTreeProvider } from '../tree/PinakeTreeProvider';
 
@@ -90,6 +90,45 @@ suite('Pinakes v0.1', () => {
 		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '06_Decisions', 'ADR-0001-ExampleDecision.md')));
 		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', '03_Development', 'Workflow.md')));
 		assert.ok(manifest?.documents.some((document) => document.id === 'full-development-workflow'));
+	});
+
+	test('persists setup reruns and syncs module state', async () => {
+		const { root, fileService, manifestService, scaffoldService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+
+		const rerunResult = await scaffoldService.initializePinake(root, {
+			projectName: 'SampleApp',
+			templateId: 'technical-architecture',
+			hiddenFromExplorer: true,
+		});
+		const manifest = await manifestService.readManifest(root);
+		const modulesState = await fileService.readJson<PinakeModulesState>(vscode.Uri.joinPath(root, '.pinake', '.state', 'modules.json'));
+		const installedModuleIds = modulesState?.installedModules.map((module) => module.id).sort();
+
+		assert.ok(rerunResult.updated.includes('.pinake/pinake.json'));
+		assert.ok(rerunResult.updated.includes('.pinake/.state/modules.json'));
+		assert.strictEqual(manifest?.project.template, 'technical-architecture');
+		assert.strictEqual(manifest?.storage.hiddenFromExplorer, true);
+		assert.strictEqual(manifest?.modules.architecture, true);
+		assert.strictEqual(manifest?.modules.quality, true);
+		assert.strictEqual(manifest?.modules.development, false);
+		assert.deepStrictEqual(installedModuleIds, [
+			'architecture',
+			'decisions',
+			'gettingStarted',
+			'overview',
+			'quality',
+			'reference',
+		].sort());
+
+		const noOpResult = await scaffoldService.initializePinake(root, {
+			projectName: 'SampleApp',
+			templateId: 'technical-architecture',
+			hiddenFromExplorer: true,
+		});
+
+		assert.ok(!noOpResult.updated.includes('.pinake/pinake.json'));
+		assert.ok(!noOpResult.updated.includes('.pinake/.state/modules.json'));
 	});
 
 	test('setup templates provide stable, actionable starter documents', () => {
@@ -493,6 +532,43 @@ suite('Pinakes v0.1', () => {
 		assert.ok(result.valid);
 		assert.ok(result.issues.some((issue) => issue.message.includes('ADR file should match')));
 		assert.ok(result.issues.some((issue) => issue.message.includes('Broken Markdown link')));
+	});
+
+	test('validates local Markdown links with index-compatible resolution', async () => {
+		const { root, fileService, indexService, scaffoldService, validationService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+		const sourcePath = await writeMarkdownLinkFixture(root, fileService);
+
+		const index = await indexService.rebuild(root);
+		const sourceDocument = index.documents.find((document) => document.path === sourcePath);
+		const links = new Map(sourceDocument?.links.map((link) => [link.target, link]));
+		const validation = await validationService.validate(root);
+		const brokenMessages = validation.issues
+			.map((issue) => issue.message)
+			.filter((message) => message.includes('Broken Markdown link'));
+		const brokenReferences = await indexService.findBrokenReferences(root);
+
+		assert.strictEqual(links.get('../00_overview/guide')?.resolvedPath, '00_overview/guide.md');
+		assert.strictEqual(links.get('../00_overview/folder/')?.resolvedPath, '00_overview/folder/index.md');
+		assert.strictEqual(links.get('../00_overview/guide.md')?.resolvedPath, '00_overview/guide.md');
+		assert.strictEqual(links.get('../00_overview/query.md?view=full#details')?.resolvedPath, '00_overview/query.md');
+		assert.ok(!links.has('https://example.com/docs'));
+		assert.ok(!links.has('mailto:docs@example.com'));
+		assert.ok(!links.has('tel:+15555550123'));
+		assert.ok(!links.has('#local'));
+		assert.deepStrictEqual(brokenMessages, [
+			`Broken Markdown link "../00_overview/missing" in .pinake/docs/${sourcePath}.`,
+		]);
+		assert.deepStrictEqual(
+			brokenReferences.filter((reference) => reference.sourcePath === sourcePath),
+			[
+				{
+					sourcePath,
+					targetRaw: '../00_overview/missing',
+					line: 11,
+				},
+			],
+		);
 	});
 
 	test('reports frontmatter that drifts from manifest metadata', async () => {
@@ -1303,6 +1379,23 @@ suite('Pinakes v0.1', () => {
 		));
 	});
 
+	test('standalone validator resolves local Markdown link variants consistently', async () => {
+		const { root, fileService, scaffoldService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+		await scaffoldService.generateCiValidation(root);
+		const sourcePath = await writeMarkdownLinkFixture(root, fileService);
+		const validatorUri = vscode.Uri.joinPath(root, '.pinake', 'tools', 'validate-pinake.mjs');
+		const { stdout } = await execFileAsync(process.execPath, [validatorUri.fsPath, '--root', root.fsPath, '--format', 'json']);
+		const report = JSON.parse(stdout) as { issues: { message: string }[] };
+		const brokenMessages = report.issues
+			.map((issue) => issue.message)
+			.filter((message) => message.includes('Broken Markdown link'));
+
+		assert.deepStrictEqual(brokenMessages, [
+			`Broken Markdown link "../00_overview/missing" in .pinake/docs/${sourcePath}.`,
+		]);
+	});
+
 	test('exports Pinake bundles and imports Markdown folders into the manifest', async () => {
 		const { root, fileService, indexService, manifestService, scaffoldService, transferService } = await createFixture();
 		await scaffoldService.initializePinake(root, 'SampleApp');
@@ -1350,6 +1443,80 @@ suite('Pinakes v0.1', () => {
 		assert.match(importedGuide, /^---\ntitle: "Imported Guide"\ntype: reference\nstatus: draft\norder: \d+\n---\n\n# Imported Guide/m);
 		assert.ok(index?.documents.some((document) => document.path === 'imported/Guide.md'));
 		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', 'imported', 'nested', 'Runbook.md')));
+	});
+
+	test('repeated exports create fresh bundles instead of stale skipped files', async () => {
+		const { root, fileService, scaffoldService, transferService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+		const exportParentPath = await fs.mkdtemp(path.join(os.tmpdir(), 'pinakes-repeat-export-'));
+		tempRoots.push(exportParentPath);
+		const exportParent = vscode.Uri.file(exportParentPath);
+
+		const firstExport = await transferService.exportWorkspace(root, exportParent);
+		await fileService.writeText(
+			vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'index.md'),
+			[
+				'---',
+				'title: "Overview"',
+				'type: overview',
+				'status: draft',
+				'order: 1',
+				'---',
+				'',
+				'# Updated Overview',
+				'',
+				'Fresh export content.',
+				'',
+			].join('\n'),
+		);
+		const secondExport = await transferService.exportWorkspace(root, exportParent);
+		const firstOverview = await fileService.readText(vscode.Uri.joinPath(vscode.Uri.file(firstExport.targetPath), 'docs', '00_overview', 'index.md'));
+		const secondOverview = await fileService.readText(vscode.Uri.joinPath(vscode.Uri.file(secondExport.targetPath), 'docs', '00_overview', 'index.md'));
+
+		assert.notStrictEqual(firstExport.targetPath, secondExport.targetPath);
+		assert.ok(secondExport.targetPath.endsWith('pinake-export-sampleapp-2'));
+		assert.ok(!firstOverview.includes('Fresh export content.'));
+		assert.ok(secondOverview.includes('Fresh export content.'));
+		assert.ok(secondExport.created.some((entry) => entry.endsWith('/pinake.json')));
+	});
+
+	test('imports slug-colliding Markdown paths with unique manifest ids', async () => {
+		const { root, fileService, manifestService, scaffoldService, transferService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+
+		const sourcePath = await fs.mkdtemp(path.join(os.tmpdir(), 'pinakes-import-collision-'));
+		tempRoots.push(sourcePath);
+		await fs.writeFile(path.join(sourcePath, 'A+B.md'), '# A Plus B\n\nFirst document.\n');
+		await fs.writeFile(path.join(sourcePath, 'A B.md'), '# A Space B\n\nSecond document.\n');
+
+		const result = await transferService.importMarkdownDirectory(root, vscode.Uri.file(sourcePath));
+		const manifest = await manifestService.readManifest(root);
+		const importedDocuments = manifest?.documents.filter((document) =>
+			document.path === 'imported/A+B.md'
+			|| document.path === 'imported/A B.md') ?? [];
+		const importedIds = importedDocuments.map((document) => document.id);
+
+		assert.strictEqual(result.sourceCount, 2);
+		assert.strictEqual(result.importedCount, 2);
+		assert.strictEqual(importedDocuments.length, 2);
+		assert.strictEqual(new Set(importedIds).size, 2);
+		assert.ok(importedIds.every((id) => /^imported-/.test(id)));
+		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', 'imported', 'A+B.md')));
+		assert.ok(await fileService.exists(vscode.Uri.joinPath(root, '.pinake', 'docs', 'imported', 'A B.md')));
+	});
+
+	test('rejects imports from Pinake docs or sources containing the target import folder', async () => {
+		const { root, scaffoldService, transferService } = await createFixture();
+		await scaffoldService.initializePinake(root, 'SampleApp');
+
+		await assert.rejects(
+			() => transferService.importMarkdownDirectory(root, vscode.Uri.joinPath(root, '.pinake', 'docs')),
+			/outside \.pinake\/docs/,
+		);
+		await assert.rejects(
+			() => transferService.importMarkdownDirectory(root, vscode.Uri.joinPath(root, '.pinake')),
+			/does not contain the target import folder/,
+		);
 	});
 
 	test('rejects export destinations inside Pinake docs to avoid recursive self-copy', async () => {
@@ -1976,6 +2143,34 @@ function createTestDocument(id: string, title: string, documentPath: string, typ
 		status: 'draft',
 		order: 1,
 	};
+}
+
+async function writeMarkdownLinkFixture(root: vscode.Uri, fileService: FileService): Promise<string> {
+	const folderUri = vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'folder');
+	const sourcePath = '02_development/link-semantics.md';
+	await fileService.ensureDirectory(folderUri);
+	await fileService.writeText(vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'guide.md'), '# Guide\n');
+	await fileService.writeText(vscode.Uri.joinPath(folderUri, 'index.md'), '# Folder Index\n');
+	await fileService.writeText(vscode.Uri.joinPath(root, '.pinake', 'docs', '00_overview', 'query.md'), '# Query\n');
+	await fileService.writeText(
+		vscode.Uri.joinPath(root, '.pinake', 'docs', sourcePath),
+		[
+			'# Links',
+			'',
+			'[Guide](../00_overview/guide)',
+			'[Folder](../00_overview/folder/)',
+			'[Titled](../00_overview/guide.md "Read next")',
+			'[Query](../00_overview/query.md?view=full#details)',
+			'[External](https://example.com/docs)',
+			'[Email](mailto:docs@example.com)',
+			'[Phone](tel:+15555550123)',
+			'[Anchor](#local)',
+			'[Missing](../00_overview/missing "Missing")',
+			'',
+		].join('\n'),
+	);
+
+	return sourcePath;
 }
 
 async function fileExists(filePath: string): Promise<boolean> {

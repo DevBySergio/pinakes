@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { pinakeDirectoryName, pinakeDocsDirectoryName, pinakeManifestFileName } from '../constants';
 import { PinakeDocumentDefinition, PinakeDocumentType, PinakeManifest, ScaffoldResult } from '../types';
+import { createDocumentId } from './documentIds';
 import { FileService } from './FileService';
 import { IndexService } from './IndexService';
 import { ManifestService } from './ManifestService';
@@ -30,7 +31,7 @@ export class PinakeTransferService {
 			throw new Error('Pinake docs directory not found. Create or repair Pinake first.');
 		}
 
-		const exportDirectory = vscode.Uri.joinPath(destinationDirectory, `pinake-export-${slug(manifest.project.name || path.basename(root.fsPath))}`);
+		const exportDirectory = await this.resolveFreshExportDirectory(destinationDirectory, `pinake-export-${slug(manifest.project.name || path.basename(root.fsPath))}`);
 		if (isUriInside(docsDirectory, exportDirectory)) {
 			throw new Error('Choose an export destination outside .pinake/docs.');
 		}
@@ -73,6 +74,9 @@ export class PinakeTransferService {
 	public async importMarkdownDirectory(root: vscode.Uri, sourceDirectory: vscode.Uri, targetFolder = 'imported'): Promise<PinakeImportResult> {
 		const manifest = await this.requireManifest(root);
 		const docsDirectory = vscode.Uri.joinPath(root, pinakeDirectoryName, pinakeDocsDirectoryName);
+		const normalizedTargetFolder = normalizeRelativePath(targetFolder);
+		const targetDirectory = joinUri(docsDirectory, normalizedTargetFolder);
+		this.assertSafeImportSource(docsDirectory, sourceDirectory, targetDirectory);
 		await this.fileService.ensureDirectory(docsDirectory);
 
 		const markdownFiles = await this.collectMarkdownFiles(sourceDirectory);
@@ -80,7 +84,7 @@ export class PinakeTransferService {
 		const importedDocuments: PinakeDocumentDefinition[] = [];
 		for (const source of markdownFiles) {
 			const sourceRelativePath = toWorkspaceRelative(sourceDirectory, source);
-			const targetRelativePath = normalizeRelativePath(`${targetFolder}/${sourceRelativePath}`);
+			const targetRelativePath = normalizeRelativePath(`${normalizedTargetFolder}/${sourceRelativePath}`);
 			const target = joinUri(docsDirectory, targetRelativePath);
 			const trackedPath = `${pinakeDirectoryName}/${pinakeDocsDirectoryName}/${targetRelativePath}`;
 			if (await this.fileService.exists(target)) {
@@ -110,6 +114,27 @@ export class PinakeTransferService {
 		return result;
 	}
 
+	private async resolveFreshExportDirectory(destinationDirectory: vscode.Uri, baseName: string): Promise<vscode.Uri> {
+		let candidate = vscode.Uri.joinPath(destinationDirectory, baseName);
+		let suffix = 2;
+		while (await this.fileService.exists(candidate)) {
+			candidate = vscode.Uri.joinPath(destinationDirectory, `${baseName}-${suffix}`);
+			suffix += 1;
+		}
+
+		return candidate;
+	}
+
+	private assertSafeImportSource(docsDirectory: vscode.Uri, sourceDirectory: vscode.Uri, targetDirectory: vscode.Uri): void {
+		if (isUriInside(docsDirectory, sourceDirectory)) {
+			throw new Error('Choose an import source outside .pinake/docs.');
+		}
+
+		if (isUriInside(sourceDirectory, targetDirectory)) {
+			throw new Error('Choose an import source that does not contain the target import folder.');
+		}
+	}
+
 	private async requireManifest(root: vscode.Uri): Promise<PinakeManifest> {
 		const manifest = await this.manifestService.readManifest(root);
 		if (!manifest) {
@@ -121,7 +146,7 @@ export class PinakeTransferService {
 
 	private createImportedDocument(content: string, targetRelativePath: string, order: number): PinakeDocumentDefinition {
 		return {
-			id: `imported-${slug(targetRelativePath)}`,
+			id: createDocumentId('imported', targetRelativePath),
 			title: extractMarkdownTitle(content) ?? titleFromPath(targetRelativePath),
 			path: targetRelativePath,
 			type: inferDocumentType(targetRelativePath),

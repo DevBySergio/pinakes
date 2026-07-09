@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { legacyPinakeDirectoryName, pinakeDirectoryName, pinakeDocsDirectoryName } from '../constants';
 import { moduleDescriptors, modulePresets } from '../modules/moduleDescriptors';
 import { AgentSkillInstaller } from '../services/AgentSkillInstaller';
+import { createDocumentId } from '../services/documentIds';
 import { FileService } from '../services/FileService';
 import {
 	formatGeneratedModulePickItem,
@@ -1219,7 +1220,7 @@ export class PinakesCommands {
 function createDocumentDefinition(relativePath: string, idSeed = relativePath): PinakeDocumentDefinition {
 	const title = titleFromRelativePath(relativePath);
 	return {
-		id: `custom-${slug(idSeed)}-${slug(relativePath)}`,
+		id: createDocumentId('custom', relativePath, idSeed),
 		title,
 		path: relativePath,
 		type: inferDocumentType(relativePath),
@@ -1285,13 +1286,6 @@ function inferDocumentType(relativePath: string): PinakeDocumentType {
 	}
 
 	return 'reference';
-}
-
-function slug(value: string): string {
-	return value
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '');
 }
 
 function formatBytes(bytes: number): string {
