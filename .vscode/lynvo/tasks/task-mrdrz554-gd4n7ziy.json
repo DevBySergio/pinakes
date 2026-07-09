@@ -1,0 +1,78 @@
+{
+  "id": "task-mrdrz554-gd4n7ziy",
+  "title": "Bug: Harden Pinake file and folder names across platforms",
+  "description": "Project audit finding.\n\nContext:\n- File and folder validators currently reject empty names, path separators, dot path segments, and non-Markdown file extensions.\n- They do not reject Windows-reserved characters, reserved device names, control characters, trailing dots/spaces, or names that normalize to hidden/internal Pinake files.\n- This can create failures or inconsistent behavior on Windows and remote workspaces after the user already accepted an input prompt.\n\nAction plan:\n1. Add validator tests for reserved characters (`<>:\"|?*`), control characters, trailing dots/spaces, reserved device names (`CON`, `PRN`, `NUL`, `COM1`, `LPT1`), and internal names such as `.state`, `.gitignore`, and `pinake.json` where inappropriate.\n2. Create a single helper for Pinake-safe path segment validation used by both file and folder validators.\n3. Preserve current friendly behavior of appending `.md` when a file name has no extension.\n4. Reuse the same validation for rename, new file, and new folder flows.\n5. Update tests around rename rejection to cover platform-unsafe names.\n6. Run compile, lint, and extension tests.\n\nAcceptance checks:\n- Unsafe names are rejected before filesystem writes.\n- Valid existing names continue to pass.\n- Rename, new file, and new folder flows use the same rules.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782728,
+  "updatedAt": 1783617782728,
+  "position": 1783617782728,
+  "labelIds": [
+    "bug"
+  ],
+  "priority": "medium",
+  "codeReference": {
+    "filePath": "src/services/FeedbackFormatter.ts",
+    "lineStart": 154,
+    "lineEnd": 188
+  },
+  "checklist": [
+    {
+      "id": "check-mrdrz56d-zx3zer49",
+      "text": "Add validator tests for Windows-reserved and control-character names",
+      "done": false,
+      "createdAt": 1783617782728,
+      "updatedAt": 1783617782728
+    },
+    {
+      "id": "check-mrdrz56e-g1m8jzjd",
+      "text": "Add validator tests for trailing dots/spaces and reserved device names",
+      "done": false,
+      "createdAt": 1783617782728,
+      "updatedAt": 1783617782728
+    },
+    {
+      "id": "check-mrdrz56f-n1utgkwt",
+      "text": "Add a shared safe Pinake path segment validator",
+      "done": false,
+      "createdAt": 1783617782728,
+      "updatedAt": 1783617782728
+    },
+    {
+      "id": "check-mrdrz56g-85leqj5f",
+      "text": "Apply the shared rules to new file, new folder, and rename flows",
+      "done": false,
+      "createdAt": 1783617782728,
+      "updatedAt": 1783617782728
+    },
+    {
+      "id": "check-mrdrz56h-2ofn9nrz",
+      "text": "Keep extensionless valid file names auto-normalizing to .md",
+      "done": false,
+      "createdAt": 1783617782728,
+      "updatedAt": 1783617782728
+    },
+    {
+      "id": "check-mrdrz56i-pt8ceo6h",
+      "text": "Run compile, lint, and extension tests",
+      "done": false,
+      "createdAt": 1783617782728,
+      "updatedAt": 1783617782728
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrdrz554-nameaudit",
+      "type": "related",
+      "targetTaskId": "task-mrdrrzry-4587ef5h",
+      "createdAt": 1783617782728
+    }
+  ]
+}

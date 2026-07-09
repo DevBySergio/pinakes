@@ -1,0 +1,11 @@
+{
+  "id": "activity-mrdrz553-1vupmx2i",
+  "type": "task_created",
+  "message": "Created \"Bug: Fail closed on unsafe manifest paths and corrupt UI state\"",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782727,
+  "taskId": "task-mrdrz553-x0cv2w95"
+}

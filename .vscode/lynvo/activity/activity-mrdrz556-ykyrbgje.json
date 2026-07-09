@@ -1,0 +1,11 @@
+{
+  "id": "activity-mrdrz556-ykyrbgje",
+  "type": "task_created",
+  "message": "Created \"Feature: Surface backlinks and reference graph from the index\"",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782730,
+  "taskId": "task-mrdrz556-k9pi4ytb"
+}

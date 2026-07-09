@@ -1,0 +1,11 @@
+{
+  "id": "activity-mrdrz557-ns0khv0r",
+  "type": "task_created",
+  "message": "Created \"Feature: Add import preview mapping and conflict controls\"",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782731,
+  "taskId": "task-mrdrz557-gdo35hki"
+}

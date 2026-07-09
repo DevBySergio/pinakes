@@ -1,0 +1,78 @@
+{
+  "id": "task-mrdrz555-eu14rprd",
+  "title": "Feature: Add validation quick fixes and frontmatter normalization",
+  "description": "Project audit finding.\n\nContext:\n- Validation already reports actionable issues and publishes diagnostics, but users still need to edit fixes manually.\n- The packaged Pinake skill helper can normalize frontmatter, which proves the workflow is valuable, but there is no native VS Code command or Problems quick fix.\n- The best first slice is deterministic fixes: frontmatter alignment, missing frontmatter, trailing whitespace, and missing generated files through Repair.\n\nAction plan:\n1. Add a `Pinake: Normalize Frontmatter` command that rewrites Markdown frontmatter from `pinake.json` for selected/current/all manifest documents.\n2. Register a CodeActionProvider for Pinake diagnostics that offers quick fixes for frontmatter mismatch, missing frontmatter, trailing whitespace, and running repair for missing generated files.\n3. Reuse existing validation messages or add stable issue codes so quick fixes do not depend on fragile text matching.\n4. After applying a fix, re-run validation diagnostics for affected files or the workspace.\n5. Add extension-host tests for command behavior and code actions.\n6. Document the command in README and keep CLI behavior unchanged.\n\nAcceptance checks:\n- Users can normalize frontmatter from VS Code without using the agent helper script.\n- Problems panel diagnostics expose relevant quick fixes.\n- Applying a quick fix updates files and clears stale diagnostics after revalidation.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782729,
+  "updatedAt": 1783617782729,
+  "position": 1783617782729,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "high",
+  "codeReference": {
+    "filePath": "src/commands/PinakesCommands.ts",
+    "lineStart": 584,
+    "lineEnd": 628
+  },
+  "checklist": [
+    {
+      "id": "check-mrdrz56n-ppdwseh2",
+      "text": "Design stable validation issue codes or structured issue metadata",
+      "done": false,
+      "createdAt": 1783617782729,
+      "updatedAt": 1783617782729
+    },
+    {
+      "id": "check-mrdrz56o-8w87vnha",
+      "text": "Implement Pinake: Normalize Frontmatter command",
+      "done": false,
+      "createdAt": 1783617782729,
+      "updatedAt": 1783617782729
+    },
+    {
+      "id": "check-mrdrz56p-w077oq6z",
+      "text": "Add CodeActionProvider quick fixes for deterministic validation issues",
+      "done": false,
+      "createdAt": 1783617782729,
+      "updatedAt": 1783617782729
+    },
+    {
+      "id": "check-mrdrz56q-mk5in7tz",
+      "text": "Re-run or update diagnostics after quick fixes",
+      "done": false,
+      "createdAt": 1783617782729,
+      "updatedAt": 1783617782729
+    },
+    {
+      "id": "check-mrdrz56r-vz6lfxnb",
+      "text": "Add extension-host tests for command and quick actions",
+      "done": false,
+      "createdAt": 1783617782729,
+      "updatedAt": 1783617782729
+    },
+    {
+      "id": "check-mrdrz56s-xstqeq7v",
+      "text": "Update README and run full checks",
+      "done": false,
+      "createdAt": 1783617782729,
+      "updatedAt": 1783617782729
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrdrz555-quickfix",
+      "type": "related",
+      "targetTaskId": "task-mrdrrzry-4587ef5h",
+      "createdAt": 1783617782729
+    }
+  ]
+}

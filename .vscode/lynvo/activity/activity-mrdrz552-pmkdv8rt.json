@@ -1,0 +1,11 @@
+{
+  "id": "activity-mrdrz552-pmkdv8rt",
+  "type": "task_created",
+  "message": "Created \"Bug: Align Markdown link parsing between validation and index\"",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782726,
+  "taskId": "task-mrdrz552-uh5miqyc"
+}

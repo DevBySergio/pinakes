@@ -1,0 +1,78 @@
+{
+  "id": "task-mrdrz552-uh5miqyc",
+  "title": "Bug: Align Markdown link parsing between validation and index",
+  "description": "Project audit finding.\n\nContext:\n- `IndexService` resolves links to `target.md` and `target/index.md`, but `ValidationService` and `scripts/validate-pinake.mjs` only check the literal path.\n- This creates false broken-link warnings for common Markdown links such as `[Guide](guide)` or `[Overview](folder/)`.\n- Inline link extraction also does not handle optional Markdown link titles well, so `[Guide](guide.md \"Read next\")` can be treated as a bad target.\n\nAction plan:\n1. Add failing tests for extension validation and the standalone validator covering extensionless links, directory index links, anchors/query strings, and optional link titles.\n2. Extract or duplicate a small shared resolver contract so validation and indexing agree on local link semantics.\n3. Keep external links, mailto, tel, and pure anchor links ignored.\n4. Update `scripts/validate-pinake.mjs` so CI output matches extension validation.\n5. Add regression tests for `findBrokenReferences` so index behavior stays compatible.\n6. Run compile, lint, standalone validator tests, and extension tests.\n\nAcceptance checks:\n- Extension validation and CI validation agree on the same local Markdown links.\n- Extensionless and folder index links are not reported as broken when their targets exist.\n- Optional link titles do not corrupt target parsing.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782726,
+  "updatedAt": 1783617782726,
+  "position": 1783617782726,
+  "labelIds": [
+    "bug"
+  ],
+  "priority": "medium",
+  "codeReference": {
+    "filePath": "src/services/ValidationService.ts",
+    "lineStart": 557,
+    "lineEnd": 603
+  },
+  "checklist": [
+    {
+      "id": "check-mrdrz55t-bpmdqt5f",
+      "text": "Add failing extension validation tests for extensionless, folder, anchor, query, and titled links",
+      "done": false,
+      "createdAt": 1783617782726,
+      "updatedAt": 1783617782726
+    },
+    {
+      "id": "check-mrdrz55u-ak7t3ypt",
+      "text": "Add matching standalone validator tests or fixtures",
+      "done": false,
+      "createdAt": 1783617782726,
+      "updatedAt": 1783617782726
+    },
+    {
+      "id": "check-mrdrz55v-yvojuaap",
+      "text": "Align ValidationService link resolution with IndexService semantics",
+      "done": false,
+      "createdAt": 1783617782726,
+      "updatedAt": 1783617782726
+    },
+    {
+      "id": "check-mrdrz55w-eblp8lu6",
+      "text": "Update scripts/validate-pinake.mjs to match extension behavior",
+      "done": false,
+      "createdAt": 1783617782726,
+      "updatedAt": 1783617782726
+    },
+    {
+      "id": "check-mrdrz55x-c5tb4hbg",
+      "text": "Preserve ignored external, mailto, tel, and anchor-only link behavior",
+      "done": false,
+      "createdAt": 1783617782726,
+      "updatedAt": 1783617782726
+    },
+    {
+      "id": "check-mrdrz55y-mxayvu2k",
+      "text": "Run compile, lint, validator, and extension tests",
+      "done": false,
+      "createdAt": 1783617782726,
+      "updatedAt": 1783617782726
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrdrz552-linkaudit",
+      "type": "related",
+      "targetTaskId": "task-mrdrrzry-4587ef5h",
+      "createdAt": 1783617782726
+    }
+  ]
+}

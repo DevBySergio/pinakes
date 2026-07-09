@@ -1,0 +1,78 @@
+{
+  "id": "task-mrdrz553-x0cv2w95",
+  "title": "Bug: Fail closed on unsafe manifest paths and corrupt UI state",
+  "description": "Project audit finding.\n\nContext:\n- The tree provider trusts manifest document paths after light string normalization. A user-edited or corrupt manifest path like `../README.md` can produce tree nodes outside the intended `.pinake/docs` model before command-level containment checks run.\n- `StateService.readUiState` lets JSON parse errors escape, so a corrupt `.pinake/.state/ui.json` can break tree rendering and state updates instead of falling back to defaults.\n- Validation reports schema issues, but normal browsing should stay robust even when generated state is damaged.\n\nAction plan:\n1. Add tests with unsafe manifest document paths and assert the tree does not render nodes outside `.pinake/docs`.\n2. Add tests with malformed `ui.json` and assert tree rendering falls back to default UI state without throwing.\n3. Introduce a reusable safe relative-path predicate for Pinake docs paths and apply it before manifest-backed tree nodes are created.\n4. Make `StateService.readUiState` catch parse errors, optionally preserve a backup/corrupt marker, and return normalized defaults.\n5. Ensure validation still reports invalid JSON/schema problems; the fallback is for runtime resilience, not silent validation success.\n6. Run compile, lint, and extension tests.\n\nAcceptance checks:\n- Bad manifest paths cannot render or open files outside `.pinake/docs`.\n- Corrupt UI state no longer breaks the tree.\n- Validation continues to surface the underlying invalid files.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782727,
+  "updatedAt": 1783617782727,
+  "position": 1783617782727,
+  "labelIds": [
+    "bug"
+  ],
+  "priority": "high",
+  "codeReference": {
+    "filePath": "src/tree/PinakeTreeProvider.ts",
+    "lineStart": 49,
+    "lineEnd": 71
+  },
+  "checklist": [
+    {
+      "id": "check-mrdrz563-wjeqhdr0",
+      "text": "Add a failing tree test for unsafe manifest document paths",
+      "done": false,
+      "createdAt": 1783617782727,
+      "updatedAt": 1783617782727
+    },
+    {
+      "id": "check-mrdrz564-5y15en6z",
+      "text": "Add a failing tree/state test for malformed ui.json",
+      "done": false,
+      "createdAt": 1783617782727,
+      "updatedAt": 1783617782727
+    },
+    {
+      "id": "check-mrdrz565-k4vrms5e",
+      "text": "Add and use a safe Pinake docs relative-path predicate",
+      "done": false,
+      "createdAt": 1783617782727,
+      "updatedAt": 1783617782727
+    },
+    {
+      "id": "check-mrdrz566-bq7xd320",
+      "text": "Filter unsafe manifest-backed tree nodes before creating URIs",
+      "done": false,
+      "createdAt": 1783617782727,
+      "updatedAt": 1783617782727
+    },
+    {
+      "id": "check-mrdrz567-2ov95nhg",
+      "text": "Make UI state reads recover to defaults without hiding validation errors",
+      "done": false,
+      "createdAt": 1783617782727,
+      "updatedAt": 1783617782727
+    },
+    {
+      "id": "check-mrdrz568-10j0nepu",
+      "text": "Run compile, lint, and extension tests",
+      "done": false,
+      "createdAt": 1783617782727,
+      "updatedAt": 1783617782727
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrdrz553-safejson",
+      "type": "related",
+      "targetTaskId": "task-mrdrrzry-4587ef5h",
+      "createdAt": 1783617782727
+    }
+  ]
+}

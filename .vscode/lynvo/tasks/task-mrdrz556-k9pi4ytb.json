@@ -1,0 +1,78 @@
+{
+  "id": "task-mrdrz556-k9pi4ytb",
+  "title": "Feature: Surface backlinks and reference graph from the index",
+  "description": "Project audit finding.\n\nContext:\n- `IndexService` already computes backlinks, broken references, and a reference graph, but the command surface only exposes text search.\n- Users managing documentation need to know what links to a document before renaming/deleting it and need a way to browse broken references outside raw validation output.\n- This feature can reuse existing index data instead of building a new graph engine.\n\nAction plan:\n1. Add context commands for `Pinake: Show Backlinks` and `Pinake: Show References` on document nodes and the active Pinake Markdown editor.\n2. Present backlinks and outbound references in QuickPick or a lightweight readonly document/output view with source path, target, line, and snippet.\n3. Add a `Pinake: Show Reference Graph` command that exports a Mermaid graph or opens a simple webview/table for graph nodes and edges.\n4. Ensure rename/delete flows can optionally warn when a document has backlinks.\n5. Add tests for command data formatting using `findBacklinks`, `findBrokenReferences`, and `getReferenceGraph`.\n6. Update README with the new reference-navigation commands.\n\nAcceptance checks:\n- A user can inspect backlinks for a selected document without leaving VS Code.\n- Broken references are discoverable from a command, not only validation output.\n- Reference graph output is deterministic and useful for review.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782730,
+  "updatedAt": 1783617782730,
+  "position": 1783617782730,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "codeReference": {
+    "filePath": "src/services/IndexService.ts",
+    "lineStart": 170,
+    "lineEnd": 229
+  },
+  "checklist": [
+    {
+      "id": "check-mrdrz56x-riv9wspc",
+      "text": "Design command UX for backlinks, outbound references, and graph output",
+      "done": false,
+      "createdAt": 1783617782730,
+      "updatedAt": 1783617782730
+    },
+    {
+      "id": "check-mrdrz56y-h6lzwfoc",
+      "text": "Implement document context commands and active-editor fallback",
+      "done": false,
+      "createdAt": 1783617782730,
+      "updatedAt": 1783617782730
+    },
+    {
+      "id": "check-mrdrz56z-7qnx1jp1",
+      "text": "Format backlink and outbound-reference results with path, line, and snippet",
+      "done": false,
+      "createdAt": 1783617782730,
+      "updatedAt": 1783617782730
+    },
+    {
+      "id": "check-mrdrz570-0norvslo",
+      "text": "Add deterministic reference graph output",
+      "done": false,
+      "createdAt": 1783617782730,
+      "updatedAt": 1783617782730
+    },
+    {
+      "id": "check-mrdrz571-l38x56od",
+      "text": "Add tests for command result formatting and graph data",
+      "done": false,
+      "createdAt": 1783617782730,
+      "updatedAt": 1783617782730
+    },
+    {
+      "id": "check-mrdrz572-hbhgcjw3",
+      "text": "Update README and run full checks",
+      "done": false,
+      "createdAt": 1783617782730,
+      "updatedAt": 1783617782730
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrdrz556-refs",
+      "type": "related",
+      "targetTaskId": "task-mrdrrzry-4587ef5h",
+      "createdAt": 1783617782730
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "task-mrdrz557-gdo35hki",
+  "title": "Feature: Add import preview mapping and conflict controls",
+  "description": "Project audit finding.\n\nContext:\n- The current import command copies Markdown into `.pinake/docs/imported` after one confirmation prompt.\n- It does not show the discovered file list, proposed target paths, inferred document metadata, skipped conflicts, or id/path collisions before writing.\n- A preview step would make imports safer for real documentation migrations and pairs well with the import/export bug hardening task.\n\nAction plan:\n1. Split import into a planning phase that returns source files, proposed target paths, inferred document metadata, and conflict status without writing.\n2. Add a command preview flow that shows counts and lets users choose target folder, skip/rename conflicts, and confirm writes.\n3. Keep a direct service method for tests and automation, but route command imports through the preview plan.\n4. Add collision handling that reuses the document-id hardening task once available.\n5. Add tests for preview-only behavior, conflict skip/rename choices, and final manifest/index updates.\n6. Update README and skill references to mention previewed imports.\n\nAcceptance checks:\n- Users can see exactly what will be imported before files are written.\n- Existing target files are shown as conflicts with explicit skip or rename behavior.\n- Confirmed imports still update manifest and index atomically from the accepted plan.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782731,
+  "updatedAt": 1783617782731,
+  "position": 1783617782731,
+  "labelIds": [
+    "feat"
+  ],
+  "priority": "medium",
+  "codeReference": {
+    "filePath": "src/commands/PinakesCommands.ts",
+    "lineStart": 654,
+    "lineEnd": 690
+  },
+  "checklist": [
+    {
+      "id": "check-mrdrz577-0fi61chs",
+      "text": "Design import planning data structure with target paths, metadata, and conflicts",
+      "done": false,
+      "createdAt": 1783617782731,
+      "updatedAt": 1783617782731
+    },
+    {
+      "id": "check-mrdrz578-rf9al2ls",
+      "text": "Implement preview-only import planning in PinakeTransferService",
+      "done": false,
+      "createdAt": 1783617782731,
+      "updatedAt": 1783617782731
+    },
+    {
+      "id": "check-mrdrz579-1umvyp05",
+      "text": "Add command UX for target folder and conflict skip/rename choices",
+      "done": false,
+      "createdAt": 1783617782731,
+      "updatedAt": 1783617782731
+    },
+    {
+      "id": "check-mrdrz57a-9985ed1h",
+      "text": "Apply imports from the accepted plan and update manifest/index once",
+      "done": false,
+      "createdAt": 1783617782731,
+      "updatedAt": 1783617782731
+    },
+    {
+      "id": "check-mrdrz57b-08ir45xr",
+      "text": "Add tests for preview, conflicts, and accepted import writes",
+      "done": false,
+      "createdAt": 1783617782731,
+      "updatedAt": 1783617782731
+    },
+    {
+      "id": "check-mrdrz57c-b4o4olbh",
+      "text": "Update docs and run full checks",
+      "done": false,
+      "createdAt": 1783617782731,
+      "updatedAt": 1783617782731
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrdrz557-importux",
+      "type": "related",
+      "targetTaskId": "task-mrdrrzry-4587ef5h",
+      "createdAt": 1783617782731
+    },
+    {
+      "id": "rel-mrdrz557-importbug",
+      "type": "blocked-by",
+      "targetTaskId": "task-mrdrz551-2cgp1l4g",
+      "createdAt": 1783617782731
+    },
+    {
+      "id": "rel-mrdrz557-idbug",
+      "type": "blocked-by",
+      "targetTaskId": "task-mrdrz550-rsq5cuvg",
+      "createdAt": 1783617782731
+    }
+  ]
+}

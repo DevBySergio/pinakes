@@ -1,0 +1,78 @@
+{
+  "id": "task-mrdrz550-rsq5cuvg",
+  "title": "Bug: Prevent document ID collisions for custom and imported docs",
+  "description": "Project audit finding.\n\nContext:\n- Imported documents use `imported-${slug(targetRelativePath)}` as the manifest id.\n- Custom documents and duplicated documents also derive ids from lossy slugs.\n- `ManifestService.addDocuments` merges on `id` or `path`, so two different paths with the same slug can overwrite each other in the manifest while both files exist on disk.\n\nAction plan:\n1. Add a regression test importing two Markdown files whose target paths slug to the same id, such as `A+B.md` and `A B.md`.\n2. Add a shared deterministic document-id helper that includes a short hash or other collision-resistant suffix from the exact normalized path.\n3. Use the helper for imported documents, new custom files, and directory duplicate manifest entries.\n4. Update `ManifestService.addDocuments` so an id collision with a different path is treated as a collision to resolve, not as a document replacement.\n5. Ensure generated template ids remain stable and human-readable where they are already explicit.\n6. Rebuild and run the full extension test suite.\n\nAcceptance checks:\n- Importing or creating two similarly named files preserves two manifest entries.\n- Duplicate ids are not introduced for distinct paths.\n- Existing generated template document ids do not churn unnecessarily.",
+  "status": "todo",
+  "createdBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "lastModifiedBy": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782724,
+  "updatedAt": 1783617782724,
+  "position": 1783617782724,
+  "labelIds": [
+    "bug"
+  ],
+  "priority": "high",
+  "codeReference": {
+    "filePath": "src/services/ManifestService.ts",
+    "lineStart": 145,
+    "lineEnd": 155
+  },
+  "checklist": [
+    {
+      "id": "check-mrdrz559-dizzzv6i",
+      "text": "Add a failing import test for slug-colliding document paths",
+      "done": false,
+      "createdAt": 1783617782724,
+      "updatedAt": 1783617782724
+    },
+    {
+      "id": "check-mrdrz55a-4c8a9byi",
+      "text": "Create a shared collision-resistant document id helper",
+      "done": false,
+      "createdAt": 1783617782724,
+      "updatedAt": 1783617782724
+    },
+    {
+      "id": "check-mrdrz55b-pz97g0hj",
+      "text": "Use the helper for import, new file, and directory duplicate document definitions",
+      "done": false,
+      "createdAt": 1783617782724,
+      "updatedAt": 1783617782724
+    },
+    {
+      "id": "check-mrdrz55c-9clultkc",
+      "text": "Prevent addDocuments from overwriting a distinct path because of an id collision",
+      "done": false,
+      "createdAt": 1783617782724,
+      "updatedAt": 1783617782724
+    },
+    {
+      "id": "check-mrdrz55d-iaxe9n0b",
+      "text": "Keep existing explicit template document ids stable",
+      "done": false,
+      "createdAt": 1783617782724,
+      "updatedAt": 1783617782724
+    },
+    {
+      "id": "check-mrdrz55e-gh7xvaeh",
+      "text": "Run compile, lint, and extension tests",
+      "done": false,
+      "createdAt": 1783617782724,
+      "updatedAt": 1783617782724
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel-mrdrz550-idaudit",
+      "type": "related",
+      "targetTaskId": "task-mrdrrzry-4587ef5h",
+      "createdAt": 1783617782724
+    }
+  ]
+}

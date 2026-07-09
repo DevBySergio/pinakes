@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrds4ff0-nl78hat5",
+  "type": "task_moved",
+  "message": "Moved \"Audit: Identify high-value Pinake follow-up tasks\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783618029324,
+  "taskId": "task-mrdrrzry-4587ef5h",
+  "metadata": {
+    "fromStatus": "in-progress",
+    "toStatus": "done"
+  }
+}

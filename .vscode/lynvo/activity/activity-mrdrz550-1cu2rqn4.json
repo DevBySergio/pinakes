@@ -1,0 +1,11 @@
+{
+  "id": "activity-mrdrz550-1cu2rqn4",
+  "type": "task_created",
+  "message": "Created \"Bug: Prevent document ID collisions for custom and imported docs\"",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783617782724,
+  "taskId": "task-mrdrz550-rsq5cuvg"
+}
