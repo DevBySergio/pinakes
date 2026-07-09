@@ -1,7 +1,7 @@
 {
   "id": "task-mratyg3h-s4207htk",
-  "title": "Add Calimaco and AI interoperability hooks",
-  "description": "Define stable metadata and command surfaces for future Calimaco desktop sync, AI assistant integration, and external tooling.",
+  "title": "Post-release: Add Calimaco and AI interoperability hooks",
+  "description": "Deferred until after the current Pinake Editor release. Define stable metadata and command surfaces for future Calimaco desktop sync, AI assistant integration, and external tooling.",
   "status": "todo",
   "createdBy": {
     "githubId": "unknown",
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439738573,
-  "updatedAt": 1783439738573,
+  "updatedAt": 1783612067278,
   "position": 4,
   "labelIds": [
     "feat"

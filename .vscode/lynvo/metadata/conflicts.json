@@ -518,5 +518,35 @@
     "remoteValue": "in-progress",
     "createdAt": 1783589832581,
     "resolved": true
+  },
+  "task-task-mratyg3e-e2qgmgpl-status": {
+    "id": "task-task-mratyg3e-e2qgmgpl-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3e-e2qgmgpl",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783612153048,
+    "resolved": false
+  },
+  "task-task-mratyg3h-s4207htk-title": {
+    "id": "task-task-mratyg3h-s4207htk-title",
+    "entityType": "task",
+    "entityId": "task-mratyg3h-s4207htk",
+    "field": "title",
+    "localValue": "Post-release: Add Calimaco and AI interoperability hooks",
+    "remoteValue": "Add Calimaco and AI interoperability hooks",
+    "createdAt": 1783612153048,
+    "resolved": false
+  },
+  "task-task-mratyg3h-s4207htk-description": {
+    "id": "task-task-mratyg3h-s4207htk-description",
+    "entityType": "task",
+    "entityId": "task-mratyg3h-s4207htk",
+    "field": "description",
+    "localValue": "Deferred until after the current Pinake Editor release. Define stable metadata and command surfaces for future Calimaco desktop sync, AI assistant integration, and external tooling.",
+    "remoteValue": "Define stable metadata and command surfaces for future Calimaco desktop sync, AI assistant integration, and external tooling.",
+    "createdAt": 1783612153048,
+    "resolved": false
   }
 }
