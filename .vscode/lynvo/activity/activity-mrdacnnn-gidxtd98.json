@@ -1,0 +1,14 @@
+{
+  "id": "activity-mrdacnnn-gidxtd98",
+  "type": "checklist_added",
+  "message": "Added implementation checklist to \"Implement export and import workflows\"",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783588180164,
+  "taskId": "task-mratyg3h-sc0i3coz",
+  "metadata": {
+    "count": 5
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrdacnno-m2g94los",
+  "type": "task_moved",
+  "message": "Moved \"Implement export and import workflows\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783588180165,
+  "taskId": "task-mratyg3h-sc0i3coz",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}
