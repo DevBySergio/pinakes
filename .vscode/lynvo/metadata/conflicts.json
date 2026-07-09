@@ -434,9 +434,9 @@
     "entityType": "task",
     "entityId": "task-mrcitd3z-cmdpolsh",
     "field": "status",
-    "localValue": "in-progress",
-    "remoteValue": "todo",
-    "createdAt": 1783544115475,
-    "resolved": true
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783586684907,
+    "resolved": false
   }
 }
