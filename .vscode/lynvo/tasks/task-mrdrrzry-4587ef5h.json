@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783617449182,
-  "updatedAt": 1783617476478,
+  "updatedAt": 1783617634366,
   "position": 1783617449182,
   "labelIds": [
     "feat"
@@ -29,16 +29,16 @@
     {
       "id": "check-mrdrrzry-csl6gp32",
       "text": "Inspect project architecture and implementation hotspots",
-      "done": false,
+      "done": true,
       "createdAt": 1783617449182,
-      "updatedAt": 1783617449182
+      "updatedAt": 1783617634366
     },
     {
       "id": "check-mrdrrzry-qgiikb3u",
       "text": "Run available checks and review failures",
-      "done": false,
+      "done": true,
       "createdAt": 1783617449182,
-      "updatedAt": 1783617449182
+      "updatedAt": 1783617634366
     },
     {
       "id": "check-mrdrrzry-7noo51hk",
