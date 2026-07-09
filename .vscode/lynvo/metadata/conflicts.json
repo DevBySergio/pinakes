@@ -447,7 +447,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783587072488,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mrc7hmkr-rfx8efcj-status": {
     "id": "task-task-mrc7hmkr-rfx8efcj-status",
@@ -457,6 +457,6 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783587432491,
-    "resolved": false
+    "resolved": true
   }
 }
