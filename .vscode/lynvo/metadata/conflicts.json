@@ -498,5 +498,15 @@
     "remoteValue": "in-progress",
     "createdAt": 1783588872493,
     "resolved": true
+  },
+  "task-task-mrcitd2y-catalog2-status": {
+    "id": "task-task-mrcitd2y-catalog2-status",
+    "entityType": "task",
+    "entityId": "task-mrcitd2y-catalog2",
+    "field": "status",
+    "localValue": "in-progress",
+    "remoteValue": "todo",
+    "createdAt": 1783588993972,
+    "resolved": false
   }
 }

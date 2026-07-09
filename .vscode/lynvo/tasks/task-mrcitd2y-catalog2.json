@@ -2,7 +2,7 @@
   "id": "task-mrcitd2y-catalog2",
   "title": "Finish or rescope the component catalog roadmap",
   "description": "Created from the project state audit.\n\nResolve the mismatch between the Done board task for catalog expansion and the roadmap acceptance criteria.\n\nContext:\n- `docs/component-catalog-roadmap.md` says catalog expansion is complete when every backlog module has a descriptor and starter files.\n- Current descriptors implement the first expansion slice, but the roadmap still lists missing modules: Authorization, Payments, Search, Email, DataPipeline, ML, GraphDB, Logging, PluginExtension, Monorepo, LegacyMigration, Documentation, Testing, and DevTools.\n\nImplementation options:\n- Implement the remaining roadmap modules with descriptors, starter Markdown files, presets where useful, icon mappings/fallbacks, and tests.\n- Or explicitly rescope the roadmap and completed Lynvo item so the current work is documented as a first expansion slice.\n\nAcceptance criteria:\n- Roadmap, code, tests, and board state agree on what is complete.\n- Missing modules are either implemented or intentionally deferred in a new backlog section.\n\nCode anchors: `docs/component-catalog-roadmap.md:67`, `src/modules/moduleDescriptors.ts:337`.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783541932286,
-  "updatedAt": 1783541932286,
+  "updatedAt": 1783588923137,
   "position": 1783541932286,
   "labelIds": [
     "feat"
@@ -27,9 +27,9 @@
     {
       "id": "check-mrcitd2y-catchk01",
       "text": "Decide whether to implement remaining modules or rescope the roadmap",
-      "done": false,
+      "done": true,
       "createdAt": 1783541932286,
-      "updatedAt": 1783541932286
+      "updatedAt": 1783588923137
     },
     {
       "id": "check-mrcitd2y-catchk02",
