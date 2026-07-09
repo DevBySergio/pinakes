@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439739573,
-  "updatedAt": 1783588613596,
+  "updatedAt": 1783588696250,
   "position": 5,
   "labelIds": [
     "feat"
@@ -22,23 +22,23 @@
     {
       "id": "check-mrdaly3g-40j2yrwq",
       "text": "Add command-level coverage for export and import folder picker workflows",
-      "done": false,
+      "done": true,
       "createdAt": 1783588613596,
-      "updatedAt": 1783588613596
+      "updatedAt": 1783588696250
     },
     {
       "id": "check-mrdaly3g-pnk9ltad",
       "text": "Add command-level coverage for import cancellation",
-      "done": false,
+      "done": true,
       "createdAt": 1783588613596,
-      "updatedAt": 1783588613596
+      "updatedAt": 1783588696250
     },
     {
       "id": "check-mrdaly3g-2qf70eo9",
       "text": "Add search command no-results coverage",
-      "done": false,
+      "done": true,
       "createdAt": 1783588613596,
-      "updatedAt": 1783588613596
+      "updatedAt": 1783588696250
     },
     {
       "id": "check-mrdaly3g-7qvskcwh",
