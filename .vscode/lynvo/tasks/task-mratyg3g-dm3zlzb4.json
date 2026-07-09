@@ -2,7 +2,7 @@
   "id": "task-mratyg3g-dm3zlzb4",
   "title": "Harden clean architecture boundaries",
   "description": "Current code is modular, but not yet fully clean/hexagonal. Refine domain/application/infrastructure boundaries, keep VS Code API dependencies at the edges, and document ownership rules.",
-  "status": "in-progress",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,13 +12,42 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439723573,
-  "updatedAt": 1783439723573,
+  "updatedAt": 1783588028401,
   "position": 1783439723573,
   "labelIds": [
     "feat"
   ],
   "priority": "medium",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mrda7gp4-02lio7bt",
+      "text": "Document Pinake architecture ownership rules and allowed VS Code API boundaries",
+      "done": true,
+      "createdAt": 1783587937865,
+      "updatedAt": 1783588004714
+    },
+    {
+      "id": "check-mrda7gp5-39cmfmeb",
+      "text": "Add automated boundary coverage for domain/template modules",
+      "done": true,
+      "createdAt": 1783587937866,
+      "updatedAt": 1783588004715
+    },
+    {
+      "id": "check-mrda7gp6-t4i0siyi",
+      "text": "Run compile, lint, and extension-host tests",
+      "done": true,
+      "createdAt": 1783587937867,
+      "updatedAt": 1783588028399
+    },
+    {
+      "id": "check-mrda7gp7-yfn11uy2",
+      "text": "Close the Lynvo task after verification",
+      "done": true,
+      "createdAt": 1783587937868,
+      "updatedAt": 1783588028400
+    }
+  ],
   "relations": [
     {
       "id": "rel-mratyg3h-wui9qpyf",

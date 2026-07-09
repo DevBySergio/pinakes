@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrda9ek1-tv8k6omr",
+  "type": "task_moved",
+  "message": "Moved \"Harden clean architecture boundaries\" to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783588028402,
+  "taskId": "task-mratyg3g-dm3zlzb4",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}

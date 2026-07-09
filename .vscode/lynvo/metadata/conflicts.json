@@ -468,5 +468,15 @@
     "remoteValue": "in-progress",
     "createdAt": 1783587885191,
     "resolved": false
+  },
+  "task-task-mratyg3g-dm3zlzb4-status": {
+    "id": "task-task-mratyg3g-dm3zlzb4-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3g-dm3zlzb4",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "in-progress",
+    "createdAt": 1783588032986,
+    "resolved": false
   }
 }
