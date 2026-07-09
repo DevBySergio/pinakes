@@ -2,7 +2,7 @@
   "id": "task-mraub5i0-yycwexiz",
   "title": "Create public Pinake specification documentation",
   "description": "Add the public docs deliverables from the original guide: manifest spec, .pinake state schemas, core scaffold reference, architecture overview, UI flow diagrams, wizard scenarios, command table, component matrix, and an example Pinake repo or sample workspace.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,13 +12,49 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783440310369,
-  "updatedAt": 1783440310369,
+  "updatedAt": 1783586831869,
   "position": 6,
   "labelIds": [
     "feat"
   ],
   "priority": "high",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mrd9jrb1-01umuui4",
+      "text": "Create public manifest and state schema reference docs",
+      "done": false,
+      "createdAt": 1783586831869,
+      "updatedAt": 1783586831869
+    },
+    {
+      "id": "check-mrd9jrb1-028cr49x",
+      "text": "Create scaffold, wizard, and UI flow documentation",
+      "done": false,
+      "createdAt": 1783586831869,
+      "updatedAt": 1783586831869
+    },
+    {
+      "id": "check-mrd9jrb1-03rvunl4",
+      "text": "Create command table and component matrix",
+      "done": false,
+      "createdAt": 1783586831869,
+      "updatedAt": 1783586831869
+    },
+    {
+      "id": "check-mrd9jrb1-04q3paud",
+      "text": "Add a sample Pinake workspace and README index links",
+      "done": false,
+      "createdAt": 1783586831869,
+      "updatedAt": 1783586831869
+    },
+    {
+      "id": "check-mrd9jrb1-057a5fga",
+      "text": "Verify docs and mark task complete",
+      "done": false,
+      "createdAt": 1783586831869,
+      "updatedAt": 1783586831869
+    }
+  ],
   "relations": [
     {
       "id": "rel-mraub5i2-x7v7260h",
