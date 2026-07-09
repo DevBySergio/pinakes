@@ -2,7 +2,7 @@
   "id": "task-mratyg3h-s4207htk",
   "title": "Plan: Pinake automation skill and documentation workflow",
   "description": "Create an in-depth implementation plan for the Pinake extension functionality, feature surface, and documentation automation workflow so `resources/skills/pinake/SKILL.md` can be drafted as a complete operational guide for AI agents.\n\nThe plan must explain how an agent should create, update, validate, and professionally optimize Pinake project documentation. It should cover choosing an initial Pinake format when `.pinake` does not exist, using default templates and modules, creating additional files/folders with the same structure when useful, preserving local-only storage, running validation/search/repair/import/export workflows, and maintaining high-quality documentation over time.",
-  "status": "todo",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439738573,
-  "updatedAt": 1783612515478,
+  "updatedAt": 1783612847880,
   "position": 4,
   "labelIds": [
     "feat"
@@ -27,44 +27,44 @@
     {
       "id": "check-mrdou8wm-funcmap1",
       "text": "Inventory Pinake extension capabilities, commands, storage contracts, templates, modules, validation, search, repair, import/export, CI, and agent-skill installer behavior",
-      "done": false,
+      "done": true,
       "createdAt": 1783612515478,
-      "updatedAt": 1783612515478
+      "updatedAt": 1783612847880
     },
     {
       "id": "check-mrdou8wm-docflow2",
       "text": "Define the end-to-end AI documentation workflow for new workspaces, existing Pinake workspaces, legacy folders, partial documentation, and ongoing updates",
-      "done": false,
+      "done": true,
       "createdAt": 1783612515478,
-      "updatedAt": 1783612515478
+      "updatedAt": 1783612847880
     },
     {
       "id": "check-mrdou8wm-format3",
       "text": "Specify how an agent should choose the initial Pinake format, template, modules, folders, and extra professional documentation files when Pinake docs do not already exist",
-      "done": false,
+      "done": true,
       "createdAt": 1783612515478,
-      "updatedAt": 1783612515478
+      "updatedAt": 1783612847880
     },
     {
       "id": "check-mrdou8wm-update4",
       "text": "Specify update rules for existing docs: preserve authored content, add missing structure, repair stale manifest/index/state, and avoid overwriting user-edited Markdown",
-      "done": false,
+      "done": true,
       "createdAt": 1783612515478,
-      "updatedAt": 1783612515478
+      "updatedAt": 1783612847880
     },
     {
       "id": "check-mrdou8wm-quality5",
       "text": "Define quality gates for professional output: validation, Markdown structure, backlinks, ADR naming, security/privacy hygiene, examples, and final verification summary",
-      "done": false,
+      "done": true,
       "createdAt": 1783612515478,
-      "updatedAt": 1783612515478
+      "updatedAt": 1783612847880
     },
     {
       "id": "check-mrdou8wm-skill006",
       "text": "Draft the target structure and acceptance criteria for `resources/skills/pinake/SKILL.md` so it can fully automate creation and maintenance of Pinake documentation",
-      "done": false,
+      "done": true,
       "createdAt": 1783612515478,
-      "updatedAt": 1783612515478
+      "updatedAt": 1783612847880
     }
   ],
   "relations": [

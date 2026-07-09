@@ -537,7 +537,7 @@
     "localValue": "Plan: Pinake automation skill and documentation workflow",
     "remoteValue": "Post-release: Add Calimaco and AI interoperability hooks",
     "createdAt": 1783612659083,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3h-s4207htk-description": {
     "id": "task-task-mratyg3h-s4207htk-description",
@@ -547,7 +547,7 @@
     "localValue": "Create an in-depth implementation plan for the Pinake extension functionality, feature surface, and documentation automation workflow so `resources/skills/pinake/SKILL.md` can be drafted as a complete operational guide for AI agents.\n\nThe plan must explain how an agent should create, update, validate, and professionally optimize Pinake project documentation. It should cover choosing an initial Pinake format when `.pinake` does not exist, using default templates and modules, creating additional files/folders with the same structure when useful, preserving local-only storage, running validation/search/repair/import/export workflows, and maintaining high-quality documentation over time.",
     "remoteValue": "Deferred until after the current Pinake Editor release. Define stable metadata and command surfaces for future Calimaco desktop sync, AI assistant integration, and external tooling.",
     "createdAt": 1783612659083,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3h-s4207htk-priority": {
     "id": "task-task-mratyg3h-s4207htk-priority",
@@ -557,6 +557,16 @@
     "localValue": "high",
     "remoteValue": "low",
     "createdAt": 1783612659083,
+    "resolved": true
+  },
+  "task-task-mratyg3h-s4207htk-status": {
+    "id": "task-task-mratyg3h-s4207htk-status",
+    "entityType": "task",
+    "entityId": "task-mratyg3h-s4207htk",
+    "field": "status",
+    "localValue": "done",
+    "remoteValue": "todo",
+    "createdAt": 1783612899397,
     "resolved": false
   }
 }
