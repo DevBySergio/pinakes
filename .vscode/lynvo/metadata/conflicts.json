@@ -467,7 +467,7 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783587885191,
-    "resolved": false
+    "resolved": true
   },
   "task-task-mratyg3g-dm3zlzb4-status": {
     "id": "task-task-mratyg3g-dm3zlzb4-status",
@@ -477,6 +477,6 @@
     "localValue": "done",
     "remoteValue": "in-progress",
     "createdAt": 1783588032986,
-    "resolved": false
+    "resolved": true
   }
 }
