@@ -2,7 +2,7 @@
   "id": "task-mratyg3h-izcpsj58",
   "title": "Expand integration and command test coverage",
   "description": "Add tests for command handlers, activation behavior, schema validation, migration flows, drag/drop, search edge cases, and generated CI/export outputs.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,13 +12,42 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439739573,
-  "updatedAt": 1783439739573,
+  "updatedAt": 1783588613596,
   "position": 5,
   "labelIds": [
     "feat"
   ],
   "priority": "medium",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mrdaly3g-40j2yrwq",
+      "text": "Add command-level coverage for export and import folder picker workflows",
+      "done": false,
+      "createdAt": 1783588613596,
+      "updatedAt": 1783588613596
+    },
+    {
+      "id": "check-mrdaly3g-pnk9ltad",
+      "text": "Add command-level coverage for import cancellation",
+      "done": false,
+      "createdAt": 1783588613596,
+      "updatedAt": 1783588613596
+    },
+    {
+      "id": "check-mrdaly3g-2qf70eo9",
+      "text": "Add search command no-results coverage",
+      "done": false,
+      "createdAt": 1783588613596,
+      "updatedAt": 1783588613596
+    },
+    {
+      "id": "check-mrdaly3g-7qvskcwh",
+      "text": "Run tests and close roadmap coverage item",
+      "done": false,
+      "createdAt": 1783588613596,
+      "updatedAt": 1783588613596
+    }
+  ],
   "relations": [
     {
       "id": "rel-mratyg3h-vu7em8hz",
