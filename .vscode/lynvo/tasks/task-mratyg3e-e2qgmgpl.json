@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783587055076,
+  "updatedAt": 1783587814337,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -113,9 +113,9 @@
     {
       "id": "check-mratyg3h-aymv1tzb",
       "text": "Add accessibility and large-tree performance hardening",
-      "done": false,
+      "done": true,
       "createdAt": 1783439716573,
-      "updatedAt": 1783439716573
+      "updatedAt": 1783587814337
     },
     {
       "id": "check-mratyg3h-ell6pwtn",
