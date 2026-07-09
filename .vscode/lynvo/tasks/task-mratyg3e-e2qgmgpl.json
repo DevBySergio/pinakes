@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783541458107,
+  "updatedAt": 1783587055076,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -127,9 +127,9 @@
     {
       "id": "check-mraub5i2-wumq0a45",
       "text": "Create public Pinake spec and schema documentation",
-      "done": false,
+      "done": true,
       "createdAt": 1783440310369,
-      "updatedAt": 1783500550874
+      "updatedAt": 1783587055076
     },
     {
       "id": "check-mraub5i2-nq6ptber",

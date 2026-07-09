@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrd9ojj7-j5mlq705",
+  "type": "task_moved",
+  "message": "Moved \"Create public Pinake specification documentation\" from in-progress to done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783587055075,
+  "taskId": "task-mraub5i0-yycwexiz",
+  "metadata": {
+    "fromStatus": "in-progress",
+    "toStatus": "done"
+  }
+}
