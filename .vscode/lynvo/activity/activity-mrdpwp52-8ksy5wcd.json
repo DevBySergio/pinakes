@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrdpwp52-8ksy5wcd",
+  "type": "task_moved",
+  "message": "Moved \"Improve Pinake setup templates for higher-value generated docs\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783614309446,
+  "taskId": "task-mrdpqwoi-9kqvi6m7",
+  "metadata": {
+    "fromStatus": "todo",
+    "toStatus": "in-progress"
+  }
+}
