@@ -2,7 +2,7 @@
   "id": "task-mratyg3h-rb969knb",
   "title": "Implement drag-and-drop move and reorder",
   "description": "Add TreeDragAndDropController support for moving docs and folders safely within Pinake/, including index refresh and validation after moves.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,13 +12,49 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439731573,
-  "updatedAt": 1783439731573,
+  "updatedAt": 1783589581657,
   "position": 1,
   "labelIds": [
     "feat"
   ],
   "priority": "medium",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mrdb6p21-z29qzo4c",
+      "text": "Add Pinake TreeDragAndDropController for safe internal moves",
+      "done": false,
+      "createdAt": 1783589581657,
+      "updatedAt": 1783589581657
+    },
+    {
+      "id": "check-mrdb6p21-u7r451zx",
+      "text": "Wire drag-and-drop into the VS Code tree view",
+      "done": false,
+      "createdAt": 1783589581657,
+      "updatedAt": 1783589581657
+    },
+    {
+      "id": "check-mrdb6p21-1pk9ez33",
+      "text": "Update manifest, UI state, index, and validation after moves",
+      "done": false,
+      "createdAt": 1783589581657,
+      "updatedAt": 1783589581657
+    },
+    {
+      "id": "check-mrdb6p21-75p1v21y",
+      "text": "Add tests for successful and rejected drag-and-drop moves",
+      "done": false,
+      "createdAt": 1783589581657,
+      "updatedAt": 1783589581657
+    },
+    {
+      "id": "check-mrdb6p21-8yxxgdnz",
+      "text": "Run tests and close task",
+      "done": false,
+      "createdAt": 1783589581657,
+      "updatedAt": 1783589581657
+    }
+  ],
   "relations": [
     {
       "id": "rel-mratyg3h-2kpdsllr",

@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrdb6p21-2zqgp5b1",
+  "type": "task_moved",
+  "message": "Moved \"Implement drag-and-drop move and reorder\" from To Do to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783589581657,
+  "taskId": "task-mratyg3h-rb969knb",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}
