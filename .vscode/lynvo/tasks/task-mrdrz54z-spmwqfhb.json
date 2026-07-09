@@ -2,7 +2,7 @@
   "id": "task-mrdrz54z-spmwqfhb",
   "title": "Bug: Persist setup reconfiguration and sync module state",
   "description": "Project audit finding.\n\nContext:\n- Re-running `Pinake: Create Documentation` against an existing `.pinake` can mutate the manifest in memory through `setTemplateSelection`, but `initializePinake` only writes the manifest when generated or discovered documents changed.\n- `.pinake/.state/modules.json` is created on first setup, but existing workspaces are not synced after template/module selection changes in `initializePinake`.\n- The result can claim `.pinake/pinake.json` was updated while template, hidden-from-Explorer, or module-state changes are not persisted.\n\nAction plan:\n1. Make `ManifestService.setTemplateSelection` return whether storage root, hiddenFromExplorer, project template, or enabled module flags actually changed.\n2. In `ScaffoldService.initializePinake`, combine that return value with `addDocuments` and discovered-document changes before deciding to write the manifest.\n3. Sync `.pinake/.state/modules.json` after setup reconfiguration, not only when initial state files are missing.\n4. Avoid adding `.pinake/pinake.json` to `result.updated` when nothing changed.\n5. Add an extension-host test that initializes a Pinake, reruns setup with a different module selection or hiddenFromExplorer value, and verifies the manifest plus modules state are both persisted.\n6. Run `npm run compile`, `npm run lint`, and `npm test`.\n\nAcceptance checks:\n- Re-running setup with changed template/module/visibility choices writes the expected manifest fields.\n- `modules.json` reflects the manifest after setup reruns.\n- Existing no-op reruns do not report misleading updates.",
-  "status": "todo",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,8 +12,8 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783617782723,
-  "updatedAt": 1783617782723,
-  "position": 1783617782723,
+  "updatedAt": 1783619037008,
+  "position": 1783619037008,
   "labelIds": [
     "bug"
   ],
@@ -27,44 +27,44 @@
     {
       "id": "check-mrdrz54z-zcfkpjk6",
       "text": "Add a failing rerun setup test for changed template/module/visibility state",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782723,
-      "updatedAt": 1783617782723
+      "updatedAt": 1783619037008
     },
     {
       "id": "check-mrdrz550-ca3nhtpa",
       "text": "Return a changed flag from ManifestService.setTemplateSelection",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782723,
-      "updatedAt": 1783617782723
+      "updatedAt": 1783619037008
     },
     {
       "id": "check-mrdrz551-enpjx6ir",
       "text": "Write the manifest when template, module, or storage values change",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782723,
-      "updatedAt": 1783617782723
+      "updatedAt": 1783619037008
     },
     {
       "id": "check-mrdrz552-z81swcsz",
       "text": "Sync modules.json after setup reruns",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782723,
-      "updatedAt": 1783617782723
+      "updatedAt": 1783619037008
     },
     {
       "id": "check-mrdrz553-75mzx8ug",
       "text": "Keep ScaffoldResult updated/skipped reporting honest",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782723,
-      "updatedAt": 1783617782723
+      "updatedAt": 1783619037008
     },
     {
       "id": "check-mrdrz554-4up4qsbt",
       "text": "Run compile, lint, and extension tests",
-      "done": false,
+      "done": true,
       "createdAt": 1783617782723,
-      "updatedAt": 1783617782723
+      "updatedAt": 1783619037008
     }
   ],
   "relations": [
