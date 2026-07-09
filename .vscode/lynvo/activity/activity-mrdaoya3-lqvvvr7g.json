@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrdaoya3-lqvvvr7g",
+  "type": "task_moved",
+  "message": "Moved \"Expand integration and command test coverage\" from In Progress to Done",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783588753803,
+  "taskId": "task-mratyg3h-izcpsj58",
+  "metadata": {
+    "from": "in-progress",
+    "to": "done"
+  }
+}

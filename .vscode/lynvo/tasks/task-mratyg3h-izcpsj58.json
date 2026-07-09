@@ -2,7 +2,7 @@
   "id": "task-mratyg3h-izcpsj58",
   "title": "Expand integration and command test coverage",
   "description": "Add tests for command handlers, activation behavior, schema validation, migration flows, drag/drop, search edge cases, and generated CI/export outputs.",
-  "status": "in-progress",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439739573,
-  "updatedAt": 1783588696250,
+  "updatedAt": 1783588753803,
   "position": 5,
   "labelIds": [
     "feat"
@@ -43,9 +43,9 @@
     {
       "id": "check-mrdaly3g-7qvskcwh",
       "text": "Run tests and close roadmap coverage item",
-      "done": false,
+      "done": true,
       "createdAt": 1783588613596,
-      "updatedAt": 1783588613596
+      "updatedAt": 1783588753803
     }
   ],
   "relations": [

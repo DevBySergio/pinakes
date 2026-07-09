@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783588394376,
+  "updatedAt": 1783588753803,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -120,9 +120,9 @@
     {
       "id": "check-mratyg3h-ell6pwtn",
       "text": "Expand automated coverage for commands and workflows",
-      "done": false,
+      "done": true,
       "createdAt": 1783439716573,
-      "updatedAt": 1783439716573
+      "updatedAt": 1783588753803
     },
     {
       "id": "check-mraub5i2-wumq0a45",
