@@ -1,0 +1,15 @@
+{
+  "id": "activity-mrda2fxi-b5qafimk",
+  "type": "task_moved",
+  "message": "Moved \"Improve accessibility and large-tree performance\" to In Progress",
+  "actor": {
+    "githubId": "unknown",
+    "username": "Lynvo - Agent"
+  },
+  "createdAt": 1783587703591,
+  "taskId": "task-mratyg3h-ct8olhgo",
+  "metadata": {
+    "from": "todo",
+    "to": "in-progress"
+  }
+}

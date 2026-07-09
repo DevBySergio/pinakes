@@ -2,7 +2,7 @@
   "id": "task-mratyg3h-ct8olhgo",
   "title": "Improve accessibility and large-tree performance",
   "description": "Add accessibility metadata where useful, verify keyboard flows, harden lazy loading, debounce index refreshes, and test with large Pinake trees.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,13 +12,42 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439736573,
-  "updatedAt": 1783439736573,
+  "updatedAt": 1783587703585,
   "position": 3,
   "labelIds": [
     "feat"
   ],
   "priority": "medium",
-  "checklist": [],
+  "checklist": [
+    {
+      "id": "check-mrda2fxd-ku6e10ff",
+      "text": "Inspect TreeView accessibility and large-tree performance risks",
+      "done": false,
+      "createdAt": 1783587703586,
+      "updatedAt": 1783587703586
+    },
+    {
+      "id": "check-mrda2fxe-nxc6uoor",
+      "text": "Batch favorite TreeView resolution to avoid per-favorite manifest reads",
+      "done": false,
+      "createdAt": 1783587703587,
+      "updatedAt": 1783587703587
+    },
+    {
+      "id": "check-mrda2fxf-xkw2msq6",
+      "text": "Add regression coverage for dense favorites and long tree metadata",
+      "done": false,
+      "createdAt": 1783587703588,
+      "updatedAt": 1783587703588
+    },
+    {
+      "id": "check-mrda2fxg-4nkptv1e",
+      "text": "Run full compile, lint, and extension-host tests",
+      "done": false,
+      "createdAt": 1783587703589,
+      "updatedAt": 1783587703589
+    }
+  ],
   "relations": [
     {
       "id": "rel-mratyg3h-41bexzcl",
