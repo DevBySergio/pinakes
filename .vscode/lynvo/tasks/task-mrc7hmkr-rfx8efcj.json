@@ -2,7 +2,7 @@
   "id": "task-mrc7hmkr-rfx8efcj",
   "title": "Run Pinake interface accessibility keyboard and theme QA",
   "description": "Run dedicated accessibility and interface QA for the native Pinake VS Code experience.\n\nThis complements the existing accessibility and large-tree performance task by focusing specifically on UX/UI behavior, keyboard operation, screen-reader-friendly metadata where supported, and visual design checks across Light, Dark, and High Contrast themes.",
-  "status": "todo",
+  "status": "in-progress",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783522907019,
-  "updatedAt": 1783522907019,
+  "updatedAt": 1783587233753,
   "position": 7,
   "labelIds": [
     "feat"
