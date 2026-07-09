@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439716573,
-  "updatedAt": 1783587814337,
+  "updatedAt": 1783588394376,
   "position": 1783439716573,
   "labelIds": [
     "feat"
@@ -106,9 +106,9 @@
     {
       "id": "check-mratyg3h-epdfjznq",
       "text": "Add export/import workflows",
-      "done": false,
+      "done": true,
       "createdAt": 1783439716573,
-      "updatedAt": 1783439716573
+      "updatedAt": 1783588394376
     },
     {
       "id": "check-mratyg3h-aymv1tzb",

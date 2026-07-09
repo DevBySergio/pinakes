@@ -2,7 +2,7 @@
   "id": "task-mratyg3h-sc0i3coz",
   "title": "Implement export and import workflows",
   "description": "Add export to archive/static site and import existing docs into the Pinake structure with reviewable mapping behavior.",
-  "status": "in-progress",
+  "status": "done",
   "createdBy": {
     "githubId": "unknown",
     "username": "Lynvo - Agent"
@@ -12,7 +12,7 @@
     "username": "Lynvo - Agent"
   },
   "createdAt": 1783439732573,
-  "updatedAt": 1783588180158,
+  "updatedAt": 1783588394375,
   "position": 2,
   "labelIds": [
     "feat"
@@ -22,37 +22,37 @@
     {
       "id": "check-mrdacnni-2sniii0l",
       "text": "Implement service-level export bundle workflow",
-      "done": false,
+      "done": true,
       "createdAt": 1783588180159,
-      "updatedAt": 1783588180159
+      "updatedAt": 1783588394370
     },
     {
       "id": "check-mrdacnnj-lpycca1d",
       "text": "Implement service-level Markdown import workflow with manifest updates",
-      "done": false,
+      "done": true,
       "createdAt": 1783588180160,
-      "updatedAt": 1783588180160
+      "updatedAt": 1783588394371
     },
     {
       "id": "check-mrdacnnk-2kaaf2a3",
       "text": "Expose native VS Code export/import commands",
-      "done": false,
+      "done": true,
       "createdAt": 1783588180161,
-      "updatedAt": 1783588180161
+      "updatedAt": 1783588394372
     },
     {
       "id": "check-mrdacnnl-6z82rlyl",
       "text": "Add integration tests and documentation updates",
-      "done": false,
+      "done": true,
       "createdAt": 1783588180162,
-      "updatedAt": 1783588180162
+      "updatedAt": 1783588394373
     },
     {
       "id": "check-mrdacnnm-ok0t3zy1",
       "text": "Run full verification and close the task",
-      "done": false,
+      "done": true,
       "createdAt": 1783588180163,
-      "updatedAt": 1783588180163
+      "updatedAt": 1783588394374
     }
   ],
   "relations": [
