@@ -13,6 +13,7 @@ import { ValidationService } from './services/ValidationService';
 import { WorkspaceService } from './services/WorkspaceService';
 import { PinakeTreeDragAndDropController } from './tree/PinakeTreeDragAndDropController';
 import { PinakeTreeProvider } from './tree/PinakeTreeProvider';
+import { pinakesTreeViewId } from './constants';
 
 export function activate(context: vscode.ExtensionContext): void {
 	const workspaceService = new WorkspaceService();
@@ -37,7 +38,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		validationDiagnosticsService,
 	);
 	const outputChannel = vscode.window.createOutputChannel('Pinakes');
-	const treeView = vscode.window.createTreeView('pinakesView', {
+	const treeView = vscode.window.createTreeView(pinakesTreeViewId, {
 		treeDataProvider: treeProvider,
 		dragAndDropController,
 		showCollapseAll: true,

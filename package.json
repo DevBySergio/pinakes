@@ -6,6 +6,10 @@
   "publisher": "DevBySergio",
   "license": "MIT",
   "icon": "resources/pinake-marketplace-icon.png",
+  "author": {
+    "name": "DevBySergio",
+    "url": "https://devbysergio.com/"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/DevBySergio/pinakes.git"
@@ -36,7 +40,7 @@
     "pinake-validate": "./scripts/validate-pinake.mjs"
   },
   "activationEvents": [
-    "onView:pinakesView",
+    "onView:devbysergioPinakesView",
     "onCommand:pinakes.createPinake",
     "onCommand:pinake.create",
     "onCommand:pinakes.openPreview",
@@ -68,16 +72,16 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "pinakesExplorer",
+          "id": "devbysergioPinakesExplorer",
           "title": "Pinake",
           "icon": "resources/pinake-icon.svg"
         }
       ]
     },
     "views": {
-      "pinakesExplorer": [
+      "devbysergioPinakesExplorer": [
         {
-          "id": "pinakesView",
+          "id": "devbysergioPinakesView",
           "name": "Project Documentation"
         }
       ]
@@ -217,144 +221,144 @@
       "view/title": [
         {
           "command": "pinakes.createPinake",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "navigation@1"
         },
         {
           "command": "pinakes.newFile",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "navigation@2"
         },
         {
           "command": "pinakes.newFolder",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "navigation@3"
         },
         {
           "command": "pinakes.searchDocumentation",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "navigation@4"
         },
         {
           "command": "pinakes.refresh",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "navigation@5"
         },
         {
           "command": "pinakes.generateModule",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "1_generate@1"
         },
         {
           "command": "pinakes.validate",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "2_validate@1"
         },
         {
           "command": "pinakes.repair",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "3_maintenance@1"
         },
         {
           "command": "pinakes.upgrade",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "3_maintenance@2"
         },
         {
           "command": "pinakes.generateCiValidation",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "3_maintenance@3"
         },
         {
           "command": "pinakes.export",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "3_maintenance@4"
         },
         {
           "command": "pinakes.import",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "3_maintenance@5"
         },
         {
           "command": "pinakes.installAgentSkill",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "3_maintenance@6"
         },
         {
           "command": "pinakes.openManifest",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "4_manage@1"
         },
         {
           "command": "pinakes.sortChildren",
-          "when": "view == pinakesView",
+          "when": "view == devbysergioPinakesView",
           "group": "4_manage@2"
         }
       ],
       "view/item/context": [
         {
           "command": "pinake.openPreview",
-          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)",
+          "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)",
           "group": "navigation@1"
         },
         {
           "command": "pinake.editDocument",
-          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)",
+          "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)",
           "group": "navigation@2"
         },
         {
           "command": "pinakes.addFavorite",
-          "when": "view == pinakesView && viewItem == pinakeDocument",
+          "when": "view == devbysergioPinakesView && viewItem == pinakeDocument",
           "group": "navigation@3"
         },
         {
           "command": "pinakes.removeFavorite",
-          "when": "view == pinakesView && viewItem == favoritePinakeDocument",
+          "when": "view == devbysergioPinakesView && viewItem == favoritePinakeDocument",
           "group": "navigation@3"
         },
         {
           "command": "pinakes.revealInExplorer",
-          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
+          "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
           "group": "navigation@4"
         },
         {
           "command": "pinakes.copyPath",
-          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
+          "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
           "group": "navigation@5"
         },
         {
           "command": "pinakes.showProperties",
-          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
+          "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
           "group": "navigation@6"
         },
         {
           "command": "pinakes.newFile",
-          "when": "view == pinakesView && viewItem == directory",
+          "when": "view == devbysergioPinakesView && viewItem == directory",
           "group": "2_modification@1"
         },
         {
           "command": "pinakes.newFolder",
-          "when": "view == pinakesView && viewItem == directory",
+          "when": "view == devbysergioPinakesView && viewItem == directory",
           "group": "2_modification@2"
         },
         {
           "command": "pinakes.rename",
-          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory)",
+          "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory)",
           "group": "2_modification@3"
         },
         {
           "command": "pinakes.duplicate",
-          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
+          "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)",
           "group": "2_modification@4"
         },
         {
           "command": "pinakes.sortChildren",
-          "when": "view == pinakesView && viewItem == directory",
+          "when": "view == devbysergioPinakesView && viewItem == directory",
           "group": "3_sort@1"
         },
         {
           "command": "pinakes.delete",
-          "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory)",
+          "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory)",
           "group": "9_delete"
         }
       ]
@@ -364,61 +368,61 @@
         "command": "pinake.openPreview",
         "key": "ctrl+alt+p",
         "mac": "cmd+alt+p",
-        "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)"
+        "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)"
       },
       {
         "command": "pinake.editDocument",
         "key": "ctrl+alt+e",
         "mac": "cmd+alt+e",
-        "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)"
+        "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == favoritePinakeDocument)"
       },
       {
         "command": "pinakes.addFavorite",
         "key": "ctrl+alt+s",
         "mac": "cmd+alt+s",
-        "when": "view == pinakesView && viewItem == pinakeDocument"
+        "when": "view == devbysergioPinakesView && viewItem == pinakeDocument"
       },
       {
         "command": "pinakes.removeFavorite",
         "key": "ctrl+alt+s",
         "mac": "cmd+alt+s",
-        "when": "view == pinakesView && viewItem == favoritePinakeDocument"
+        "when": "view == devbysergioPinakesView && viewItem == favoritePinakeDocument"
       },
       {
         "command": "pinakes.revealInExplorer",
         "key": "ctrl+alt+r",
         "mac": "cmd+alt+r",
-        "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)"
+        "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)"
       },
       {
         "command": "pinakes.copyPath",
         "key": "ctrl+alt+c",
         "mac": "cmd+alt+c",
-        "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)"
+        "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory || viewItem == favoritePinakeDocument)"
       },
       {
         "command": "pinakes.validate",
         "key": "ctrl+alt+v",
         "mac": "cmd+alt+v",
-        "when": "view == pinakesView"
+        "when": "view == devbysergioPinakesView"
       },
       {
         "command": "pinakes.rename",
         "key": "f2",
         "mac": "f2",
-        "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory)"
+        "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory)"
       },
       {
         "command": "pinakes.delete",
         "key": "delete",
         "mac": "delete",
-        "when": "view == pinakesView && (viewItem == pinakeDocument || viewItem == directory)"
+        "when": "view == devbysergioPinakesView && (viewItem == pinakeDocument || viewItem == directory)"
       },
       {
         "command": "pinakes.searchDocumentation",
         "key": "ctrl+alt+f",
         "mac": "cmd+alt+f",
-        "when": "view == pinakesView"
+        "when": "view == devbysergioPinakesView"
       }
     ],
     "jsonValidation": [

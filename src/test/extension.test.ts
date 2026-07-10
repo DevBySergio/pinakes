@@ -6,6 +6,7 @@ import * as path from 'path';
 import { promisify } from 'util';
 import * as vscode from 'vscode';
 import { PinakesCommands } from '../commands/PinakesCommands';
+import { pinakesExtensionVersion, pinakesTreeViewId, pinakesViewContainerId } from '../constants';
 import { getModuleDescriptor, moduleDescriptors, modulePresets } from '../modules/moduleDescriptors';
 import {
 	AgentSkillInstaller,
@@ -1099,11 +1100,19 @@ suite('Pinakes v0.1', () => {
 	test('contributes the Pinake agent skill install command and packaged skill', async () => {
 		const packageJsonPath = path.resolve(__dirname, '..', '..', 'package.json');
 		const skillPath = path.resolve(__dirname, '..', '..', 'resources', 'skills', 'pinake', 'SKILL.md');
+		const packageJsonText = await fs.readFile(packageJsonPath, 'utf8');
+		const expectedViewWhen = `view == ${pinakesTreeViewId}`;
 		const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf8')) as {
+			version: string;
 			activationEvents: string[];
 			contributes: {
+				viewsContainers: { activitybar: { id: string; title: string; icon: string }[] };
+				views: Record<string, { id: string; name: string }[]>;
 				commands: { command: string; title: string; icon?: string }[];
-				menus: { 'view/title': { command: string; when: string; group: string }[] };
+				menus: {
+					'view/title': { command: string; when: string; group: string }[];
+					'view/item/context': { command: string; when: string; group: string }[];
+				};
 				keybindings: { command: string; key: string; mac?: string; when?: string }[];
 			};
 		};
@@ -1115,13 +1124,31 @@ suite('Pinakes v0.1', () => {
 			.map((item) => item.command);
 		const primaryIcons = primaryViewActions.map((commandId) =>
 			packageJson.contributes.commands.find((item) => item.command === commandId)?.icon);
+		const viewTitleMenuKeys = packageJson.contributes.menus['view/title'].map((item) =>
+			`${item.command}|${item.when}|${item.group}`);
+		const viewItemMenuKeys = packageJson.contributes.menus['view/item/context'].map((item) =>
+			`${item.command}|${item.when}|${item.group}`);
 		await vscode.commands.executeCommand('pinakes.refresh');
 		const registeredCommands = await vscode.commands.getCommands(true);
 
+		assert.strictEqual(packageJson.version, pinakesExtensionVersion);
+		assert.ok(!packageJsonText.includes('pinakesView'));
+		assert.ok(!packageJsonText.includes('pinakesExplorer'));
+		assert.ok(packageJson.activationEvents.includes(`onView:${pinakesTreeViewId}`));
+		assert.ok(!packageJson.activationEvents.includes('onView:pinakesView'));
+		assert.strictEqual(packageJson.contributes.viewsContainers.activitybar[0]?.id, pinakesViewContainerId);
+		assert.strictEqual(packageJson.contributes.viewsContainers.activitybar[0]?.title, 'Pinake');
+		assert.deepStrictEqual(packageJson.contributes.views[pinakesViewContainerId]?.map((view) => view.id), [
+			pinakesTreeViewId,
+		]);
+		assert.ok(packageJson.contributes.menus['view/title'].every((item) => item.when === expectedViewWhen));
+		assert.ok(packageJson.contributes.menus['view/item/context'].every((item) => item.when.startsWith(`${expectedViewWhen} && `)));
+		assert.strictEqual(new Set(viewTitleMenuKeys).size, viewTitleMenuKeys.length);
+		assert.strictEqual(new Set(viewItemMenuKeys).size, viewItemMenuKeys.length);
 		assert.ok(packageJson.activationEvents.includes('onCommand:pinakes.installAgentSkill'));
 		assert.strictEqual(command?.title, 'Pinake: Install Agent Skill');
 		assert.ok(packageJson.contributes.commands.every((item) => item.title.startsWith('Pinake: ')));
-		assert.strictEqual(viewButton?.when, 'view == pinakesView');
+		assert.strictEqual(viewButton?.when, expectedViewWhen);
 		assert.strictEqual(viewButton?.group, '3_maintenance@6');
 		assert.ok(packageJson.activationEvents.includes('onCommand:pinakes.export'));
 		assert.ok(packageJson.activationEvents.includes('onCommand:pinakes.import'));
@@ -1223,8 +1250,10 @@ suite('Pinakes v0.1', () => {
 	test('ships public Pinake specification docs and sample workspace', async () => {
 		const rootPath = path.resolve(__dirname, '..', '..');
 		const packageJson = JSON.parse(await fs.readFile(path.join(rootPath, 'package.json'), 'utf8')) as {
-			files: string[];
+			files?: string[];
 		};
+		const vscodeIgnore = await fs.readFile(path.join(rootPath, '.vscodeignore'), 'utf8');
+		const npmIgnore = await fs.readFile(path.join(rootPath, '.npmignore'), 'utf8');
 		const publicSpec = await fs.readFile(path.join(rootPath, 'docs', 'public-specification.md'), 'utf8');
 		const scaffoldReference = await fs.readFile(path.join(rootPath, 'docs', 'scaffold-reference.md'), 'utf8');
 		const flows = await fs.readFile(path.join(rootPath, 'docs', 'extension-architecture-and-flows.md'), 'utf8');
@@ -1232,9 +1261,12 @@ suite('Pinakes v0.1', () => {
 		const sampleManifest = JSON.parse(await fs.readFile(path.join(sampleRoot, '.pinake', 'pinake.json'), 'utf8')) as {
 			documents: { path: string }[];
 		};
+		const vscodeIgnorePatterns = parseIgnorePatterns(vscodeIgnore);
+		const npmIgnorePatterns = parseIgnorePatterns(npmIgnore);
 
-		assert.ok(packageJson.files.includes('docs/**'));
-		assert.ok(packageJson.files.includes('examples/**'));
+		assert.strictEqual(packageJson.files, undefined);
+		assertPackageIgnorePatterns(vscodeIgnorePatterns);
+		assertPackageIgnorePatterns(npmIgnorePatterns);
 		assert.match(publicSpec, /## Manifest/);
 		assert.match(publicSpec, /## State Files/);
 		assert.match(scaffoldReference, /## Component Module Matrix/);
@@ -1679,6 +1711,26 @@ suite('Pinakes v0.1', () => {
 		await stateService.recordSortMode(root, 'nameDesc');
 		const descendingChildren = await provider.getChildren();
 		assert.strictEqual(descendingChildren[0]?.label, '99_appendix');
+	});
+
+	test('uses visible representative icons for quality folders', async () => {
+		const { root, fileService, stateService } = await createFixture();
+		const provider = new PinakeTreeProvider(root, fileService, stateService);
+		const modernQualityItem = provider.getTreeItem({
+			uri: vscode.Uri.joinPath(root, '.pinake', 'docs', '05_quality'),
+			label: '05_quality',
+			relativePath: '05_quality',
+			kind: 'directory',
+		});
+		const legacyQualityItem = provider.getTreeItem({
+			uri: vscode.Uri.joinPath(root, '.pinake', 'docs', '04_Quality'),
+			label: '04_Quality',
+			relativePath: '04_Quality',
+			kind: 'directory',
+		});
+
+		assertThemeIconId(modernQualityItem.iconPath, 'checklist');
+		assertThemeIconId(legacyQualityItem.iconPath, 'checklist');
 	});
 
 	test('shows filesystem folders alongside manifest-backed tree children', async () => {
@@ -2233,7 +2285,28 @@ function assertCommandKeybinding(
 	const keybinding = keybindings.find((item) => item.command === command);
 	assert.ok(keybinding, `Expected keybinding for ${command}.`);
 	assert.strictEqual(keybinding.key, key);
-	assert.match(keybinding.when ?? '', /view == pinakesView/);
+	assert.match(keybinding.when ?? '', new RegExp(`view == ${pinakesTreeViewId}`));
+}
+
+function assertThemeIconId(iconPath: vscode.TreeItem['iconPath'], expected: string): void {
+	assert.ok(iconPath instanceof vscode.ThemeIcon);
+	assert.strictEqual(iconPath.id, expected);
+}
+
+function parseIgnorePatterns(content: string): string[] {
+	return content
+		.split(/\r?\n/)
+		.map((line) => line.trim())
+		.filter((line) => line && !line.startsWith('#'));
+}
+
+function assertPackageIgnorePatterns(patterns: string[]): void {
+	assert.ok(patterns.includes('src/**'));
+	assert.ok(patterns.includes('out/test/**'));
+	assert.ok(patterns.includes('node_modules/**'));
+	assert.ok(patterns.includes('examples/sample-pinake-workspace/.pinake/.state/**'));
+	assert.ok(!patterns.includes('docs/**'));
+	assert.ok(!patterns.includes('examples/**'));
 }
 
 async function withDefaultSetupQuickPicks<T>(callback: () => Promise<T>): Promise<T> {

@@ -1,103 +1,156 @@
-# Pinake Editor
+# Pinake Editor 📚
 
-Pinake Editor is a VS Code extension for managing internal project documentation from a native VS Code sidebar.
+**Pinake Editor** is a local-first documentation manager built directly into VS Code. Create, organize, search, validate, import, and export project documentation without leaving your editor.
+
+Unlike cloud documentation tools, **Pinake Editor keeps your project knowledge inside your workspace**. Markdown documents, manifests, indexes, and generated state stay local and reviewable.
+
+<!-- Image slot: save the main extension screenshot at docs/assets/pinake-editor-preview.png -->
 
 ![Pinake Editor preview](docs/assets/pinake-editor-preview.png)
 
-## Features
+---
 
-- Adds a native Activity Bar container and `Project Documentation` tree view.
-- Initializes a Pinake workspace in `.pinake/`, with documentation stored in `.pinake/docs`.
-- Creates `.pinake/pinake.json` as the source of truth for project metadata, selected modules, and document paths.
-- Provides a creation wizard with templates:
-  - Minimal Internal Docs
-  - Product / Project Docs
-  - Technical Architecture
-  - API / Service Docs
-  - Operations / Runbook
-  - Full Product Handbook
-- Highlights recommended optional modules during setup while keeping template defaults lightweight.
-- Optionally hides `.pinake` from the standard VS Code Explorer by merging `"**/.pinake": true` into `.vscode/settings.json`.
-- Opens Markdown documents from the Pinake TreeView in Markdown Preview by default.
-- Provides an explicit `Edit` action to open Markdown source in the editor.
-- Supports tree actions: new file, new folder, rename, duplicate, delete, refresh, open preview, edit, reveal in Explorer, copy path, show properties, open manifest, and sort children.
-- Saves expanded, collapsed, favorites, and last-opened tree state in `.pinake/.state/ui.json`.
-- Shows favorited Markdown files in a virtual `Favorites` group at the top of the Pinake tree.
-- Searches local documentation through the offline index in `.pinake/.state/indexes.json`, with snippets, tag/heading filters, backlinks, broken references, and reference graph data.
-- Repairs missing generated files without overwriting edited documents.
-- Upgrades legacy Pinake folders into the current `.pinake/docs` layout and records migration history.
-- Validates Pinake structure, runtime JSON schemas, document paths, ADR names, Markdown frontmatter alignment, Markdown style, basic local Markdown links, and warning-only secret hygiene patterns.
-- Generates a standalone Pinake validator and GitHub Actions workflow for CI.
-- Keeps all data local to the workspace. The extension does not use telemetry or network APIs.
+## ✨ Key Features
 
-## Commands
+### 1. 📁 Native Documentation Explorer
 
-- `Pinake: Create Documentation`
-- `Pinake: Open Preview`
-- `Pinake: Edit`
-- `Pinake: Generate Module`
-- `Pinake: Search Documentation`
-- `Pinake: Repair`
-- `Pinake: Upgrade`
-- `Pinake: Generate CI Validation Workflow`
-- `Pinake: Export`
-- `Pinake: Import Markdown`
-- `Pinake: Validate`
-- `Pinake: Refresh`
-- `Pinake: New Markdown File`
-- `Pinake: New Folder`
-- `Pinake: Rename`
-- `Pinake: Delete`
-- `Pinake: Open Manifest`
-- `Pinake: Duplicate`
-- `Pinake: Reveal in Explorer`
-- `Pinake: Copy Relative Path`
-- `Pinake: Show Properties`
-- `Pinake: Set Tree Sort Order`
-- `Pinake: Add to Favorites`
-- `Pinake: Remove from Favorites`
+Manage your documentation from a dedicated VS Code Activity Bar view:
 
-## Keybindings
+- **Project Documentation Tree** - Browse `.pinake/docs` from a native sidebar
+- **Favorites** - Keep important Markdown files pinned in a virtual Favorites group
+- **Preview by Default** - Open documents in Markdown Preview with one click
+- **Explicit Editing** - Use the Edit action when you want to modify the Markdown source
+- **Context Actions** - Rename, duplicate, delete, reveal, copy path, show properties, and sort items
 
-- `F2`: Rename the selected Pinake tree item.
-- `Delete`: Delete the selected Pinake tree item.
-- `Cmd+Alt+P` on macOS or `Ctrl+Alt+P` elsewhere: Open preview for the selected Pinake document.
-- `Cmd+Alt+E` on macOS or `Ctrl+Alt+E` elsewhere: Edit the selected Pinake document.
-- `Cmd+Alt+S` on macOS or `Ctrl+Alt+S` elsewhere: Add or remove the selected Pinake document from Favorites.
-- `Cmd+Alt+R` on macOS or `Ctrl+Alt+R` elsewhere: Reveal the selected Pinake item in Explorer.
-- `Cmd+Alt+C` on macOS or `Ctrl+Alt+C` elsewhere: Copy the selected Pinake item path.
-- `Cmd+Alt+V` on macOS or `Ctrl+Alt+V` elsewhere: Validate the current Pinake.
-- `Cmd+Alt+F` on macOS or `Ctrl+Alt+F` elsewhere: Search Pinake documentation from the tree.
+### 2. 🧱 Documentation Workspace Setup
 
-## Storage
+Create a complete Pinake workspace with a guided setup flow:
 
-Pinake Editor stores generated Pinake files in a hidden project-internal folder:
+- **Local `.pinake/` Folder** - Stores project documentation and metadata inside the repository
+- **Manifest Source of Truth** - Tracks project metadata, modules, and document paths in `.pinake/pinake.json`
+- **Template Selection** - Choose from focused documentation templates for projects, APIs, architecture, operations, and product handbooks
+- **Optional Modules** - Add recommended documentation modules without bloating the initial setup
+- **Explorer Visibility Control** - Optionally hide `.pinake` from the standard VS Code Explorer
 
-- `.pinake/pinake.json` is the Pinake manifest and source of truth.
-- `.pinake/docs/` contains project documentation.
-- `.pinake/.state/` stores generated local state such as module state, UI state, indexes, migrations, and version metadata.
-- `.pinake/.gitignore` ignores the generated `.state/` folder.
+### 3. 📝 Markdown-First Documentation
 
-The extension does not store project documentation inside `.vscode`. It only writes `.vscode/settings.json` if the user explicitly confirms the option to hide `.pinake` from the standard Explorer during setup.
+Keep documentation portable, editable, and easy to review:
 
-## Development
+- **Plain Markdown Files** - Human-authored content lives under `.pinake/docs`
+- **Frontmatter Metadata** - Generated documents include title, type, status, and order metadata
+- **Preview / Edit Split** - Read in Markdown Preview and edit source only when needed
+- **New File and Folder Actions** - Create documentation directly from the Pinake sidebar
+- **Safe Local Paths** - Commands reject absolute paths, `..`, and files outside the Pinake docs root
 
-```sh
-npm run compile
-npm run lint
-npm run pinake:validate -- --root /path/to/workspace --format json
-npm test
-```
+### 4. 🔎 Offline Search
 
-## Design Reference
+Find project knowledge without relying on external services:
 
-- [Pinake Public Specification](docs/public-specification.md)
-- [Pinake Scaffold Reference](docs/scaffold-reference.md)
-- [Pinake Extension Architecture And Flows](docs/extension-architecture-and-flows.md)
-- [Pinake Clean Architecture Boundaries](docs/clean-architecture-boundaries.md)
-- [Pinake Interface Audit](docs/interface-audit.md)
-- [Pinake Interface Accessibility QA](docs/interface-accessibility-qa.md)
-- [Security and Privacy Guidance](docs/security-privacy.md)
-- [Component Catalog Roadmap](docs/component-catalog-roadmap.md)
-- [Release Checklist](docs/release-checklist.md)
-- [Sample Pinake Workspace](examples/sample-pinake-workspace)
+- **Local Indexes** - Search data is generated in `.pinake/.state/indexes.json`
+- **Snippet Results** - Results include matched text, document path, tags, and headings
+- **Scoped Queries** - Filter by text, `tag:<name>`, or `heading:<text>`
+- **Backlink and Reference Data** - Track local references and broken Markdown links
+- **No Network Required** - Search runs entirely inside the workspace
+
+### 5. 🧩 Templates and Modules
+
+Generate useful documentation structure quickly:
+
+- **Minimal Internal Docs**
+- **Product / Project Docs**
+- **Technical Architecture**
+- **API / Service Docs**
+- **Operations / Runbook**
+- **Full Product Handbook**
+  ![Pinake Creator preview](docs/assets/pinake-creator-preview.png)
+- **Component Modules** - Add focused docs for API, Database, Docker, Kubernetes, CI/CD, Frontend, Mobile, Authentication, GraphQL, gRPC, WebSocket, Backend, Cache, Message Queue, OAuth, IaC, Monitoring, Security, CLI, SDK, and Microservice projects
+
+### 6. ✅ Validation and Repair
+
+Keep documentation structure healthy over time:
+
+- **Manifest Validation** - Checks `.pinake/pinake.json` against the expected schema
+- **State Validation** - Validates generated module, UI, index, migration, and version state files
+- **Markdown Checks** - Reports missing files, frontmatter drift, ADR naming issues, style warnings, and broken local links
+- **Secret Hygiene Warnings** - Flags obvious sensitive content patterns without failing the whole validation run
+- **Repair Workflow** - Recreates missing generated files and discovers untracked Markdown without overwriting edited documents
+
+### 7. 🔄 Import, Export, and Upgrade
+
+Move documentation in and out of Pinake safely:
+
+- **Markdown Import** - Bring existing Markdown folders into `.pinake/docs/imported`
+- **Static Export** - Export a reviewable bundle with `docs/`, `pinake.json`, and `index.html`
+- **Legacy Upgrade** - Migrate older Pinake folders into the current `.pinake/docs` layout
+- **Migration History** - Record upgrade activity in generated state
+- **CI Validator Generation** - Create a standalone validator and GitHub Actions workflow when you want repository checks
+
+### 8. 🤖 Agent Skill Support
+
+Use Pinake with automation-friendly workflows:
+
+- **Install Agent Skill** - Install the packaged Pinake skill into your Codex skill directory
+- **Source-Backed Docs** - Agents can read and update documentation from local Markdown files
+- **Reviewable Changes** - Documentation edits remain normal repository diffs
+- **No External Storage** - Generated extension state stays under `.pinake/.state`
+
+---
+
+## 🚀 How to Use
+
+Open the **Pinake** activity bar icon in the sidebar, or use the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`):
+
+| Command                                   | Description                                            |
+| ----------------------------------------- | ------------------------------------------------------ |
+| `Pinake: Create Documentation`            | Create a new `.pinake` documentation workspace         |
+| `Pinake: New Markdown File`               | Add a Markdown document under the selected folder      |
+| `Pinake: New Folder`                      | Add a folder under the selected Pinake docs location   |
+| `Pinake: Open Preview`                    | Open the selected document in Markdown Preview         |
+| `Pinake: Edit`                            | Open the selected document as Markdown source          |
+| `Pinake: Search Documentation`            | Search paths, headings, tags, and document text        |
+| `Pinake: Generate Module`                 | Add focused starter documentation for a component      |
+| `Pinake: Validate`                        | Validate the current Pinake workspace                  |
+| `Pinake: Repair`                          | Recreate missing generated files and repair references |
+| `Pinake: Upgrade`                         | Upgrade a legacy Pinake folder into the current layout |
+| `Pinake: Import Markdown`                 | Import existing Markdown files into Pinake             |
+| `Pinake: Export`                          | Export a static documentation bundle                   |
+| `Pinake: Generate CI Validation Workflow` | Generate local validator tooling and GitHub Actions CI |
+| `Pinake: Install Agent Skill`             | Install the bundled Pinake skill for Codex workflows   |
+| `Pinake: Open Manifest`                   | Open `.pinake/pinake.json`                             |
+| `Pinake: Set Tree Sort Order`             | Change how the documentation tree is sorted            |
+
+### Keyboard Shortcuts
+
+| Shortcut                   | Action                                 |
+| -------------------------- | -------------------------------------- |
+| `Ctrl+Alt+P` / `Cmd+Alt+P` | Open preview for the selected document |
+| `Ctrl+Alt+E` / `Cmd+Alt+E` | Edit the selected document             |
+| `Ctrl+Alt+S` / `Cmd+Alt+S` | Add or remove the selected favorite    |
+| `Ctrl+Alt+R` / `Cmd+Alt+R` | Reveal the selected item in Explorer   |
+| `Ctrl+Alt+C` / `Cmd+Alt+C` | Copy the selected item path            |
+| `Ctrl+Alt+V` / `Cmd+Alt+V` | Validate the current Pinake workspace  |
+| `Ctrl+Alt+F` / `Cmd+Alt+F` | Search Pinake documentation            |
+| `F2`                       | Rename the selected document or folder |
+| `Delete`                   | Delete the selected document or folder |
+
+---
+
+## 🛡️ Privacy
+
+Your documentation is yours.
+
+- **No Telemetry** - Pinake Editor does **NOT** send project documentation to external servers
+- **Local Workspace Storage** - Documents, manifests, indexes, and UI state are stored inside the current workspace
+- **No Account Required** - No sign-up, no cloud account, no external API keys
+- **Reviewable Files** - Markdown and JSON files can be inspected before committing them
+- **Generated State Isolation** - `.pinake/.gitignore` ignores `.pinake/.state/` by default
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+---
+
+**Happy documenting!** 📚

@@ -35,6 +35,12 @@ flowchart TD
 | Templates | `src/templates/*`, `src/modules/*` | Define setup templates and generated component modules. |
 | Schemas | `schemas/*.schema.json` | Validate manifest and state JSON through VS Code JSON validation and runtime validation. |
 
+## Native VS Code Identifiers
+
+Pinake Editor contributes one Activity Bar container, `devbysergioPinakesExplorer`, and one TreeView, `devbysergioPinakesView`. These IDs are intentionally scoped to the Marketplace publisher and extension name because VS Code treats view and container IDs as global across all installed extensions.
+
+Do not reuse the legacy IDs `pinakesExplorer` or `pinakesView` for new UI contributions. Older local VSIX builds were installed under `undefined_publisher.pinakes`; if those builds remain installed while the Marketplace build is active, shared view IDs cause VS Code to merge both extensions' `view/title` menu contributions and duplicate toolbar and overflow actions.
+
 ## UI Flow Diagram
 
 ```mermaid

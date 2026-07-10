@@ -17,12 +17,14 @@ Use this checklist before publishing a VSIX or marketplace build.
 - Run `npm pack --dry-run` and review the npm file list.
 - Run `npm exec --yes --package @vscode/vsce vsce package`.
 - Inspect the generated VSIX manifest and confirm the publisher is not `undefined`.
+- Confirm the generated VSIX manifest uses `devbysergioPinakesExplorer` and `devbysergioPinakesView`, with no `pinakesExplorer` or `pinakesView` references.
 - Confirm the packaged build includes `out/**`, `resources/pinake-icon.svg`, `resources/pinake-marketplace-icon.png`, `resources/skills/pinake/SKILL.md`, `scripts/validate-pinake.mjs`, `schemas/*.schema.json`, `docs/`, `examples/sample-pinake-workspace`, `README.md`, `CHANGELOG.md`, and `LICENSE`.
 - Confirm the packaged build does not include `.github/**`, stale `*.vsix` or `*.tgz` files, `node_modules/**`, `.vscode-test/**`, or `examples/sample-pinake-workspace/.pinake/.state/**`.
 
 ## Manual VS Code Smoke Test
 
 - Install the packaged VSIX into a clean VS Code profile.
+- In a profile that previously had a local `undefined_publisher.pinakes` VSIX, confirm the new Pinake TreeView does not duplicate toolbar icons or overflow menu entries.
 - Capture or refresh the README/marketplace screenshot or GIF from the installed VSIX if the UI changed.
 - Open a blank workspace and confirm the Pinake Activity Bar container and empty state render.
 - Run `Pinake: Create Documentation`, create a Minimal Internal Docs workspace, and validate it.
@@ -38,7 +40,7 @@ Use this checklist before publishing a VSIX or marketplace build.
 
 - The sample workspace contains `.pinake/.gitignore` so generated `.state/` files stay ignored when copied from source or packaged as a VSIX.
 - `npm pack --dry-run` may omit `.gitignore` files because npm treats them as package metadata. Use VSIX packaging when verifying extension-distribution contents.
-- Keep VSIX packaging on one strategy: `vsce` supports `.vscodeignore` or a `package.json` `files` allowlist, not both.
+- Keep VSIX packaging on one strategy. This repo uses `.vscodeignore` and `.npmignore`; do not add a `package.json` `files` allowlist unless the ignore-file strategy is removed.
 - Do not publish real credentials, tokens, private keys, or production-only sensitive values in sample Pinake documents.
 
 ## Publish Notes
