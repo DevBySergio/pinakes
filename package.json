@@ -1,6 +1,6 @@
 {
   "name": "pinakes",
-  "displayName": "Pinake Editor",
+  "displayName": "Pinake",
   "description": "Manage Pinake project documentation from a native VS Code sidebar.",
   "version": "1.0.0",
   "publisher": "DevBySergio",
