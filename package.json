@@ -2,23 +2,35 @@
   "name": "pinakes",
   "displayName": "Pinake Editor",
   "description": "Manage Pinake project documentation from a native VS Code sidebar.",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "publisher": "DevBySergio",
+  "license": "MIT",
+  "icon": "resources/pinake-marketplace-icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DevBySergio/pinakes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DevBySergio/pinakes/issues"
+  },
+  "homepage": "https://github.com/DevBySergio/pinakes#readme",
+  "keywords": [
+    "pinake",
+    "documentation",
+    "markdown",
+    "tree-view",
+    "project-documentation",
+    "knowledge-base"
+  ],
+  "galleryBanner": {
+    "color": "#252526",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.125.0"
   },
   "categories": [
     "Other"
-  ],
-  "files": [
-    "out/**/*.js",
-    "!out/test/**",
-    "resources/**",
-    "scripts/**",
-    "schemas/**",
-    "docs/**",
-    "examples/**",
-    "README.md",
-    "CHANGELOG.md"
   ],
   "bin": {
     "pinake-validate": "./scripts/validate-pinake.mjs"

@@ -2,7 +2,7 @@
 
 Pinake Editor is a VS Code extension for managing internal project documentation from a native VS Code sidebar.
 
-![Pinake Editor preview](docs/assets/pinake-editor-preview.svg)
+![Pinake Editor preview](docs/assets/pinake-editor-preview.png)
 
 ## Features
 

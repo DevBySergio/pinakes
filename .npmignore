@@ -4,6 +4,7 @@
 .github/**
 .pinake/**
 .vscode/**
+.vscodeignore
 .vscode-test/**
 node_modules/**
 src/**
@@ -13,7 +14,6 @@ out/test/**
 .yarnrc
 vsc-extension-quickstart.md
 package-lock.json
-.npmignore
 *.vsix
 *.tgz
 npm-debug.log*

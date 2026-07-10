@@ -4,6 +4,8 @@ All notable changes to the "pinakes" extension will be documented in this file.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-07-10
+
 - Added the native Pinake Activity Bar view and documentation tree.
 - Added Pinake workspace initialization with `.pinake/pinake.json`, `.pinake/docs/`, and `.pinake/.state/` files.
 - Added a setup wizard for template selection, optional modules, explicit Explorer hiding, legacy migration, and a final confirmation summary before writing files.
